@@ -1,8 +1,48 @@
 const db = require('../models');
 const { constants } = require('../utils/constants')
 const users = db.users;
+const Role = db.roles;
+
+const Op = db.Sequelize.Op;
 
 exports.usersController = {
+    create:(req, res) => {
+        const role = req.body;
+        users.create(role)
+            .then(user => { 
+                if (req.body.roles) {
+                    Role.findAll({
+                        where: {
+                            roleName: {
+                                [Op.or]: req.body.roles
+                            }
+                        }
+                    }).then(roles => {
+                        user.setRoles(roles).then(() => {
+                            res.status(200).send({
+                                message: "User was registered successfully!"
+                            })
+                        })
+                    }) 
+                } else {
+                    user.setRoles([1]).then(() => {
+                        res.status(200).send({ message: "User was registered successfully!" });
+                    });
+                }
+            })
+            .catch(error => {
+                res.status(500).send({
+                    message: error.message
+                })
+            })
+            // .then(data => {
+            //     res.status(200)
+            //         .send(data)
+            // })
+            // .catch(err => {
+            //     constants.handleError(err, res);
+            // })
+    },
     getAll:(req, res) => {
         users.findAll()
             .then(data => {
@@ -94,3 +134,19 @@ exports.usersController = {
             })
     },
 }
+
+exports.allAccess = (req, res) => {
+    res.status(200).send("Public Content.");
+};
+
+exports.userBoard = (req, res) => {
+    res.status(200).send("User Content.");
+};
+
+exports.adminBoard = (req, res) => {
+    res.status(200).send("Admin Content.");
+};
+
+exports.moderatorBoard = (req, res) => {
+    res.status(200).send("Moderator Content.");
+};

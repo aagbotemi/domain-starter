@@ -1,5 +1,6 @@
+const bcrypt = require('bcryptjs');
 const db = require('../models');
-const { constants } = require('./constants')
+const { constants } = require("./constants");
 const users = db.users;
 const Role = db.roles;
 

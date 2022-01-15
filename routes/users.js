@@ -1,7 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const { jwtAuth } = require("../middleware");
+var express = require("express");
+var router = express.Router();
 const { usersController } = require("../controllers/users");
+const { jwtAuth } = require("../middleware/auth");
+
+
 
 router.post(
   "/",

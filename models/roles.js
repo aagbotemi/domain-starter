@@ -3,11 +3,10 @@ module.exports = (sequelize, dataType) => {
     roleName: {
       type: dataType.STRING,
       allowNull: false,
+      unique: true,
     },
     roleDescription: {
-      type: dataType.STRING,
-      unique: true,
-      allowNull: false,
+      type: dataType.STRING
     },
   });
   return roles;

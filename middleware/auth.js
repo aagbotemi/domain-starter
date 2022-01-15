@@ -1,51 +1,96 @@
-const { jwt, verify } = require("jsonwebtoken");
-require("dotenv").config()
+const { jwt, verify } = require('jsonwebtoken');
+const config = require('../config/auth');
+const db = require("../models");
+const ROLES = db.ROLES;
+const User = db.users;
 
-exports.jwtAuth = {
+verifyToken = (req, res, next) => {
+    let token = req.headers['Authorization']
 
+    // if token doesn't exist, reject request
+    if (!token) {
+        return res.status(403).send({
+            message: 'Forbidden'
+        })
+    }
 
-  AdminVerifyToken: (req, res, next) => {
-    
-    let token = req.headers["authorization"].split(" ")[1];
-    
+    // if token exist, validate
+    // verify(token, 'secretKey')
+    verify(token, config.secretKey, (err, decoded) => {
+        if (err) {
+            return res.status(401).send({
+                message: 'Unauthorized Access'
+            })
+        }
 
-    if (!token) return res.status(403).send({ message: "Unauthorised Access" });
+        req.userId = decoded.id
 
-    verify(token, process.env.secret, (err, decode) => {
-      if (err) return res.status(401).send({ message: "forbidden access" });
+        next();
+    })
+}
 
+isAdmin = (req, res, next) => {
+    User.findByPk(req.userId).then(user => {
+        user.getRoles().then(roles => {
+            for (let i = 0; i < roles.length; i++) {
+                if (roles[i].name === "admin") {
+                    next();
+                    return;
+                }
+            }
 
-      if (decode.userType !== "admin")
-        return res.status(401).send({ message: "forbidden access" });
-
-        
-      req.userId = decode.id;
-
-
-      next();
+            res.status(403).send({
+                message: "Require Admin Role!"
+            });
+            return;
+        });
     });
-  },
-
-  POVerifyToken: (req, res, next) => {
-
-    let token = req.headers["authorization"].split(" ")[1];
-
-
-    if (!token) return res.status(403).send({ message: "Unauthorised Access" });
-
-    verify(token, process.env.secret, (err, decode) => {
-      if (err) return res.status(401).send({ message: "forbidden access" });
-
-
-      if (decode.userType !== "partnerOrg")
-        return res.status(401).send({ message: "forbidden access" });
-
-      req.userId = decode.id;
-
-
-      next();
-    });
-  },
-
-  
 };
+
+isPO = (req, res, next) => {
+    User.findByPk(req.userId).then(user => {
+        user.getRoles().then(roles => {
+            for (let i = 0; i < roles.length; i++) {
+                if (roles[i].name === "PO") {
+                next();
+                return;
+                }
+            }
+
+            res.status(403).send({
+                message: "Require PO Role!"
+            });
+        });
+    });
+};
+
+isAdminOrPO = (req, res, next) => {
+    User.findByPk(req.userId).then(user => {
+        user.getRoles().then(roles => {
+            for (let i = 0; i < roles.length; i++) {
+                if (roles[i].name === "moderator") {
+                    next();
+                    return;
+                }
+
+                if (roles[i].name === "admin") {
+                    next();
+                    return;
+                }
+            }
+
+            res.status(403).send({
+                message: "Require PO or Admin Role!"
+            });
+        });
+    });
+};
+
+const jwtAuth = {
+    verifyToken: verifyToken,
+    isAdmin: isAdmin,
+    isPO: isPO,
+    isAdminOrPO: isAdminOrPO
+}
+
+module.exports = jwtAuth;

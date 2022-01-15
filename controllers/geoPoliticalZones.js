@@ -1,15 +1,15 @@
 const db = require('../models');
 const { constants } = require('./constants')
-const roles = db.roles;
+const geoPoliticalZones  = db.geoPoliticalZones;
 
-exports.rolesController = {
+exports.geoPoliticalZonesController = {
     create:(req, res) => {
-        const role = req.body;
-        roles.create(role)
+        const zone = req.body;
+        geoPoliticalZones.create(zone)
             .then(data => {
                 res.status(200).send({
                     success: true,
-                    message: "Role Added Successfully",
+                    message: "GeoPolitical Zones Added Successfully",
                     data: data
                 })
             })
@@ -18,12 +18,12 @@ exports.rolesController = {
             })
     },
     getAll:(req, res) => {
-        roles.findAll()
+        geoPoliticalZones.findAll()
             .then(data => {
                 if(data.length == 0) {
                     res.status(404).send({
                         status: false,
-                        message: "No role has been created!!!"
+                        message: "No GeoPolitical Zone has been created!!!"
                     })
                 }
                 res.status(200).send({
@@ -41,7 +41,7 @@ exports.rolesController = {
             })
     },
     getById:(req, res) => {
-        roles.findOne({
+        geoPoliticalZones.findOne({
             where: {
                 id: req.params.id
             }})
@@ -65,8 +65,8 @@ exports.rolesController = {
         })
     },
     update:(req, res) => {
-        const role = req.body
-        roles.update(role, {
+        const zone = req.body
+        geoPoliticalZones.update(zone, {
             where: {
                 id: req.params.id
             }})
@@ -85,7 +85,7 @@ exports.rolesController = {
             })
     },
     delete:(req, res) => {
-        roles.destroy({
+        geoPoliticalZones.destroy({
             where: {
                 id: req.params.id
             }})

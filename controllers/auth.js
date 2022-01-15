@@ -1,5 +1,5 @@
 const db = require('../models');
-const { constants } = require('../utils/constants')
+const { constants } = require('./constants')
 const bcrypt = require('bcryptjs');
 const { sign } = require('jsonwebtoken');
 
@@ -15,7 +15,7 @@ exports.authController = {
     signin:(req, res) => {
         Users.findOne({
             where: {
-                userName: req.body.userName
+                email: req.body.email
             }
         }).then(user => {
             // if record doesn't exist
@@ -38,24 +38,17 @@ exports.authController = {
 
             let payload = {
                 id: user.id,
-                userName: user.userName,
+                email: user.email,
                 userType: user.userType
             }
             let token = sign(payload, config.secretKey, {
                 expiresIn: 36000
             })
-
-            let authorities = [];
-            user.getRoles().then(roles => {
-                for (let i = 0; i < roles.length; i++) {
-                    authorities.push("ROLE_" + roles[i].name.toUpperCase());
-                }
-                res.status(200).send({
-                    id: user.id,
-                    userData: payload,
-                    roles: authorities,
-                    accessToken: token
-                });
+            
+            res.status(200).send({
+                status: true,
+                userData: payload,
+                accessToken: token
             });
         }).catch(err => {
             res.status(400)

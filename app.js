@@ -8,8 +8,11 @@ var cors = require("cors");
 const indexRouter = require("./routes/index");
 const authRouter = require('./routes/auth');
 const usersRouter = require("./routes/users");
-// const rolesRouter = require('./routes/roles');
+const rolesRouter = require('./routes/roles');
 const beneficiariesRouter = require("./routes/beneficiaries");
+const citiesRouter = require("./routes/cities");
+const statesRouter = require("./routes/states");
+const zonesRouter = require("./routes/geoPoliticalZones");
 
 var app = express();
 app.use(cors());
@@ -26,12 +29,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-// app.use('/roles', rolesRouter);
+app.use('/roles', rolesRouter);
 app.use('/auth', authRouter);
 app.use("/beneficiaries", beneficiariesRouter);
+app.use("/cities", citiesRouter);
+app.use("/states", statesRouter);
+app.use("/zones", zonesRouter);
 
 const db = require("./models/index");
-
 db.sequelize.sync();
 /*
 db.sequelize.sync({ force: true }).then(() => {

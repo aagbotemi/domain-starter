@@ -3,6 +3,9 @@ var router = express.Router();
 const { jwtAuth } = require("../middleware/auth");
 const { authController } = require("../controllers/auth");
 
-router.post("/signin", authController.signin);
+router.post(
+  "/signin",
+  authController.signin
+);
 
 module.exports = router;

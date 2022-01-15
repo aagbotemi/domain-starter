@@ -1,38 +1,36 @@
 var express = require("express");
 var router = express.Router();
-const { rolesController } = require("../controllers/roles");
+const { geoPoliticalZonesController } = require("../controllers/geoPoliticalZones");
 const { jwtAuth } = require("../middleware/auth");
 
-
-
 router.post(
-    "/",
+    '/',
     jwtAuth.adminVerifyToken,
-    rolesController.create
-);
+    geoPoliticalZonesController.create
+)
 
 router.get(
     "/",
     jwtAuth.adminVerifyToken,
-    rolesController.getAll
+    geoPoliticalZonesController.getAll
 );
 
 router.get(
     "/:id",
     jwtAuth.adminVerifyToken,
-    rolesController.getById
+    geoPoliticalZonesController.getById
 );
 
 router.put(
     "/:id",
     jwtAuth.adminVerifyToken,
-    rolesController.update
+    geoPoliticalZonesController.update
 );
 
 router.delete(
     "/:id",
     jwtAuth.adminVerifyToken,
-    rolesController.delete
+    geoPoliticalZonesController.delete
 );
 
 module.exports = router;

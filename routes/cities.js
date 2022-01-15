@@ -1,38 +1,36 @@
 var express = require("express");
 var router = express.Router();
-const { rolesController } = require("../controllers/roles");
+const { citiesController } = require("../controllers/cities");
 const { jwtAuth } = require("../middleware/auth");
-
-
 
 router.post(
     "/",
     jwtAuth.adminVerifyToken,
-    rolesController.create
+    citiesController.create
 );
 
 router.get(
     "/",
     jwtAuth.adminVerifyToken,
-    rolesController.getAll
+    citiesController.getAll
 );
 
 router.get(
     "/:id",
     jwtAuth.adminVerifyToken,
-    rolesController.getById
+    citiesController.getById
 );
 
 router.put(
     "/:id",
     jwtAuth.adminVerifyToken,
-    rolesController.update
+    citiesController.update
 );
 
 router.delete(
     "/:id",
     jwtAuth.adminVerifyToken,
-    rolesController.delete
+    citiesController.delete
 );
 
 module.exports = router;

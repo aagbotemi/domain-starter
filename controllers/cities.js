@@ -1,15 +1,15 @@
 const db = require('../models');
 const { constants } = require('./constants')
-const roles = db.roles;
+const cities = db.cities;
 
-exports.rolesController = {
+exports.citiesController = {
     create:(req, res) => {
-        const role = req.body;
-        roles.create(role)
+        const city = req.body;
+        cities.create(city)
             .then(data => {
                 res.status(200).send({
                     success: true,
-                    message: "Role Added Successfully",
+                    message: "City Added Successfully",
                     data: data
                 })
             })
@@ -18,12 +18,12 @@ exports.rolesController = {
             })
     },
     getAll:(req, res) => {
-        roles.findAll()
+        cities.findAll()
             .then(data => {
                 if(data.length == 0) {
                     res.status(404).send({
                         status: false,
-                        message: "No role has been created!!!"
+                        message: "No city has been created!!!"
                     })
                 }
                 res.status(200).send({
@@ -41,7 +41,7 @@ exports.rolesController = {
             })
     },
     getById:(req, res) => {
-        roles.findOne({
+        cities.findOne({
             where: {
                 id: req.params.id
             }})
@@ -65,8 +65,8 @@ exports.rolesController = {
         })
     },
     update:(req, res) => {
-        const role = req.body
-        roles.update(role, {
+        const city = req.body
+        cities.update(city, {
             where: {
                 id: req.params.id
             }})
@@ -85,7 +85,7 @@ exports.rolesController = {
             })
     },
     delete:(req, res) => {
-        roles.destroy({
+        cities.destroy({
             where: {
                 id: req.params.id
             }})

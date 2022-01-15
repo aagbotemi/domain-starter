@@ -1,5 +1,5 @@
 const db = require('../models');
-const { constants } = require('../utils/constants')
+const { constants } = require("./constants");
 const users = db.users;
 const Role = db.roles;
 
@@ -135,19 +135,3 @@ exports.usersController = {
             })
     },
 }
-
-exports.allAccess = (req, res) => {
-    res.status(200).send("Public Content.");
-};
-
-exports.userBoard = (req, res) => {
-    res.status(200).send("User Content.");
-};
-
-exports.adminBoard = (req, res) => {
-    res.status(200).send("Admin Content.");
-};
-
-exports.moderatorBoard = (req, res) => {
-    res.status(200).send("Moderator Content.");
-};

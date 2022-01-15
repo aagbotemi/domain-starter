@@ -1,48 +1,38 @@
-const express = require('express');
-const router = express.Router();
-const app = express();
-const { jwtAuth } = require("../middleware");
-const controller = require("../controllers/users");
-const { verifyCreatedUser } = require("../middleware");
+var express = require("express");
+var router = express.Router();
+const { usersController } = require("../controllers/users");
+const { jwtAuth } = require("../middleware/auth");
 
-module.exports = function(app) {    
-  app.use(function(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
-    next();
-  });
 
-  router.post(
-    "/",
-    [
-      verifyCreatedUser.checkDuplicateUsernameOrEmail,
-      verifyCreatedUser.checkRolesExisted
-    ],
-    controller.usersController.create
-  );
 
-  router.get("/", controller.allAccess);
+router.post(
+  "/",
+  jwtAuth.adminVerifyToken,
+  usersController.create
+);
 
-  router.get(
-    "/alluser",
-    [jwtAuth.verifyToken],
-    controller.userBoard
-  );
+router.get(
+  "/",
+  jwtAuth.adminVerifyToken,
+  usersController.getAll
+);
 
-  router.get(
-    "/OP",
-    [jwtAuth.verifyToken, jwtAuth.isPO],
-    controller.moderatorBoard
-  );
+router.get(
+  "/:id",
+  jwtAuth.adminVerifyToken,
+  usersController.getById
+);
 
-  router.get(
-    "/admin",
-    [jwtAuth.verifyToken, jwtAuth.isAdmin],
-    controller.adminBoard
-  );
+router.put(
+  "/:id",
+  jwtAuth.adminVerifyToken,
+  usersController.update
+);
 
-};
+router.delete(
+  "/:id",
+  jwtAuth.adminVerifyToken,
+  usersController.delete
+);
 
 module.exports = router;

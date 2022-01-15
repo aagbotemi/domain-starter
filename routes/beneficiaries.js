@@ -26,3 +26,5 @@ router.post(
   jwtAuth.poVerifyToken,
   beneficiariesController.createTrainee
 );
+
+module.exports = router;

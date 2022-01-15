@@ -1,96 +1,68 @@
-const { jwt, verify } = require('jsonwebtoken');
-const config = require('../config/auth');
-const db = require("../models");
-const ROLES = db.ROLES;
-const User = db.users;
+const { jwt, verify } = require("jsonwebtoken");
+require("dotenv").config()
 
-verifyToken = (req, res, next) => {
-    let token = req.headers['Authorization']
+exports.jwtAuth = {
 
-    // if token doesn't exist, reject request
-    if (!token) {
-        return res.status(403).send({
-            message: 'Forbidden'
-        })
-    }
 
-    // if token exist, validate
-    // verify(token, 'secretKey')
-    verify(token, config.secretKey, (err, decoded) => {
-        if (err) {
-            return res.status(401).send({
-                message: 'Unauthorized Access'
-            })
-        }
-
-        req.userId = decoded.id
-
+    adminVerifyToken: (req, res, next) => {
+      
+      let token = req.headers["authorization"].split(" ")[1];
+      
+  
+      if (!token) return res.status(403).send({ message: "Unauthorised Access" });
+  
+      verify(token, process.env.secret, (err, decode) => {
+        if (err) return res.status(401).send({ message: "forbidden access" });
+  
+  
+        if (decode.userType !== "admin")
+          return res.status(401).send({ message: "forbidden access" });
+  
+          
+        req.userId = decode.id;
+  
+  
         next();
-    })
-}
-
-isAdmin = (req, res, next) => {
-    User.findByPk(req.userId).then(user => {
-        user.getRoles().then(roles => {
-            for (let i = 0; i < roles.length; i++) {
-                if (roles[i].name === "admin") {
-                    next();
-                    return;
-                }
-            }
-
-            res.status(403).send({
-                message: "Require Admin Role!"
-            });
-            return;
-        });
-    });
-};
-
-isPO = (req, res, next) => {
-    User.findByPk(req.userId).then(user => {
-        user.getRoles().then(roles => {
-            for (let i = 0; i < roles.length; i++) {
-                if (roles[i].name === "PO") {
-                next();
-                return;
-                }
-            }
-
-            res.status(403).send({
-                message: "Require PO Role!"
-            });
-        });
-    });
-};
-
-isAdminOrPO = (req, res, next) => {
-    User.findByPk(req.userId).then(user => {
-        user.getRoles().then(roles => {
-            for (let i = 0; i < roles.length; i++) {
-                if (roles[i].name === "moderator") {
-                    next();
-                    return;
-                }
-
-                if (roles[i].name === "admin") {
-                    next();
-                    return;
-                }
-            }
-
-            res.status(403).send({
-                message: "Require PO or Admin Role!"
-            });
-        });
-    });
-};
-
-const jwtAuth = {
-    verifyToken: verifyToken,
-    isAdmin: isAdmin,
-    isPO: isPO,
-    isAdminOrPO: isAdminOrPO
-}
-
-module.exports = jwtAuth;
+      });
+    },
+  
+    poVerifyToken: (req, res, next) => {
+  
+      let token = req.headers["authorization"].split(" ")[1];
+  
+  
+      if (!token) return res.status(403).send({ message: "Unauthorised Access" });
+  
+      verify(token, process.env.secret, (err, decode) => {
+        if (err) return res.status(401).send({ message: "forbidden access" });
+  
+  
+        if (decode.userType !== "partnerOrganisation")
+          return res.status(401).send({ message: "forbidden access" });
+  
+        req.userId = decode.id;
+  
+  
+        next();
+      });
+    },
+  
+    
+  
+    generalVerifyToken: (req, res, next) => {
+    
+      let token = req.headers["authorization"].split(" ")[1];
+  
+      console.log(token)
+      if (!token) return res.status(403).send({ message: "Unauthorised Access" });
+  
+      verify(token, process.env.secret, (err, decode) => {
+        if (err) return res.status(401).send({ message: "forbidden access" });
+  
+  
+        req.userId = decode.id;
+  
+        next();
+      });
+    }
+  };

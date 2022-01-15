@@ -37,13 +37,6 @@ exports.usersController = {
                     message: error.message
                 })
             })
-            // .then(data => {
-            //     res.status(200)
-            //         .send(data)
-            // })
-            // .catch(err => {
-            //     constants.handleError(err, res);
-            // })
     },
     getAll:(req, res) => {
         users.findAll()
@@ -110,7 +103,7 @@ exports.usersController = {
                     .send(data);
             })
             .catch(err => {
-                constants.handleError(err, res)
+                constants.handleErr(err, res)
             })
     },
     delete:(req, res) => {
@@ -132,7 +125,7 @@ exports.usersController = {
                     });
             })
             .catch(err => {
-                constants.handleError(err, res)
+                constants.handleErr(err, res)
             })
     },
 }

@@ -1,5 +1,5 @@
 const db = require('../models');
-const { constants } = require('../utils/constants')
+const { constants } = require('./constants')
 const roles = db.roles;
 
 exports.rolesController = {
@@ -7,17 +7,19 @@ exports.rolesController = {
         const role = req.body;
         roles.create(role)
             .then(data => {
-                res.status(200)
-                    .send(data)
+                res.status(200).send({
+                    success: true,
+                    message: "Role Added Successfully",
+                    data: data
+                })
             })
             .catch(err => {
-                constants.handleError(err, res);
+                constants.handleErr(err, res);
             })
     },
     getAll:(req, res) => {
         roles.findAll()
             .then(data => {
-
                 if(data.length == 0) {
                     res.status(404).send({
                         status: false,
@@ -79,7 +81,7 @@ exports.rolesController = {
                     .send(data);
             })
             .catch(err => {
-                constants.handleError(err, res)
+                constants.handleErr(err, res)
             })
     },
     delete:(req, res) => {
@@ -101,7 +103,7 @@ exports.rolesController = {
                     });
             })
             .catch(err => {
-                constants.handleError(err, res)
+                constants.handleErr(err, res)
             })
     },
 }

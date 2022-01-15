@@ -10,6 +10,8 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const rolesRouter = require('./routes/roles');
+const beneficiariesRouter = require('./routes/beneficiaries');
+
 
 var app = express();
 app.use(cors());
@@ -29,6 +31,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/roles', rolesRouter);
 app.use('/auth', authRouter);
+app.use("/beneficiaries", beneficiariesRouter);
 
 const db = require("./models/index");
 const Role = db.roles;

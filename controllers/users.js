@@ -7,9 +7,10 @@ const Op = db.Sequelize.Op;
 
 exports.usersController = {
     create:(req, res) => {
-        const role = req.body;
-        users.create(role)
-            .then(user => { 
+        const user = req.body;
+        user.password = bcrypt.hashSync(user.password, 10);
+        users.create(user)
+            .then(role => { 
                 if (req.body.roles) {
                     Role.findAll({
                         where: {
@@ -18,14 +19,14 @@ exports.usersController = {
                             }
                         }
                     }).then(roles => {
-                        user.setRoles(roles).then(() => {
+                        role.setRoles(roles).then(() => {
                             res.status(200).send({
                                 message: "User was registered successfully!"
                             })
                         })
                     }) 
                 } else {
-                    user.setRoles([1]).then(() => {
+                    role.setRoles([1]).then(() => {
                         res.status(200).send({ message: "User was registered successfully!" });
                     });
                 }

@@ -72,9 +72,6 @@ db.beneficiaries.belongsTo(db.trainingBatch);
 db.trainingCategories.hasOne(db.beneficiaries);
 db.beneficiaries.belongsTo(db.trainingCategories);
 
-db.partnerOrganisation.hasMany(db.trainingCategories);
-db.trainingCategories.belongsTo(db.partnerOrganisation);
-
 db.partnerOrganisation.hasMany(db.trainingBatch);
 db.trainingBatch.belongsTo(db.partnerOrganisation);
 

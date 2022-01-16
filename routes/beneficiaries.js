@@ -3,9 +3,7 @@ var router = express.Router();
 const { beneficiariesController } = require("../controllers/beneficiaries");
 const { jwtAuth } = require("../middleware/auth");
 
-
-router.get("/:id", jwtAuth.poVerifyToken, beneficiariesController.getById);
-
+router.get("/:id", jwtAuth.generalVerifyToken, beneficiariesController.getById);
 
 router.get(
   "/all-trainees",
@@ -13,18 +11,25 @@ router.get(
   beneficiariesController.getAllBeneficiaries
 );
 
-/* Get all patients. */
 router.get(
   "/trainees",
   jwtAuth.poVerifyToken,
   beneficiariesController.getPOTrainees
 );
 
-/* Get all patients. */
 router.post(
   "/add-trainee",
   jwtAuth.poVerifyToken,
   beneficiariesController.createTrainee
 );
+
+router.put(
+  "/update/:id",
+  jwtAuth.poVerifyToken,
+  beneficiariesController.updateTrainee
+);
+
+router.delete('/delete/:id', jwtAuth.poVerifyToken, beneficiariesController.delete);
+
 
 module.exports = router;

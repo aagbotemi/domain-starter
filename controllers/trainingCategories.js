@@ -1,22 +1,22 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const beneficiaries = require("../models/beneficiaries");
-const users = db.beneficiaries;
-// const department = db.department;
+const trainingCategories = require("../models/trainingCategories");
+const partnerOrganisation = require("../models/partnerOrganisation");
+
 require("dotenv").config();
 
-exports.beneficiariesController = {
-  createTrainee: (req, res) => {
-    const trainee = req.body;
-    trainee.partnerOrganisationId = req.userId;
+exports.trainingCategories = {
+  createTrainingCategories: (req, res) => {
+    const category = req.body;
+    // category.partnerOrganisationId = req.userId;
 
-    beneficiaries
-      .create(trainee)
+    trainingCategories
+      .create(category)
       .then((data) => {
         res.status(200).send({
           success: true,
-          message: "Trainee Added Successfully",
+          message: "Training Category Added Successfully",
           data: data,
         });
       })
@@ -26,7 +26,7 @@ exports.beneficiariesController = {
   },
 
   getById: (req, res) => {
-    beneficiaries
+    trainingCategories
       .findOne(
         {
           where: {
@@ -34,17 +34,9 @@ exports.beneficiariesController = {
           },
         },
         {
-          include: [
-            {
-              model: db.partnerOrganisation,
-            },
-            {
-              model: db.trainingCategories,
-            },
-            {
-              model: db.trainingBatch,
-            },
-          ],
+          include: {
+            model: partnerOrganisation,
+          },
         }
       )
       .then((data) => {
@@ -62,25 +54,46 @@ exports.beneficiariesController = {
       });
   },
 
-  getAllBeneficiaries: (req, res) => {
-    users
+  getAllById: (req, res) => {
+    trainingCategories
+      .findAll(
+        {
+          where: {
+            id: req.param.id,
+          },
+        },
+        {
+          include: {
+            model: partnerOrganisation,
+          },
+        }
+      )
+      .then((data) => {
+        if (!data) {
+          res.status(400).send({
+            message: "Record not found",
+          });
+        }
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
+  getAllTrainingCategories: (req, res) => {
+    trainingCategories
       .findAll({
-        include: [
-          {
-            model: db.partnerOrganisation,
-          },
-          {
-            model: db.trainingCategories,
-          },
-          {
-            model: db.trainingBatch,
-          },
-        ],
+        include: {
+          model: partnerOrganisation,
+        },
       })
       .then((data) => {
         res.status(200).send({
           success: true,
-          message: "All beneficiaries retrieved successfully",
+          message: "All training categories retrieved successfully",
           data,
         });
       })
@@ -91,32 +104,18 @@ exports.beneficiariesController = {
       });
   },
 
-  getPOTrainees: (req, res) => {
-    beneficiaries
+  getPOTrainingCategories: (req, res) => {
+    trainingCategories
       .findAll({
-        include: [
-          {
-            model: db.partnerOrganisation,
-          },
-          {
-            model: db.trainingCategories,
-          },
-          {
-            model: db.trainingBatch,
-          },
-        ],
+        where: {
+          partnerOrganisationId: req.userId,
+        },
       })
       .then((data) => {
-        let traineeObj = [];
-        data.forEach((trainee) => {
-          if (trainee.partnerOrganisationId === req.userId) {
-            traineeObj.push(trainee);
-          }
-        });
         res.status(200).send({
           success: true,
-          message: "All trainees retrieved successfully",
-          data: userObj,
+          message: "All training categories retrieved successfully",
+          data,
         });
       })
       .catch((err) => {
@@ -125,11 +124,13 @@ exports.beneficiariesController = {
         });
       });
   },
-  updateTrainee: (req, res) => {
-    const trainee = req.body;
 
-    beneficiaries
-      .update(trainee, {
+  update: (req, res) => {
+    const category = req.body;
+    // category.id = req.param.id;
+
+    trainingCategories
+      .update(category, {
         where: {
           id: req.params.id,
         },
@@ -147,7 +148,7 @@ exports.beneficiariesController = {
       });
   },
   delete: (req, res) => {
-    beneficiaries
+    trainingCategories
       .destroy({
         where: {
           id: req.params.id,

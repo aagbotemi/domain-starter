@@ -1,6 +1,7 @@
 const db = require('../models');
 const { constants } = require('./constants')
 const states = db.states;
+const geoPoliticalZone = require('../models/geoPoliticalZones');
 
 exports.statesController = {
     create:(req, res) => {
@@ -41,10 +42,18 @@ exports.statesController = {
             })
     },
     getById:(req, res) => {
-        states.findOne({
-            where: {
-                id: req.params.id
-            }})
+        states.findOne(
+            {
+                where: {
+                    id: req.params.id
+                }
+            },
+            {
+                include: {
+                    model: geoPoliticalZone,
+                },
+            }
+        )
             .then(data =>{
                 if(data == undefined) {
                     res.status(404).send({

@@ -1,22 +1,21 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const beneficiaries = require("../models/beneficiaries");
-const users = db.beneficiaries;
-// const department = db.department;
+const trainingBatch = require("../models/trainingBatch");
+
 require("dotenv").config();
 
-exports.beneficiariesController = {
-  createTrainee: (req, res) => {
-    const trainee = req.body;
-    trainee.partnerOrganisationId = req.userId;
+exports.trainingBatch = {
+  createTrainingBatch: (req, res) => {
+    const batch = req.body;
+    // category.partnerOrganisationId = req.userId;
 
-    beneficiaries
-      .create(trainee)
+    trainingBatch
+      .create(batch)
       .then((data) => {
         res.status(200).send({
           success: true,
-          message: "Trainee Added Successfully",
+          message: "Training batch Added Successfully",
           data: data,
         });
       })
@@ -26,7 +25,7 @@ exports.beneficiariesController = {
   },
 
   getById: (req, res) => {
-    beneficiaries
+    trainingBatch
       .findOne(
         {
           where: {
@@ -34,17 +33,9 @@ exports.beneficiariesController = {
           },
         },
         {
-          include: [
-            {
-              model: db.partnerOrganisation,
-            },
-            {
-              model: db.trainingCategories,
-            },
-            {
-              model: db.trainingBatch,
-            },
-          ],
+          include: {
+            model: partnerOrganisation,
+          },
         }
       )
       .then((data) => {
@@ -62,25 +53,46 @@ exports.beneficiariesController = {
       });
   },
 
-  getAllBeneficiaries: (req, res) => {
-    users
+  getAllById: (req, res) => {
+    trainingBatch
+      .findAll(
+        {
+          where: {
+            id: req.param.id,
+          },
+        },
+        {
+          include: {
+            model: partnerOrganisation,
+          },
+        }
+      )
+      .then((data) => {
+        if (!data) {
+          res.status(400).send({
+            message: "Record not found",
+          });
+        }
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
+  getAllTrainingBatch: (req, res) => {
+    trainingBatch
       .findAll({
-        include: [
-          {
-            model: db.partnerOrganisation,
-          },
-          {
-            model: db.trainingCategories,
-          },
-          {
-            model: db.trainingBatch,
-          },
-        ],
+        include: {
+          model: partnerOrganisation,
+        },
       })
       .then((data) => {
         res.status(200).send({
           success: true,
-          message: "All beneficiaries retrieved successfully",
+          message: "All training batch retrieved successfully",
           data,
         });
       })
@@ -91,32 +103,21 @@ exports.beneficiariesController = {
       });
   },
 
-  getPOTrainees: (req, res) => {
-    beneficiaries
-      .findAll({
-        include: [
-          {
-            model: db.partnerOrganisation,
+  getPOTrainingBatch: (req, res) => {
+    trainingBatch
+      .findAll(
+        {
+          where: {
+            partnerOrganisationId: req.userId,
           },
-          {
-            model: db.trainingCategories,
-          },
-          {
-            model: db.trainingBatch,
-          },
-        ],
-      })
+        },
+        
+      )
       .then((data) => {
-        let traineeObj = [];
-        data.forEach((trainee) => {
-          if (trainee.partnerOrganisationId === req.userId) {
-            traineeObj.push(trainee);
-          }
-        });
         res.status(200).send({
           success: true,
-          message: "All trainees retrieved successfully",
-          data: userObj,
+          message: "All batches retrieved successfully",
+          data,
         });
       })
       .catch((err) => {
@@ -125,11 +126,13 @@ exports.beneficiariesController = {
         });
       });
   },
-  updateTrainee: (req, res) => {
-    const trainee = req.body;
 
-    beneficiaries
-      .update(trainee, {
+  update: (req, res) => {
+    const batch = req.body;
+    // category.id = req.param.id;
+
+    trainingBatch
+      .update(batch, {
         where: {
           id: req.params.id,
         },
@@ -147,7 +150,7 @@ exports.beneficiariesController = {
       });
   },
   delete: (req, res) => {
-    beneficiaries
+    trainingBatch
       .destroy({
         where: {
           id: req.params.id,

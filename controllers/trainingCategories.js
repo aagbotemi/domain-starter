@@ -2,8 +2,8 @@ const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
 const trainingCategories = require("../models/trainingCategories");
-const users = db.beneficiaries;
-// const department = db.department;
+const partnerOrganisation = require("../models/partnerOrganisation");
+
 require("dotenv").config();
 
 exports.trainingCategories = {
@@ -27,11 +27,47 @@ exports.trainingCategories = {
 
   getById: (req, res) => {
     trainingCategories
-      .findOne({
-        where: {
-          id: req.param.id,
+      .findOne(
+        {
+          where: {
+            id: req.param.id,
+          },
         },
+        {
+          include: {
+            model: partnerOrganisation,
+          },
+        }
+      )
+      .then((data) => {
+        if (!data) {
+          res.status(400).send({
+            message: "Record not found",
+          });
+        }
+        res.status(200).send(data);
       })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
+  getAllById: (req, res) => {
+    trainingCategories
+      .findAll(
+        {
+          where: {
+            id: req.param.id,
+          },
+        },
+        {
+          include: {
+            model: partnerOrganisation,
+          },
+        }
+      )
       .then((data) => {
         if (!data) {
           res.status(400).send({
@@ -49,12 +85,16 @@ exports.trainingCategories = {
 
   getAllTrainingCategories: (req, res) => {
     trainingCategories
-      .findAll()
+      .findAll({
+        include: {
+          model: partnerOrganisation,
+        },
+      })
       .then((data) => {
         res.status(200).send({
           success: true,
           message: "All training categories retrieved successfully",
-          data: userObj,
+          data,
         });
       })
       .catch((err) => {
@@ -64,25 +104,69 @@ exports.trainingCategories = {
       });
   },
 
-  getPOTrainees: (req, res) => {
-    beneficiaries
-      .findAll()
+  getPOTrainingCategories: (req, res) => {
+    trainingCategories
+      .findAll({
+        where: {
+          partnerOrganisationId: req.userId,
+        },
+      })
       .then((data) => {
-        let traineeObj = [];
-        data.forEach((trainee) => {
-          if (trainee.partnerOrganisationId === req.userId) {
-            traineeObj.push(trainee);
-          }
-        });
         res.status(200).send({
           success: true,
-          message: "All trainees retrieved successfully",
-          data: userObj,
+          message: "All training categories retrieved successfully",
+          data,
         });
       })
       .catch((err) => {
         res.status(400).send({
           message: err.message || "Could not find record",
+        });
+      });
+  },
+
+  update: (req, res) => {
+    const category = req.body;
+    // category.id = req.param.id;
+
+    trainingCategories
+      .update(category, {
+        where: {
+          id: req.params.id,
+        },
+      })
+      .then((data) => {
+        if (data[0] !== 1) {
+          res.status(400).send({
+            message: "Record not found",
+          });
+        }
+        res.status(200).send({ message: "Record Updated" });
+      })
+      .catch((err) => {
+        constants.handleErr(err, res);
+      });
+  },
+  delete: (req, res) => {
+    trainingCategories
+      .destroy({
+        where: {
+          id: req.params.id,
+        },
+      })
+      .then((data) => {
+        if (data !== 1) {
+          res.status(404).send({
+            message: "record not found",
+          });
+        }
+        res.status(200).send({
+          message: "record deleted",
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: "could not fetch record",
         });
       });
   },

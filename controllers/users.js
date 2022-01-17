@@ -11,26 +11,12 @@ exports.usersController = {
         const user = req.body;
         user.password = bcrypt.hashSync(user.password, 10);
         users.create(user)
-            .then(role => { 
-                if (req.body.roles) {
-                    Role.findAll({
-                        where: {
-                            roleName: {
-                                [Op.or]: req.body.roles
-                            }
-                        }
-                    }).then(roles => {
-                        role.setRoles(roles).then(() => {
-                            res.status(200).send({
-                                message: "User was registered successfully!"
-                            })
-                        })
-                    }) 
-                } else {
-                    role.setRoles([1]).then(() => {
-                        res.status(200).send({ message: "User was registered successfully!" });
-                    });
-                }
+            .then((data) => {
+                res.status(200).send({
+                    success: true,
+                    message: "User Added Successfully",
+                    data: data,
+                });
             })
             .catch(error => {
                 res.status(500).send({

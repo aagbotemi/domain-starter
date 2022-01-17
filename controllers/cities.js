@@ -1,6 +1,7 @@
 const db = require('../models');
 const { constants } = require('./constants')
 const cities = db.cities;
+const states = require('../models/states');
 
 exports.citiesController = {
     create:(req, res) => {
@@ -41,10 +42,18 @@ exports.citiesController = {
             })
     },
     getById:(req, res) => {
-        cities.findOne({
-            where: {
-                id: req.params.id
-            }})
+        cities.findOne(
+            {
+                where: {
+                    id: req.params.id
+                }
+            },
+            {
+                include: {
+                    model: states,
+                },
+            }
+        )
             .then(data =>{
                 if(data == undefined) {
                     res.status(404).send({

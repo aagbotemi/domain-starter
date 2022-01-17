@@ -3,8 +3,6 @@ var router = express.Router();
 const { usersController } = require("../controllers/users");
 const { jwtAuth } = require("../middleware/auth");
 
-
-
 router.post(
   "/",
   jwtAuth.adminVerifyToken,

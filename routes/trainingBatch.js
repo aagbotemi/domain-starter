@@ -3,9 +3,9 @@ var router = express.Router();
 const { trainingBatch } = require("../controllers/trainingbatch");
 const { jwtAuth } = require("../middleware/auth");
 
-router.get("/:id", jwtAuth.generalVerifyToken, trainingCategories.getById);
+router.get("/:id", jwtAuth.generalVerifyToken, trainingBatch.getById);
 
-router.get("/all/:id", jwtAuth.adminVerifyToken, trainingCategories.getById);
+router.get("/all/:id", jwtAuth.adminVerifyToken, trainingBatch.getById);
 
 router.get(
   "/all-batch",

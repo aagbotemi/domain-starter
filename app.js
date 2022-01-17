@@ -45,29 +45,6 @@ app.use("/partnerOrg", partnerOrgRouter);
 
 const db = require("./models/index");
 db.sequelize.sync();
-/*db.sequelize.sync({ force: true }).then(() => {
-  console.log('Drop and Resync Db');
-  // initial();
-});
-
-/*
-function initial() {
-  Role.create({
-    id: 1,
-    roleName: "user"
-  });
- 
-  Role.create({
-    id: 2,
-    roleName: "PO"
-  });
- 
-  Role.create({
-    id: 3,
-    roleName: "admin"
-  });
-}
-*/
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -86,3 +63,4 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+

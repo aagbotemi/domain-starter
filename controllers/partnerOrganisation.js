@@ -8,7 +8,6 @@ require("dotenv").config();
 exports.partnerOrgController = {
   createPartnerOrg: (req, res) => {
     const po = req.body;
-   
 
     partnerOrganisation
       .create(po)
@@ -32,7 +31,18 @@ exports.partnerOrgController = {
             id: req.param.id,
           },
         },
-        
+        {
+          include: [
+            {
+              model: db.trainingCategories,
+              include: [
+                {
+                  model: db.trainingBatch,
+                },
+              ],
+            },
+          ],
+        }
       )
       .then((data) => {
         if (!data) {
@@ -51,7 +61,18 @@ exports.partnerOrgController = {
 
   getAllPartnerOrg: (req, res) => {
     partnerOrganisation
-      .findAll()
+      .findAll({
+        include: [
+          {
+            model: db.trainingCategories,
+            include: [
+              {
+                model: db.trainingBatch,
+              },
+            ],
+          },
+        ],
+      })
       .then((data) => {
         res.status(200).send({
           success: true,
@@ -66,7 +87,6 @@ exports.partnerOrgController = {
       });
   },
 
- 
   updatePartnerOrg: (req, res) => {
     const po = req.body;
 

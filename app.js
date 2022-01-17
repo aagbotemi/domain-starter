@@ -42,21 +42,6 @@ app.use("/trainingCategories", categoriesRouter);
 app.use("/trainingBatch", batchRouter);
 app.use("/partnerOrg", partnerOrgRouter);
 
-const db = require("./models/index");
-// db.sequelize.sync();
-
-db.sequelize.sync();
-
-// function initial() {
-//   Role.create({
-//     id: 1,
-//     roleName: "user"
-//   });
-
-//   Role.create({
-//     id: 2,
-//     roleName: "PO"
-//   });
 
 const db = require("./models/index");
 db.sequelize.sync();

@@ -15,6 +15,7 @@ const statesRouter = require("./routes/states");
 const zonesRouter = require("./routes/geoPoliticalZones");
 const categoriesRouter = require("./routes/trainingCategories");
 const batchRouter = require("./routes/trainingBatch");
+const partnerOrgRouter = require("./routes/partnerOrg");
 
 var app = express();
 app.use(cors());
@@ -39,11 +40,12 @@ app.use("/states", statesRouter);
 app.use("/zones", zonesRouter);
 app.use("/trainingCategories", categoriesRouter);
 app.use("/trainingBatch", batchRouter);
+app.use("/partnerOrg", partnerOrgRouter);
 
 const db = require("./models/index");
 // db.sequelize.sync();
 
-db.sequelize.sync({ force: true });
+db.sequelize.sync();
 
 // function initial() {
 //   Role.create({

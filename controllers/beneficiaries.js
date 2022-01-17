@@ -63,7 +63,7 @@ exports.beneficiariesController = {
   },
 
   getAllBeneficiaries: (req, res) => {
-    users
+    beneficiaries
       .findAll({
         include: [
           {

@@ -1,7 +1,7 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const trainingBatch = require("../models/trainingBatch");
+const trainingBatch = db.trainingBatch
 
 require("dotenv").config();
 

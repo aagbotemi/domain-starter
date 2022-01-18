@@ -29,7 +29,7 @@ exports.trainingBatch = {
       .findOne(
         {
           where: {
-            id: req.param.id,
+            id: req.params.id,
           },
         },
         {
@@ -58,7 +58,7 @@ exports.trainingBatch = {
       .findAll(
         {
           where: {
-            id: req.param.id,
+            id: req.params.id,
           },
         },
         {

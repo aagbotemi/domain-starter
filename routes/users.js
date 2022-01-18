@@ -5,7 +5,7 @@ const { jwtAuth } = require("../middleware/auth");
 
 router.post(
   "/",
-  jwtAuth.adminVerifyToken,
+  // jwtAuth.adminVerifyToken,
   usersController.create
 );
 

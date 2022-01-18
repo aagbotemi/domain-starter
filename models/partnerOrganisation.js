@@ -1,5 +1,5 @@
 module.exports = (sequelize, dataType) => {
-  const partnerOrganisaton = sequelize.define("partnerOrganisaton", {
+  const partnerOrganisaton = sequelize.define("partnerorganisaton", {
     organisationName: {
       type: dataType.STRING,
       unique: true,

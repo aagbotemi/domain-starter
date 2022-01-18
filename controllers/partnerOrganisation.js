@@ -29,7 +29,7 @@ exports.partnerOrgController = {
       .findOne(
         {
           where: {
-            id: req.param.id,
+            id: req.params.id,
           },
         },
         {

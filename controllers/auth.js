@@ -20,7 +20,7 @@ exports.authController = {
         }).then(user => {
             // if record doesn't exist
             if (!user) {
-                return res.status(401).send({
+                return res.status(404).send({
                     message: 'Invalid username or password'
                 })
             }

@@ -64,12 +64,8 @@ exports.partnerOrgController = {
       .findAll({
         include: [
           {
-            model: db.trainingCategories,
-            include: [
-              {
-                model: db.trainingBatch,
-              },
-            ],
+            model: db.trainingCategories
+           
           },
         ],
       })

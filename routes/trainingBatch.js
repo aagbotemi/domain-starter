@@ -5,16 +5,16 @@ const { jwtAuth } = require("../middleware/auth");
 
 router.get("/:id", jwtAuth.generalVerifyToken, trainingBatch.getById);
 
-router.get("/all/:id", jwtAuth.adminVerifyToken, trainingBatch.getById);
+router.get("/:id", jwtAuth.adminVerifyToken, trainingBatch.getById);
 
 router.get(
-  "/all-batch",
+  "/",
   jwtAuth.adminVerifyToken,
   trainingBatch.getAllTrainingBatch
 );
 
 router.get(
-  "/categories",
+  "/",
   jwtAuth.poVerifyToken,
   trainingBatch.getPOTrainingBatch
 );
@@ -25,8 +25,8 @@ router.post(
   trainingBatch.createTrainingBatch
 );
 
-router.put("/update/:id", jwtAuth.poVerifyToken, trainingBatch.update);
+router.put("/:id", jwtAuth.poVerifyToken, trainingBatch.update);
 
-router.delete("/delete/:id", jwtAuth.poVerifyToken, trainingBatch.delete);
+router.delete("/:id", jwtAuth.poVerifyToken, trainingBatch.delete);
 
 module.exports = router;

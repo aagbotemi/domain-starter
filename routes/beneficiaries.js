@@ -6,30 +6,30 @@ const { jwtAuth } = require("../middleware/auth");
 router.get("/:id", jwtAuth.generalVerifyToken, beneficiariesController.getById);
 
 router.get(
-  "/all-trainees",
+  "/",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getAllBeneficiaries
 );
 
 router.get(
-  "/trainees",
+  "/",
   jwtAuth.poVerifyToken,
   beneficiariesController.getPOTrainees
 );
 
 router.post(
-  "/add-trainee",
+  "/",
   jwtAuth.poVerifyToken,
   beneficiariesController.createTrainee
 );
 
 router.put(
-  "/update/:id",
+  "/:id",
   jwtAuth.poVerifyToken,
   beneficiariesController.updateTrainee
 );
 
-router.delete('/delete/:id', jwtAuth.poVerifyToken, beneficiariesController.delete);
+router.delete('/:id', jwtAuth.poVerifyToken, beneficiariesController.delete);
 
 
 module.exports = router;

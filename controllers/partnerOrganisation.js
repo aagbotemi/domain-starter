@@ -9,8 +9,9 @@ exports.partnerOrgController = {
   createPartnerOrg: async (req, res) => {
     const po = req.body;
 
-   const participatingOrg =  await partnerOrganisation.create(po)
-   participatingOrg.setCategories(po.categories)
+    const participatingOrg = await partnerOrganisation.create(po);
+    participatingOrg
+      .setCategories(po.categories)
       .then((data) => {
         res.status(200).send({
           success: true,
@@ -35,11 +36,6 @@ exports.partnerOrgController = {
           include: [
             {
               model: db.trainingCategories,
-              include: [
-                {
-                  model: db.trainingBatch,
-                },
-              ],
             },
           ],
         }

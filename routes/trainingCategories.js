@@ -8,7 +8,7 @@ router.get("/:id", jwtAuth.generalVerifyToken, trainingCategories.getById);
 router.get("/", jwtAuth.generalVerifyToken, trainingCategories.getAll);
 
 router.get(
-  "/all-categories",
+  "/",
   jwtAuth.generalVerifyToken,
   trainingCategories.getAllTrainingCategories
 );

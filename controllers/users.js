@@ -10,9 +10,11 @@ exports.usersController = {
   create: (req, res) => {
     const user = req.body;
     user.password = bcrypt.hashSync(user.password, 10);
-    const userObj = await users.create(user);
-    userObj
-      .setPartnerOrganisaton(user.partnerOrg)
+    // const userObj = await users.create(user);
+    // userObj
+    //   .setPartnerOrganisaton(user.partnerOrg)
+    users
+      .create(user)
       .then((data) => {
         res.status(200).send({
           success: true,

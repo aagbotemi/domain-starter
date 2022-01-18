@@ -20,7 +20,7 @@ router.get(
 );
 
 router.post(
-  "/add-batch",
+  "/",
   jwtAuth.poVerifyToken,
   trainingBatch.createTrainingBatch
 );

@@ -1,7 +1,7 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const partnerOrganisation = require("../models/partnerOrganisation");
+const partnerOrganisation = db.partnerOrganisation;
 
 require("dotenv").config();
 

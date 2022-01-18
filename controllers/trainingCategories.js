@@ -1,8 +1,8 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const trainingCategories = require("../models/trainingCategories");
-const partnerOrganisation = require("../models/partnerOrganisation");
+const trainingCategories = db.trainingCategories
+const partnerOrganisation = db.partnerOrganisation
 
 require("dotenv").config();
 

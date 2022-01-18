@@ -9,15 +9,15 @@ router.get("/all/:id", jwtAuth.adminVerifyToken, trainingCategories.getById);
 
 router.get(
   "/all-categories",
-  jwtAuth.generalVerifyToken,
+  jwtAuth.adminVerifyToken,
   trainingCategories.getAllTrainingCategories
 );
 
-// router.get(
-//   "/categories",
-//   jwtAuth.poVerifyToken,
-//   trainingCategories.getPOTrainingCategories
-// );
+router.get(
+  "/categories",
+  jwtAuth.poVerifyToken,
+  trainingCategories.getPOTrainingCategories
+);
 
 router.post(
   "/add-category",

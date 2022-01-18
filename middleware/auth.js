@@ -34,12 +34,16 @@ exports.jwtAuth = {
     }
     let token1 = headers.split(" ")[1];
 
-    if (!token1) return res.status(403).send({ message: "Unauthorised Access" });
+    if (!token1)
+      return res.status(403).send({ message: "Unauthorised Access" });
 
     verify(token1, process.env.secret, (err, decode) => {
       if (err) return res.status(401).send({ message: "forbidden access" });
 
-      if (decode.userType !== "partnerOrg" || decode.userType !== "admin")
+      if (
+        decode.userType !== "partnerOrganisation" ||
+        decode.userType !== "admin"
+      )
         return res.status(401).send({ message: "forbidden access" });
 
       req.userId = decode.id;

@@ -111,7 +111,7 @@ exports.trainingCategories = {
       });
   },
 
-  /* getPOTrainingCategories: (req, res) => {
+  getPOTrainingCategories: (req, res) => {
     trainingCategories
       .findAll()
       .then((data) => {
@@ -127,7 +127,7 @@ exports.trainingCategories = {
         });
       });
   },
-*/
+
   update: (req, res) => {
     const category = req.body;
     // category.id = req.param.id;

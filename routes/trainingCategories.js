@@ -13,11 +13,11 @@ router.get(
   trainingCategories.getAllTrainingCategories
 );
 
-// router.get(
-//   "/categories",
-//   jwtAuth.poVerifyToken,
-//   trainingCategories.getPOTrainingCategories
-// );
+router.get(
+  "/categories",
+  jwtAuth.poVerifyToken,
+  trainingCategories.getPOTrainingCategories
+);
 
 router.post(
   "/",

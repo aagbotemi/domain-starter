@@ -12,7 +12,7 @@ exports.usersController = {
     user.password = bcrypt.hashSync(user.password, 10);
     const userObj = await users.create(user);
     userObj
-      .setpartnerOrganisaton(user.partnerOrg)
+      .setPartnerOrganisaton(user.partnerOrg)
       .then((data) => {
         res.status(200).send({
           success: true,
@@ -56,16 +56,18 @@ exports.usersController = {
   },
   getById: (req, res) => {
     users
-      .findOne({
-        where: {
-          id: req.params.id,
+      .findOne(
+        {
+          where: {
+            id: req.params.id,
+          },
         },
-      },
-      {
-        include: {
-          model: partnerOrganisation,
-        },
-      })
+        {
+          include: {
+            model: partnerOrganisation,
+          },
+        }
+      )
       .then((data) => {
         if (data == undefined) {
           res.status(404).send({

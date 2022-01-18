@@ -39,7 +39,11 @@ exports.authController = {
             let payload = {
                 id: user.id,
                 email: user.email,
-                userType: user.userType
+                userType: user.userType,
+                fullName: user.fullName,
+                phoneNumber: user.phoneNumber,
+                userName: user.userName,
+                profileImage: user.profileImage
             }
             let token = sign(payload, config.secretKey, {
                 expiresIn: 36000

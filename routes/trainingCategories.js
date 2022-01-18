@@ -5,7 +5,7 @@ const { jwtAuth } = require("../middleware/auth");
 
 router.get("/:id", jwtAuth.generalVerifyToken, trainingCategories.getById);
 
-router.get("/all/:id", jwtAuth.adminVerifyToken, trainingCategories.getById);
+router.get("/", jwtAuth.generalVerifyToken, trainingCategories.getAll);
 
 router.get(
   "/all-categories",
@@ -20,13 +20,13 @@ router.get(
 // );
 
 router.post(
-  "/add-category",
+  "/",
   jwtAuth.poVerifyToken,
   trainingCategories.createTrainingCategories
 );
 
-router.put("/update/:id", jwtAuth.poVerifyToken, trainingCategories.update);
+router.put("/:id", jwtAuth.poVerifyToken, trainingCategories.update);
 
-router.delete("/delete/:id", jwtAuth.poVerifyToken, trainingCategories.delete);
+router.delete("/:id", jwtAuth.poVerifyToken, trainingCategories.delete);
 
 module.exports = router;

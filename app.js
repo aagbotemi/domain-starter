@@ -38,9 +38,9 @@ app.use("/beneficiaries", beneficiariesRouter);
 app.use("/cities", citiesRouter);
 app.use("/states", statesRouter);
 app.use("/zones", zonesRouter);
-app.use("/trainingCategories", categoriesRouter);
+app.use("/trade-areas", categoriesRouter);
 app.use("/trainingBatch", batchRouter);
-app.use("/partnerOrg", partnerOrgRouter);
+app.use("/participating-organisation", partnerOrgRouter);
 
 
 const db = require("./models/index");

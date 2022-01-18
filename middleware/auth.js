@@ -5,8 +5,11 @@ exports.jwtAuth = {
 
 
     adminVerifyToken: (req, res, next) => {
-      
-      let token = req.headers["authorization"].split(" ")[1];
+      let headers = req.headers["authorization"]
+      if(headers==undefined){
+        return res.status(401).send({ message: "Unauthorised Access, missing authorization token" });
+      }
+      let token = headers.split(" ")[1];
       
   
       if (!token) return res.status(403).send({ message: "Unauthorised Access" });
@@ -37,7 +40,7 @@ exports.jwtAuth = {
         if (err) return res.status(401).send({ message: "forbidden access" });
   
   
-        if (decode.userType !== "partnerOrganisation")
+        if (decode.userType !== "admin")
           return res.status(401).send({ message: "forbidden access" });
   
         req.userId = decode.id;
@@ -51,6 +54,10 @@ exports.jwtAuth = {
   
     generalVerifyToken: (req, res, next) => {
     
+      let headers = req.headers["authorization"]
+      if(headers==undefined){
+        return res.status(401).send({ message: "Unauthorised Access, missing authorization token" });
+      }
       let token = req.headers["authorization"].split(" ")[1];
   
       console.log(token)

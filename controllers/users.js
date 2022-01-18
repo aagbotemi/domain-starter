@@ -30,7 +30,7 @@ exports.usersController = {
                 if(data.length == 0) {
                     res.status(404).send({
                         status: false,
-                        message: "No course has been created!!!"
+                        message: "No user has been created!!!"
                     })
                 }
 

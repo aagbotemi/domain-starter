@@ -1,8 +1,8 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const trainingCategories = require("../models/trainingCategories");
-const partnerOrganisation = require("../models/partnerOrganisation");
+const trainingCategories = db.trainingCategories
+const partnerOrganisation = db.partnerOrganisation
 
 require("dotenv").config();
 
@@ -24,6 +24,17 @@ exports.trainingCategories = {
         constants.handleErr(err, res);
       });
   },
+  getAll:(req,res)=>{
+    trainingCategories.findAll().then(data=>{
+    res.status(200).send(data)
+    }).catch(err=>{
+        res.status(400).send({
+            message:err.message || "Could not fetch record"
+        })
+
+    })
+
+},
 
   getById: (req, res) => {
     trainingCategories

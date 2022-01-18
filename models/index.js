@@ -41,17 +41,17 @@ db.users.belongsToMany(db.roles, { through: "usersRoles" });
 db.roles.belongsToMany(db.users, { through: "usersRoles" });
 
 db.partnerOrganisation.belongsToMany(db.users, {
-  through: "partnerOrganisation_contactPerson",
+  through: "partnerorganisationContactperson",
 });
 db.users.belongsToMany(db.partnerOrganisation, {
-  through: "partnerOrganisation_contactPerson",
+  through: "partnerorganisationContactperson",
 });
 
 db.partnerOrganisation.belongsToMany(db.trainingCategories, {
-  through: "partnerOrganisation_category",
+  through: "partnerorganisationCategory",
 });
 db.trainingCategories.belongsToMany(db.partnerOrganisation, {
-  through: "partnerOrganisation_category",
+  through: "partnerorganisationCategory",
 });
 
 db.states.hasOne(db.partnerOrganisation);

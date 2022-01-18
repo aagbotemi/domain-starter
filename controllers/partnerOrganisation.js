@@ -1,16 +1,17 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const partnerOrganisation = require("../models/partnerOrganisation");
+const partnerOrganisation = db.partnerOrganisation;
 
 require("dotenv").config();
 
 exports.partnerOrgController = {
-  createPartnerOrg: (req, res) => {
+  createPartnerOrg: async (req, res) => {
     const po = req.body;
 
-    partnerOrganisation
-      .create(po)
+    const participatingOrg = await partnerOrganisation.create(po);
+    participatingOrg
+      .setCategories(po.categories)
       .then((data) => {
         res.status(200).send({
           success: true,
@@ -35,11 +36,6 @@ exports.partnerOrgController = {
           include: [
             {
               model: db.trainingCategories,
-              include: [
-                {
-                  model: db.trainingBatch,
-                },
-              ],
             },
           ],
         }
@@ -64,12 +60,8 @@ exports.partnerOrgController = {
       .findAll({
         include: [
           {
-            model: db.trainingCategories,
-            include: [
-              {
-                model: db.trainingBatch,
-              },
-            ],
+            model: db.trainingCategories
+           
           },
         ],
       })

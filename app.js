@@ -6,9 +6,9 @@ var logger = require("morgan");
 var cors = require("cors");
 
 const indexRouter = require("./routes/index");
-const authRouter = require('./routes/auth');
+const authRouter = require("./routes/auth");
 const usersRouter = require("./routes/users");
-const rolesRouter = require('./routes/roles');
+const rolesRouter = require("./routes/roles");
 const beneficiariesRouter = require("./routes/beneficiaries");
 const citiesRouter = require("./routes/cities");
 const statesRouter = require("./routes/states");
@@ -32,16 +32,15 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use('/roles', rolesRouter);
-app.use('/auth', authRouter);
+app.use("/roles", rolesRouter);
+app.use("/auth", authRouter);
 app.use("/beneficiaries", beneficiariesRouter);
 app.use("/cities", citiesRouter);
 app.use("/states", statesRouter);
 app.use("/zones", zonesRouter);
-app.use("/trainingCategories", categoriesRouter);
+app.use("/trade-areas", categoriesRouter);
 app.use("/trainingBatch", batchRouter);
-app.use("/partnerOrg", partnerOrgRouter);
-
+app.use("/participating-organisation", partnerOrgRouter);
 
 const db = require("./models/index");
 db.sequelize.sync();
@@ -63,4 +62,3 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
-

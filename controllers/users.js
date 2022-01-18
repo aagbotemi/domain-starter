@@ -30,7 +30,7 @@ exports.usersController = {
                 if(data.length == 0) {
                     res.status(404).send({
                         status: false,
-                        message: "No course has been created!!!"
+                        message: "No user has been created!!!"
                     })
                 }
 
@@ -52,6 +52,31 @@ exports.usersController = {
         users.findOne({
             where: {
                 id: req.params.id
+            }})
+            .then(data =>{
+                if(data == undefined) {
+                    res.status(404).send({
+                        status: false,
+                        message: "record not found"
+                    })
+                }
+                res.status(200).send({
+                    status: true,
+                    data,
+                });
+            }).catch(err => {
+            res.status(400)
+                .send({
+                    status: false,
+                    message: err.message || "Could not fetch record"
+                })
+        })
+    },
+
+    getProfile:(req, res) => {
+        users.findOne({
+            where: {
+                id: req.userId
             }})
             .then(data =>{
                 if(data == undefined) {

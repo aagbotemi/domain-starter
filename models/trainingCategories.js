@@ -1,5 +1,5 @@
 module.exports = (sequelize, dataType) => {
-    const trainingCategories = sequelize.define("trainingCategories", {
+    const trainingCategories = sequelize.define("category", {
       categoryName: {
         type: dataType.STRING,
         allowNull: false

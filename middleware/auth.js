@@ -32,11 +32,11 @@ exports.jwtAuth = {
         .status(401)
         .send({ message: "Unauthorised Access, missing authorization token" });
     }
-    let token = headers.split(" ")[1];
+    let token1 = headers.split(" ")[1];
 
-    if (!token) return res.status(403).send({ message: "Unauthorised Access" });
+    if (!token1) return res.status(403).send({ message: "Unauthorised Access" });
 
-    verify(token, process.env.secret, (err, decode) => {
+    verify(token1, process.env.secret, (err, decode) => {
       if (err) return res.status(401).send({ message: "forbidden access" });
 
       if (decode.userType !== "partnerOrg" || decode.userType !== "admin")
@@ -56,13 +56,6 @@ exports.jwtAuth = {
         .send({ message: "Unauthorised Access, missing authorization token" });
     }
     let token = headers.split(" ")[1];
-
-    if (headers == undefined) {
-      return res
-        .status(401)
-        .send({ message: "Unauthorised Access, missing authorization token" });
-    }
-    let token = req.headers["authorization"].split(" ")[1];
 
     console.log(token);
     if (!token) return res.status(403).send({ message: "Unauthorised Access" });

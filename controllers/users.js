@@ -7,14 +7,12 @@ const Role = db.roles;
 const Op = db.Sequelize.Op;
 
 exports.usersController = {
-  create: (req, res) => {
+  create: async (req, res) => {
     const user = req.body;
     user.password = bcrypt.hashSync(user.password, 10);
-    // const userObj = await users.create(user);
-    // userObj
-    //   .setPartnerOrganisaton(user.partnerOrg)
-    users
-      .create(user)
+    const userObj = await users.create(user);
+    userObj
+      .setPartnerorganisaton(user.partnerOrg)
       .then((data) => {
         res.status(200).send({
           success: true,

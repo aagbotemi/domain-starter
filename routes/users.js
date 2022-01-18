@@ -22,7 +22,7 @@ router.get(
 );
 
 router.get(
-  "/:id",
+  "/profile",
   jwtAuth.generalVerifyToken,
   usersController.getProfile
 );

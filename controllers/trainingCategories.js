@@ -41,7 +41,7 @@ exports.trainingCategories = {
       .findOne(
         {
           where: {
-            id: req.param.id,
+            id: req.params.id,
           },
         },
         {
@@ -70,7 +70,7 @@ exports.trainingCategories = {
       .findAll(
         {
           where: {
-            id: req.param.id,
+            id: req.params.id,
           },
         },
         {

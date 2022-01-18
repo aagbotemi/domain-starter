@@ -32,12 +32,11 @@ exports.jwtAuth = {
         .status(401)
         .send({ message: "Unauthorised Access, missing authorization token" });
     }
-    let token1 = headers.split(" ")[1];
+    let token = headers.split(" ")[1];
 
-    if (!token1)
-      return res.status(403).send({ message: "Unauthorised Access" });
+    if (!token) return res.status(403).send({ message: "Unauthorised Access" });
 
-    verify(token1, process.env.secret, (err, decode) => {
+    verify(token, process.env.secret, (err, decode) => {
       if (err) return res.status(401).send({ message: "forbidden access" });
 
       if (

@@ -85,11 +85,7 @@ exports.trainingCategories = {
 
   getAllTrainingCategories: (req, res) => {
     trainingCategories
-      .findAll({
-        include: {
-          model: partnerOrganisation,
-        },
-      })
+      .findAll()
       .then((data) => {
         res.status(200).send({
           success: true,
@@ -104,13 +100,9 @@ exports.trainingCategories = {
       });
   },
 
-  getPOTrainingCategories: (req, res) => {
+  /* getPOTrainingCategories: (req, res) => {
     trainingCategories
-      .findAll({
-        where: {
-          partnerOrganisationId: req.userId,
-        },
-      })
+      .findAll()
       .then((data) => {
         res.status(200).send({
           success: true,
@@ -124,7 +116,7 @@ exports.trainingCategories = {
         });
       });
   },
-
+*/
   update: (req, res) => {
     const category = req.body;
     // category.id = req.param.id;

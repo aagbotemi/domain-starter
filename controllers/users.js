@@ -42,13 +42,42 @@ exports.usersController = {
             })
             .catch(err => {
                 res.status(400)
-                    .send({
-                        status: false,
-                        message: err.message || "Could not fetch record"
-                    })
+                .send({
+                    status: false,
+                    message: err.message || "Could not fetch record"
+                })
             })
     },
+
+    
     getById:(req, res) => {
+        users.findOne({
+            where: {
+                id: req.userId
+            }})
+            .then(data =>{
+                if(data == undefined) {
+                    res.status(404).send({
+                        status: false,
+                        message: "record not found"
+                    })
+                }
+                res.status(200).send({
+                    status: true,
+                    data,
+                });
+            }).catch(err => {
+            res.status(400)
+                .send({
+                    status: false,
+                    message: err.message || "Could not fetch record"
+                })
+        })
+    },
+
+    getProfile: (req, res) => {
+        const id = req.userId;
+        console.log("id ++++", id);
         users.findOne({
             where: {
                 id: req.params.id
@@ -73,30 +102,6 @@ exports.usersController = {
         })
     },
 
-    getProfile:(req, res) => {
-        users.findOne({
-            where: {
-                id: req.userId
-            }})
-            .then(data =>{
-                if(data == undefined) {
-                    res.status(404).send({
-                        status: false,
-                        message: "record not found"
-                    })
-                }
-                res.status(200).send({
-                    status: true,
-                    data,
-                });
-            }).catch(err => {
-            res.status(400)
-                .send({
-                    status: false,
-                    message: err.message || "Could not fetch record"
-                })
-        })
-    },
     update:(req, res) => {
         const user = req.body
         users.update(user, {

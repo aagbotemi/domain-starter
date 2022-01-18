@@ -30,7 +30,7 @@ exports.authController = {
 
             // if password is not valid
             if (!passwordIsValid ) {
-                return res.status(401).send({
+                return res.status(404).send({
                     accessToken: null,
                     message: 'Invalid username or password'
                 })

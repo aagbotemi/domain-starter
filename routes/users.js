@@ -16,14 +16,14 @@ router.get(
 );
 
 router.get(
-  "/:id",
+  "/profile",
   jwtAuth.generalVerifyToken,
   usersController.getById
 );
 
 router.get(
   "/:id",
-  jwtAuth.generalVerifyToken,
+  jwtAuth.adminVerifyToken,
   usersController.getProfile
 );
 

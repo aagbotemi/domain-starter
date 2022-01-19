@@ -43,7 +43,7 @@ app.use("/trainingBatch", batchRouter);
 app.use("/participating-organisation", partnerOrgRouter);
 
 const db = require("./models/index");
-db.sequelize.sync({ force: true });
+db.sequelize.sync();
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

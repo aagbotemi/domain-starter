@@ -1,14 +1,16 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const trainingBatch = db.trainingBatch
+const trainingBatch = db.trainingBatch;
+const partnerorganisation = db.partnerOrganisation;
+
 
 require("dotenv").config();
 
 exports.trainingBatch = {
   createTrainingBatch: (req, res) => {
     const batch = req.body;
-    batch.partnerorganisationId = req.userId
+    batch.partnerorganisationId = req.userId;
     // category.partnerOrganisationId = req.userId;
 
     trainingBatch
@@ -35,7 +37,7 @@ exports.trainingBatch = {
         },
         {
           include: {
-            model: partnerOrganisation,
+            model: partnerorganisation,
           },
         }
       )
@@ -64,7 +66,7 @@ exports.trainingBatch = {
         },
         {
           include: {
-            model: partnerOrganisation,
+            model: partnerorganisation,
           },
         }
       )
@@ -87,7 +89,7 @@ exports.trainingBatch = {
     trainingBatch
       .findAll({
         include: {
-          model: partnerOrganisation,
+          model: partnerorganisation,
         },
       })
       .then((data) => {
@@ -106,14 +108,11 @@ exports.trainingBatch = {
 
   getPOTrainingBatch: (req, res) => {
     trainingBatch
-      .findAll(
-        {
-          where: {
-            partnerOrganisationId: req.userId,
-          },
+      .findAll({
+        where: {
+          partnerorganisationId: req.userId,
         },
-        
-      )
+      })
       .then((data) => {
         res.status(200).send({
           success: true,

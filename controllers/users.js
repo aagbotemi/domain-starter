@@ -30,7 +30,13 @@ exports.usersController = {
   },
   getAll: (req, res) => {
     users
-      .findAll()
+      .findAll({
+        include: [
+          {
+            model: db.partnerOrganisation,
+          },
+        ],
+      })
       .then((data) => {
         if (data.length == 0) {
           res.status(404).send({
@@ -55,11 +61,20 @@ exports.usersController = {
 
   getById: (req, res) => {
     users
-      .findOne({
-        where: {
-          id: req.userId,
+      .findOne(
+        {
+          where: {
+            id: req.userId,
+          },
         },
-      })
+        {
+          include: [
+            {
+              model: db.partnerOrganisation,
+            },
+          ],
+        }
+      )
       .then((data) => {
         if (data == undefined) {
           res.status(404).send({
@@ -84,11 +99,20 @@ exports.usersController = {
     const id = req.userId;
     console.log("id ++++", id);
     users
-      .findOne({
-        where: {
-          id: req.params.id,
+      .findOne(
+        {
+          where: {
+            id: req.params.id,
+          },
         },
-      })
+        {
+          include: [
+            {
+              model: db.partnerOrganisation,
+            },
+          ],
+        }
+      )
       .then((data) => {
         if (data == undefined) {
           res.status(404).send({

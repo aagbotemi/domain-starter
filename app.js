@@ -39,7 +39,7 @@ app.use("/cities", citiesRouter);
 app.use("/states", statesRouter);
 app.use("/zones", zonesRouter);
 app.use("/trade-areas", categoriesRouter);
-app.use("/trainingBatch", batchRouter);
+app.use("/training-batch", batchRouter);
 app.use("/participating-organisation", partnerOrgRouter);
 
 const db = require("./models/index");

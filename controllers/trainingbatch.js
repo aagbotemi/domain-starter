@@ -4,13 +4,12 @@ const { constants } = require("./constants");
 const trainingBatch = db.trainingBatch;
 const partnerorganisation = db.partnerOrganisation;
 
-
 require("dotenv").config();
 
 exports.trainingBatch = {
   createTrainingBatch: (req, res) => {
     const batch = req.body;
-    batch.partnerorganisationId = req.userId;
+    batch.partnerorganisationId = req.poId;
     // category.partnerOrganisationId = req.userId;
 
     trainingBatch
@@ -110,7 +109,7 @@ exports.trainingBatch = {
     trainingBatch
       .findAll({
         where: {
-          partnerorganisationId: req.userId,
+          partnerorganisationId: req.poId,
         },
       })
       .then((data) => {

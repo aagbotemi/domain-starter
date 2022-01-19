@@ -8,7 +8,7 @@ require("dotenv").config();
 exports.beneficiariesController = {
   createTrainee: (req, res) => {
     const trainee = req.body;
-    trainee.partnerOrganisationId = req.userId;
+    trainee.partnerOrganisationId = req.poId;
 
     beneficiaries
       .create(trainee)
@@ -108,7 +108,7 @@ exports.beneficiariesController = {
       .then((data) => {
         let traineeObj = [];
         data.forEach((trainee) => {
-          if (trainee.partnerOrganisationId === req.userId) {
+          if (trainee.partnerOrganisationId === req.poId) {
             traineeObj.push(trainee);
           }
         });

@@ -115,7 +115,7 @@ exports.trainingCategories = {
     trainingCategories
       .findAll({
         where: {
-          id: req.userId,
+          id: req.poId,
         },
       })
       .then((data) => {

@@ -9,6 +9,11 @@ router.post(
   usersController.create
 );
 
+router.post(
+  "/admin",
+  usersController.create
+);
+
 router.get(
   "/",
   jwtAuth.adminVerifyToken,

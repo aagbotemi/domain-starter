@@ -7,21 +7,27 @@ require("dotenv").config();
 
 exports.partnerOrgController = {
   createPartnerOrg: async (req, res) => {
-    const po = req.body;
+    try{
+      const po = req.body;
 
-    const participatingOrg = await partnerOrganisation.create(po);
-    participatingOrg
-      .setCategories(po.categories)
-      .then((data) => {
-        res.status(200).send({
-          success: true,
-          message: "Partner Organisation Added Successfully",
-          data: data,
+      const participatingOrg = await partnerOrganisation.create(po);
+      participatingOrg
+        .setCategories(po.categories)
+        .then((data) => {
+          res.status(200).send({
+            success: true,
+            message: "Partner Organisation Added Successfully",
+            data: data,
+          });
+        })
+        .catch((err) => {
+          constants.handleErr(err, res);
         });
-      })
-      .catch((err) => {
-        constants.handleErr(err, res);
-      });
+    }catch(err){
+      constants.handleErr(err, res);
+      
+    }
+    
   },
 
   getById: (req, res) => {

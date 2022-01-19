@@ -68,11 +68,9 @@ exports.usersController = {
           },
         },
         {
-          include: [
-            {
-              model: db.partnerOrganisation,
-            },
-          ],
+          include: {
+            model: db.partnerOrganisation,
+          },
         }
       )
       .then((data) => {
@@ -106,11 +104,9 @@ exports.usersController = {
           },
         },
         {
-          include: [
-            {
-              model: db.partnerOrganisation,
-            },
-          ],
+          include: {
+            model: db.partnerOrganisation,
+          },
         }
       )
       .then((data) => {

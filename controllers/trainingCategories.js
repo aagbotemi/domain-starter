@@ -1,8 +1,8 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const trainingCategories = db.trainingCategories
-const partnerOrganisation = db.partnerOrganisation
+const trainingCategories = db.trainingCategories;
+const partnerOrganisation = db.partnerOrganisation;
 
 require("dotenv").config();
 
@@ -34,7 +34,7 @@ exports.trainingCategories = {
 
   //   })
 
-// },
+  // },
 
   getById: (req, res) => {
     trainingCategories
@@ -113,7 +113,11 @@ exports.trainingCategories = {
 
   getPOTrainingCategories: (req, res) => {
     trainingCategories
-      .findAll()
+      .findAll({
+        where: {
+          id: req.userId,
+        },
+      })
       .then((data) => {
         res.status(200).send({
           success: true,

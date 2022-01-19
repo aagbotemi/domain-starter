@@ -40,12 +40,8 @@ db.geoPoliticalZones = require("./geoPoliticalZones")(sequelize, Sequelize);
 db.users.belongsToMany(db.roles, { through: "usersRoles" });
 db.roles.belongsToMany(db.users, { through: "usersRoles" });
 
-db.partnerOrganisation.belongsToMany(db.users, {
-  through: "partnerorganisationContactperson",
-});
-db.users.belongsToMany(db.partnerOrganisation, {
-  through: "partnerorganisationContactperson",
-});
+db.partnerOrganisation.hasMany(db.users);
+db.users.belongsTo(db.partnerOrganisation);
 
 db.partnerOrganisation.belongsToMany(db.trainingCategories, {
   through: "partnerorganisationCategory",

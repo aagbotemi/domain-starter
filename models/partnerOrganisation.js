@@ -1,5 +1,5 @@
 module.exports = (sequelize, dataType) => {
-  const partnerOrganisaton = sequelize.define("partnerorganisaton", {
+  const partnerOrganisation = sequelize.define("partnerorganisation", {
     organisationName: {
       type: dataType.STRING,
       unique: true,
@@ -18,5 +18,5 @@ module.exports = (sequelize, dataType) => {
       allowNull: false,
     },
   });
-  return partnerOrganisaton;
+  return partnerOrganisation;
 };

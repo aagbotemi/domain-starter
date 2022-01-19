@@ -12,7 +12,7 @@ router.get(
 );
 
 router.get(
-  "/",
+  "/trainees",
   jwtAuth.poVerifyToken,
   beneficiariesController.getPOTrainees
 );

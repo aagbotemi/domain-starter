@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const db = require("../models");
 const { constants } = require("./constants");
 const users = db.users;
-const Role = db.roles;
+const partnerOrganisation = db.partnerOrganisation;
 
 const Op = db.Sequelize.Op;
 
@@ -69,7 +69,7 @@ exports.usersController = {
         },
         {
           include: {
-            model: db.partnerOrganisation,
+            model: partnerOrganisation,
           },
         }
       )
@@ -105,7 +105,7 @@ exports.usersController = {
         },
         {
           include: {
-            model: db.partnerOrganisation,
+            model: partnerOrganisation,
           },
         }
       )

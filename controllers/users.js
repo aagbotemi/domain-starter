@@ -69,7 +69,7 @@ exports.usersController = {
         },
         {
           include: {
-            model: partnerOrganisation,
+            model: db.partnerOrganisation,
           },
         }
       )
@@ -105,7 +105,7 @@ exports.usersController = {
         },
         {
           include: {
-            model: partnerOrganisation,
+            model: db.partnerOrganisation,
           },
         }
       )

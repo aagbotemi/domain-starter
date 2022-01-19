@@ -94,6 +94,8 @@ exports.usersController = {
   },
 
   getProfile: (req, res) => {
+    const id = req.userId;
+    console.log("id ++++", id);
     users
       .findOne(
         {
@@ -148,35 +150,6 @@ exports.usersController = {
         constants.handleErr(err, res);
       });
   },
-
-  forgotPassword: (req, res) => {
-    const password = req.body.password;
-    users
-      .findOne({
-        where: {
-          email: req.body.email,
-        },
-      }).update(password)
-      .then((data) => {
-        if (req.body.email == null) {
-          res.status(404).send({
-            status: false,
-            message: "record not found",
-          });
-        }
-        if (data[0] !== 1) {
-          res.status(404).send({
-            status: false,
-            message: "record not found",
-          });
-        }
-        res.status(200).send(data);
-      })
-      .catch((err) => {
-        constants.handleErr(err, res);
-      });
-  },
-
   delete: (req, res) => {
     users
       .destroy({

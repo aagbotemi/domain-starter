@@ -24,17 +24,17 @@ exports.trainingCategories = {
         constants.handleErr(err, res);
       });
   },
-  getAll:(req,res)=>{
-    trainingCategories.findAll().then(data=>{
-    res.status(200).send(data)
-    }).catch(err=>{
-        res.status(400).send({
-            message:err.message || "Could not fetch record"
-        })
+  // getAll:(req,res)=>{
+  //   trainingCategories.findAll().then(data=>{
+  //   res.status(200).send(data)
+  //   }).catch(err=>{
+  //       res.status(400).send({
+  //           message:err.message || "Could not fetch record"
+  //       })
 
-    })
+  //   })
 
-},
+// },
 
   getById: (req, res) => {
     trainingCategories

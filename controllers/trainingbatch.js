@@ -8,6 +8,7 @@ require("dotenv").config();
 exports.trainingBatch = {
   createTrainingBatch: (req, res) => {
     const batch = req.body;
+    batch.partnerorganisationId = req.userId
     // category.partnerOrganisationId = req.userId;
 
     trainingBatch

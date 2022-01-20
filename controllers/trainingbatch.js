@@ -108,6 +108,7 @@ exports.trainingBatch = {
   },
 
   getPOTrainingBatch: (req, res) => {
+    console.log(req.poId);
     trainingBatch
       .findAll
       //   {

@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
 const trainingBatch = db.trainingBatch;
 const partnerorganisation = db.partnerOrganisation;
+const Op = db.Sequelize.Op;
+
 
 require("dotenv").config();
 
@@ -108,10 +110,11 @@ exports.trainingBatch = {
   },
 
   getPOTrainingBatch: (req, res) => {
+    var condition = req.poId ? { partnerorganisationId: { [Op.like]: `%${req.poId}%` } } : null;
     trainingBatch
       .findAll({
         where: {
-          partnerorganisationId: req.poId,
+          condition
         },
       })
       .then((data) => {

@@ -108,32 +108,24 @@ exports.trainingBatch = {
   },
 
   getPOTrainingBatch: (req, res) => {
-    console.log(req.poId);
     trainingBatch
-      .findAll
-      //   {
-      //   where: {
-      //     partnerorganisationId: req.poId,
-      //   },
-      // }
-      ()
+      .findAll({
+        where: {
+          partnerorganisationId: req.poId,
+        },
+      })
       .then((data) => {
-        const arr = [];
-        data.forEach((batch) => {
-          if (batch.partnerorganisationId === req.poId) {
-            arr.push(batch);
-          }
-        });
-        res.status(200).send({
-          success: true,
-          message: "All batches retrieved successfully",
-          data: arr,
-        });
+        if (!data) {
+          res.status(400).send({
+            message: "Record not found",
+            data: [],
+          });
+        }
+        res.status(200).send(data);
       })
       .catch((err) => {
         res.status(400).send({
           message: err.message || "Could not find record",
-          data: [],
         });
       });
   },

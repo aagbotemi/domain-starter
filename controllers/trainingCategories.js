@@ -8,6 +8,7 @@ require("dotenv").config();
 
 exports.trainingCategories = {
   createTrainingCategories: (req, res) => {
+    console.log(req);
     const category = req.body;
     // category.partnerOrganisationId = req.userId;
 

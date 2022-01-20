@@ -9,7 +9,10 @@ exports.constants = {
 
       return res.status(400).send(errObj);
     }else{
-      return res.status(400).send(err);
+      return res.status(400).send({
+        message:
+          err.message || "Some error occurred."
+      });
 
     }
   },

@@ -115,7 +115,7 @@ exports.trainingCategories = {
     trainingCategories
       .findAll({
         where: {
-          id: req.poId,
+          partneroganisation: req.poId,
         },
       })
       .then((data) => {

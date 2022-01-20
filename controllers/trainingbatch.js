@@ -109,7 +109,7 @@ exports.trainingBatch = {
     trainingBatch
       .findAll({
         where: {
-          partnerorganisationId: req.poId,
+          partnerorganisation: req.poId,
         },
       })
       .then((data) => {

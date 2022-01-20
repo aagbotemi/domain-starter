@@ -20,6 +20,8 @@ exports.jwtAuth = {
         return res.status(401).send({ message: "forbidden access" });
 
       req.userId = decode.id;
+      req.poId = decode.partnerorganisation;
+      console.log(decode.partnerorganisation);
 
       next();
     });
@@ -45,9 +47,8 @@ exports.jwtAuth = {
       //   return res.status(401).send({ message: "forbidden access" });
 
       req.userId = decode.id;
-      req.poId = decode.partnerOrganisation;
-      console.log(decode.partnerOrganisation);
-
+      req.poId = decode.partnerorganisation;
+      console.log(decode.partnerorganisation);
 
       next();
     });
@@ -70,8 +71,8 @@ exports.jwtAuth = {
 
       // console.log(decode.id);
       req.userId = decode.id;
-      req.poId = decode.partnerOrganisation;
-      console.log(decode.partnerOrganisation);
+      req.poId = decode.partnerorganisation;
+      console.log(decode.partnerorganisation);
 
       next();
     });

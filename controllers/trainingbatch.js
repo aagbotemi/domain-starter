@@ -44,6 +44,7 @@ exports.trainingBatch = {
         if (!data) {
           res.status(400).send({
             message: "Record not found",
+            data: []
           });
         }
         res.status(200).send(data);
@@ -51,6 +52,7 @@ exports.trainingBatch = {
       .catch((err) => {
         res.status(400).send({
           message: err.message || "Could not find record",
+        
         });
       });
   },
@@ -73,6 +75,7 @@ exports.trainingBatch = {
         if (!data) {
           res.status(400).send({
             message: "Record not found",
+            data: []
           });
         }
         res.status(200).send(data);
@@ -123,6 +126,7 @@ exports.trainingBatch = {
       .catch((err) => {
         res.status(400).send({
           message: err.message || "Could not find record",
+          data: []
         });
       });
   },

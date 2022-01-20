@@ -150,6 +150,33 @@ exports.usersController = {
         constants.handleErr(err, res);
       });
   },
+
+  forgotPassword: async (req, res) => {
+    const reset = req.body;
+    reset.password = bcrypt.hashSync(reset.password, 10);
+    await users.findOne({
+        where: {
+          email: req.body.email,
+        },
+      })
+      .then((data) => {
+        users.update(reset, {
+          where: {
+            id: data.id
+          }
+        })
+      })
+      .then((data) => {
+        res
+          .status(200)
+          .send({
+            message: "Password Changed successfully"
+          });
+      })
+      .catch((err) => {
+        constants.handleErr(err, res);
+      });
+  },
   delete: (req, res) => {
     users
       .destroy({

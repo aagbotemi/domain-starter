@@ -112,6 +112,7 @@ exports.trainingCategories = {
   },
 
   getPOTrainingCategories: (req, res) => {
+    
     trainingCategories
       .findAll({
         where: {

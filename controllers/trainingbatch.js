@@ -106,6 +106,7 @@ exports.trainingBatch = {
   },
 
   getPOTrainingBatch: (req, res) => {
+
     trainingBatch
       .findAll({
         where: {

@@ -12,6 +12,8 @@ exports.trainingBatch = {
     const batch = req.body;
     batch.partnerorganisationId = req.poId;
     // category.partnerOrganisationId = req.userId;
+    // partnerorganisationId: req.poId,
+
 
     trainingBatch
       .create(batch)
@@ -109,7 +111,6 @@ exports.trainingBatch = {
   },
 
   getPOTrainingBatch: (req, res) => {
-    // partnerorganisationId: req.poId,
     trainingBatch
       .findAll({
         where: {

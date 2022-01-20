@@ -20,6 +20,8 @@ exports.jwtAuth = {
         return res.status(401).send({ message: "forbidden access" });
 
       req.userId = decode.id;
+      req.poId = decode.partnerOrganisation;
+      
 
       next();
     });
@@ -46,6 +48,7 @@ exports.jwtAuth = {
 
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
+     
 
       next();
     });
@@ -69,7 +72,7 @@ exports.jwtAuth = {
       // console.log(decode.id);
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
-
+     
 
       next();
     });

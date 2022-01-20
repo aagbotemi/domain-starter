@@ -4,6 +4,7 @@ const { constants } = require("./constants");
 const trainingBatch = db.trainingBatch;
 const partnerorganisation = db.partnerOrganisation;
 
+
 require("dotenv").config();
 
 exports.trainingBatch = {
@@ -11,6 +12,8 @@ exports.trainingBatch = {
     const batch = req.body;
     batch.partnerorganisationId = req.poId;
     // category.partnerOrganisationId = req.userId;
+    // partnerorganisationId: req.poId,
+
 
     trainingBatch
       .create(batch)
@@ -44,6 +47,7 @@ exports.trainingBatch = {
         if (!data) {
           res.status(400).send({
             message: "Record not found",
+            data: [],
           });
         }
         res.status(200).send(data);
@@ -73,6 +77,7 @@ exports.trainingBatch = {
         if (!data) {
           res.status(400).send({
             message: "Record not found",
+            data: [],
           });
         }
         res.status(200).send(data);
@@ -113,11 +118,13 @@ exports.trainingBatch = {
         },
       })
       .then((data) => {
-        res.status(200).send({
-          success: true,
-          message: "All batches retrieved successfully",
-          data,
-        });
+        if (!data) {
+          res.status(400).send({
+            message: "Record not found",
+            data: [],
+          });
+        }
+        res.status(200).send(data);
       })
       .catch((err) => {
         res.status(400).send({

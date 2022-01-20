@@ -109,6 +109,7 @@ exports.trainingBatch = {
   },
 
   getPOTrainingBatch: (req, res) => {
+    // partnerorganisationId: req.poId,
     trainingBatch
       .findAll({
         where: {

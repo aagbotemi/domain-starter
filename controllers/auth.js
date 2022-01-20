@@ -46,7 +46,7 @@ exports.authController = {
           phoneNumber: user.phoneNumber,
           userName: user.userName,
           profileImage: user.profileImage,
-          partnerOrganisation: user.partnerOrganisation,
+          partnerOrganisation: user.partnerorganisationId,
         };
         let token = sign(payload, config.secretKey, {
           expiresIn: 36000,

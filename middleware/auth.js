@@ -46,6 +46,8 @@ exports.jwtAuth = {
 
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
+      console.log(decode.partnerOrganisation);
+
 
       next();
     });
@@ -69,7 +71,7 @@ exports.jwtAuth = {
       // console.log(decode.id);
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
-
+      console.log(decode.partnerOrganisation);
 
       next();
     });

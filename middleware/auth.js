@@ -21,7 +21,7 @@ exports.jwtAuth = {
 
       req.userId = decode.id;
       req.poId = decode.partnerorganisation;
-      console.log(decode.partnerorganisation);
+      console.log(decode);
 
       next();
     });

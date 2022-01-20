@@ -32,6 +32,11 @@ router.get(
   usersController.getProfile
 );
 
+router.post(
+  "/reset-password",
+  usersController.forgotPassword
+);
+
 router.put(
   "/:id",
   jwtAuth.adminVerifyToken,

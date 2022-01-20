@@ -83,7 +83,7 @@ exports.trainingCategories = {
         if (!data) {
           res.status(400).send({
             message: "Record not found",
-            data: []
+            data: [],
           });
         }
         res.status(200).send(data);
@@ -91,7 +91,7 @@ exports.trainingCategories = {
       .catch((err) => {
         res.status(400).send({
           message: err.message || "Could not find record",
-          data: []
+          data: [],
         });
       });
   },
@@ -109,17 +109,16 @@ exports.trainingCategories = {
       .catch((err) => {
         res.status(400).send({
           message: err.message || "Could not find record",
-          data: []
+          data: [],
         });
       });
   },
 
   getPOTrainingCategories: (req, res) => {
-
     trainingCategories
       .findAll({
         where: {
-          partneroganisation: req.poId,
+          partnerorganisationId: req.poId,
         },
       })
       .then((data) => {
@@ -132,7 +131,7 @@ exports.trainingCategories = {
       .catch((err) => {
         res.status(400).send({
           message: err.message || "Could not find record",
-          data: []
+          data: [],
         });
       });
   },

@@ -44,7 +44,7 @@ exports.trainingBatch = {
         if (!data) {
           res.status(400).send({
             message: "Record not found",
-            data: []
+            data: [],
           });
         }
         res.status(200).send(data);
@@ -52,7 +52,6 @@ exports.trainingBatch = {
       .catch((err) => {
         res.status(400).send({
           message: err.message || "Could not find record",
-        
         });
       });
   },
@@ -75,7 +74,7 @@ exports.trainingBatch = {
         if (!data) {
           res.status(400).send({
             message: "Record not found",
-            data: []
+            data: [],
           });
         }
         res.status(200).send(data);
@@ -109,24 +108,31 @@ exports.trainingBatch = {
   },
 
   getPOTrainingBatch: (req, res) => {
-
     trainingBatch
-      .findAll({
-        where: {
-          partnerorganisationId: req.poId,
-        },
-      })
+      .findAll
+      //   {
+      //   where: {
+      //     partnerorganisationId: req.poId,
+      //   },
+      // }
+      ()
       .then((data) => {
+        const arr = [];
+        data.forEach((batch) => {
+          if (batch.partnerorganisationId === req.poId) {
+            arr.push(batch);
+          }
+        });
         res.status(200).send({
           success: true,
           message: "All batches retrieved successfully",
-          data,
+          data: arr,
         });
       })
       .catch((err) => {
         res.status(400).send({
           message: err.message || "Could not find record",
-          data: []
+          data: [],
         });
       });
   },

@@ -8,7 +8,6 @@ require("dotenv").config();
 
 exports.trainingCategories = {
   createTrainingCategories: (req, res) => {
-    console.log(req);
     const category = req.body;
     // category.partnerOrganisationId = req.userId;
 
@@ -123,6 +122,7 @@ exports.trainingCategories = {
         },
       })
       .then((data) => {
+        
         res.status(200).send({
           success: true,
           message: "All training categories retrieved successfully",

@@ -19,7 +19,7 @@ const partnerOrgRouter = require("./routes/partnerOrg");
 const dashboardRouter = require("./routes/dashboard");
 
 
-var app = express({force: true});
+var app = express();
 app.use(cors());
 
 // view engine setup

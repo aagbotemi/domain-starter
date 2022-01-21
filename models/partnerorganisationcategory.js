@@ -1,5 +1,5 @@
 module.exports = (sequelize, dataType) => {
-    const partnerorganisationcategory = sequelize.define("partnerorganisationcategories", {
+    const partnerorganisationcategory = sequelize.define("partnerorganisationcategory", {
         partnerorganisationId: {
             type: dataType.INTEGER,
             references: {

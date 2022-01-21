@@ -115,17 +115,18 @@ exports.trainingCategories = {
   },
 
   getPOTrainingCategories: (req, res) => {
-    db.partnerorganisationcategory
+    db.trainingCategories
       .findAll({
         where: {
           partnerorganisationId: req.poId,
         },
       },
-      {
-        include: {
-          model: trainingCategories,
-        },
-      })
+      // {
+      //   include: {
+      //     model: trainingCategories,
+      //   },
+      // }
+      )
       .then((data) => {
         res.status(200).send({
           success: true,

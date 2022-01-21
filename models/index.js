@@ -35,6 +35,8 @@ db.trainingCategories = require("./trainingCategories")(sequelize, Sequelize);
 db.beneficiaries = require("./beneficiaries")(sequelize, Sequelize);
 db.trainingBatch = require("./trainingBatch")(sequelize, Sequelize);
 db.geoPoliticalZones = require("./geoPoliticalZones")(sequelize, Sequelize);
+db.partnerorganisationcategory = require("./partnerorganisationcategory")(sequelize, Sequelize);
+
 
 
 db.users.belongsToMany(db.roles, { through: "usersRoles" });
@@ -44,10 +46,10 @@ db.partnerOrganisation.hasMany(db.users);
 db.users.belongsTo(db.partnerOrganisation);
 
 db.partnerOrganisation.belongsToMany(db.trainingCategories, {
-  through: "partnerorganisationCategory",
+  through: db.partnerorganisationcategory,
 });
 db.trainingCategories.belongsToMany(db.partnerOrganisation, {
-  through: "partnerorganisationCategory",
+  through: db.partnerorganisationcategory,
 });
 
 db.states.hasOne(db.partnerOrganisation);

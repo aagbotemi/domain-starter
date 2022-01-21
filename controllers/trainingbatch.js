@@ -146,12 +146,12 @@ exports.trainingBatch = {
         },
       })
       .then((data) => {
-        if (!data) {
-          res.status(400).send({
-            message: "Record not found",
-            data: [],
-          });
-        }
+        // if (!data) {
+        //   res.status(400).send({
+        //     message: "Record not found",
+        //     data: [],
+        //   });
+        // }
         res.status(200).send(data);
       })
       .catch((err) => {

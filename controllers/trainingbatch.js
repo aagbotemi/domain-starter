@@ -112,6 +112,34 @@ exports.trainingBatch = {
 
   getPOTrainingBatch: (req, res) => {
     trainingBatch
+      .findAll(
+        {
+          include: {
+            model: partnerorganisation
+          }
+        },
+        {
+          where: {
+            partnerorganisationId: req.poId,
+          },
+        }
+      )
+      .then((data) => {
+        res.status(200).send({
+          success: true,
+          message: "All training batch retrieved successfully",
+          data,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
+  getPOTsdfgfrainingBatch: (req, res) => {
+    trainingBatch
       .findAll({
         where: {
           partnerorganisationId: req.poId,

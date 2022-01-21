@@ -1,16 +1,16 @@
 const db = require('../models');
 const { constants } = require('./constants')
 const states = db.states;
-const geoPoliticalZone = require('../models/geoPoliticalZones');
+const geoPoliticalZone = db.geoPoliticalZones;
 
 exports.statesController = {
     create:(req, res) => {
         const state = req.body;
-        states.create(state)
+        states.bulkCreate(state)
             .then(data => {
                 res.status(200).send({
                     success: true,
-                    message: "State Added Successfully",
+                    message: "States Added Successfully",
                     data: data
                 })
             })
@@ -19,7 +19,13 @@ exports.statesController = {
             })
     },
     getAll:(req, res) => {
-        states.findAll()
+        states.findAll(
+            {
+                include: {
+                    model: geoPoliticalZone,
+                },
+            }
+        )
             .then(data => {
                 if(data.length == 0) {
                     res.status(404).send({

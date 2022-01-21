@@ -14,7 +14,7 @@ router.get(
 );
 
 router.get(
-  "/batches",
+  "/po/batches",
   jwtAuth.poVerifyToken,
   trainingBatch.getPOTrainingBatch
 );

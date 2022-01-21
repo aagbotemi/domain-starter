@@ -18,7 +18,6 @@ const batchRouter = require("./routes/trainingBatch");
 const partnerOrgRouter = require("./routes/partnerOrg");
 const dashboardRouter = require("./routes/dashboard");
 
-
 var app = express();
 app.use(cors());
 
@@ -45,9 +44,8 @@ app.use("/training-batch", batchRouter);
 app.use("/participating-organisation", partnerOrgRouter);
 app.use("/dashboard", dashboardRouter);
 
-
 const db = require("./models/index");
-db.sequelize.sync();
+db.sequelize.sync({ force: true });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

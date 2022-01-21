@@ -120,7 +120,11 @@ exports.trainingCategories = {
         where: {
           partnerorganisationId: req.poId,
         },
-      })
+      },
+        {
+          include: {
+        model: partnerOrganisation
+      }})
       .then((data) => {
         
         res.status(200).send({

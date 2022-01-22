@@ -45,7 +45,7 @@ app.use("/participating-organisation", partnerOrgRouter);
 app.use("/dashboard", dashboardRouter);
 
 const db = require("./models/index");
-db.sequelize.sync();
+db.sequelize.sync({ alter: true });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -3,9 +3,11 @@ const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
 const trainingBatch = db.trainingBatch;
 const partnerorganisation = db.partnerOrganisation;
+const { auditTrailController } = require("./auditTrail");
 
 
 require("dotenv").config();
+
 
 exports.trainingBatch = {
   createTrainingBatch: (req, res) => {
@@ -18,6 +20,12 @@ exports.trainingBatch = {
     trainingBatch
       .create(batch)
       .then((data) => {
+        trail = {
+          actor: `${req.poId}`,
+          action: ` ${req.body.batchName} has been created successfully`,
+          type: "success",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({
           success: true,
           message: "Training batch Added Successfully",
@@ -138,29 +146,6 @@ exports.trainingBatch = {
       });
   },
 
-  getPOTsdfgfrainingBatch: (req, res) => {
-    trainingBatch
-      .findAll({
-        where: {
-          partnerorganisationId: req.poId,
-        },
-      })
-      .then((data) => {
-        // if (!data) {
-        //   res.status(400).send({
-        //     message: "Record not found",
-        //     data: [],
-        //   });
-        // }
-        res.status(200).send(data);
-      })
-      .catch((err) => {
-        res.status(400).send({
-          message: err.message || "Could not find record",
-        });
-      });
-  },
-
   update: (req, res) => {
     const batch = req.body;
     // category.id = req.param.id;
@@ -177,6 +162,12 @@ exports.trainingBatch = {
             message: "Record not found",
           });
         }
+        trail = {
+          actor: `${req.poId}`,
+          action: ` ${req.body.batchName} has been updated`,
+          type: "warning",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
@@ -196,6 +187,12 @@ exports.trainingBatch = {
             message: "record not found",
           });
         }
+        trail = {
+          actor: `${req.poId}`,
+          action: `A training batch has been deleted`,
+          type: "danger",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({
           message: "record deleted",
         });

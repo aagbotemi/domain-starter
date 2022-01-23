@@ -11,8 +11,6 @@ router.get(
   partnerOrgController.getAllPartnerOrg
 );
 
-
-
 router.post(
   "/",
   jwtAuth.adminVerifyToken,

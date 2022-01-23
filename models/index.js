@@ -35,6 +35,7 @@ db.trainingCategories = require("./trainingCategories")(sequelize, Sequelize);
 db.beneficiaries = require("./beneficiaries")(sequelize, Sequelize);
 db.trainingBatch = require("./trainingBatch")(sequelize, Sequelize);
 db.geoPoliticalZones = require("./geoPoliticalZones")(sequelize, Sequelize);
+db.auditTrail = require("./auditTrail")(sequelize, Sequelize);
 // db.partnerorganisationcategory = require("./partnerorganisationcategory")(sequelize, Sequelize);
 
 

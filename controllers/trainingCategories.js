@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
 const trainingCategories = db.trainingCategories;
 const partnerOrganisation = db.partnerOrganisation;
+const { auditTrailController } = require("./auditTrail");
 
 require("dotenv").config();
 
@@ -14,6 +15,12 @@ exports.trainingCategories = {
     trainingCategories
       .create(category)
       .then((data) => {
+        trail = {
+          actor: `${req.poId}`,
+          action: ` ${req.body.categoryName} category has been created successfully`,
+          type: "success",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({
           success: true,
           message: "Training Category Added Successfully",
@@ -116,18 +123,19 @@ exports.trainingCategories = {
 
   getPOTrainingCategories: (req, res) => {
     db.trainingCategories
-      .findAll({
-        where: {
-          partnerorganisationId: req.poId,
+      .findAll(
+        {
+          where: {
+            partnerorganisationId: req.poId,
+          },
         },
-      },
-      // {
-      //   include: {
-      //     model: trainingCategories,
-      //   },
-      // }
-      )
-      .then((data) => {
+        {
+          include: {
+            model: trainingCategories,
+          },
+        }
+        )
+        .then((data) => {
         res.status(200).send({
           success: true,
           message: "All training categories retrieved successfully",
@@ -135,6 +143,7 @@ exports.trainingCategories = {
         });
       })
       .catch((err) => {
+        console.log("error++++ ", err);
         res.status(400).send({
           message: err.message || "Could not find record",
           data: [],
@@ -158,6 +167,12 @@ exports.trainingCategories = {
             message: "Record not found",
           });
         }
+        trail = {
+          actor: `${req.poId}`,
+          action: ` ${req.body.categoryName} has been updated`,
+          type: "warning",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
@@ -177,6 +192,12 @@ exports.trainingCategories = {
             message: "record not found",
           });
         }
+        trail = {
+          actor: `${req.poId}`,
+          action: `A training category has been deleted`,
+          type: "danger",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({
           message: "record deleted",
         });

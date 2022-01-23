@@ -3,6 +3,7 @@ const db = require("../models");
 const { constants } = require("./constants");
 const users = db.users;
 const partnerOrganisation = db.partnerOrganisation;
+const { auditTrailController } = require("./auditTrail");
 
 const Op = db.Sequelize.Op;
 
@@ -16,6 +17,12 @@ exports.usersController = {
     users
       .create(user)
       .then((data) => {
+        trail = {
+          actor: "Admin",
+          action: `${req.body.fullName} has been created successfully`,
+          type: "success",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({
           success: true,
           message: "User Added Successfully",
@@ -95,7 +102,6 @@ exports.usersController = {
 
   getProfile: (req, res) => {
     const id = req.userId;
-    console.log("id ++++", id);
     users
       .findOne(
         {
@@ -144,6 +150,12 @@ exports.usersController = {
             message: "record not found",
           });
         }
+        trail = {
+          actor: `${req.userId}`,
+          action: ` ${req.body.fullName} has been updated`,
+          type: "warning",
+        }
+        auditTrailController.create(trail)
         res.status(200).send(data);
       })
       .catch((err) => {
@@ -191,6 +203,12 @@ exports.usersController = {
             message: "record not found",
           });
         }
+        trail = {
+          actor: `${req.userId}`,
+          action: `A users has been deleted`,
+          type: "danger",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({
           status: true,
           message: "record deleted",

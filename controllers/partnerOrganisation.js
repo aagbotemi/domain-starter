@@ -2,6 +2,7 @@ const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
 const partnerOrganisation = db.partnerOrganisation;
+const { auditTrailController } = require("./auditTrail");
 
 require("dotenv").config();
 
@@ -14,6 +15,12 @@ exports.partnerOrgController = {
       participatingOrg
         .setCategories(po.categories)
         .then((data) => {
+          trail = {
+            actor: `${req.userId}`,
+            action: ` ${req.body.organisationName} has been created successfully`,
+            type: "success",
+          }
+          auditTrailController.create(trail)
           res.status(200).send({
             success: true,
             message: "Partner Organisation Added Successfully",
@@ -100,6 +107,12 @@ exports.partnerOrgController = {
             message: "Record not found",
           });
         }
+        trail = {
+          actor: `${req.userId}`,
+          action: ` ${req.body.organisationName} has been updated successfully`,
+          type: "warning",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
@@ -119,6 +132,12 @@ exports.partnerOrgController = {
             message: "record not found",
           });
         }
+        trail = {
+          actor: `${req.userId}`,
+          action: `A partner organisation has been created successfully`,
+          type: "danger",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({
           message: "record deleted",
         });

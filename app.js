@@ -17,7 +17,7 @@ const categoriesRouter = require("./routes/trainingCategories");
 const batchRouter = require("./routes/trainingBatch");
 const partnerOrgRouter = require("./routes/partnerOrg");
 const dashboardRouter = require("./routes/dashboard");
-
+const auditTrailRouter = require("./routes/auditTrail");
 
 var app = express();
 app.use(cors());
@@ -44,7 +44,7 @@ app.use("/trade-areas", categoriesRouter);
 app.use("/training-batch", batchRouter);
 app.use("/participating-organisation", partnerOrgRouter);
 app.use("/dashboard", dashboardRouter);
-
+app.use("/audit-trail", auditTrailRouter);
 
 const db = require("./models/index");
 db.sequelize.sync();

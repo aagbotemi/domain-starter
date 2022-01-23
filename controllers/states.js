@@ -2,12 +2,19 @@ const db = require('../models');
 const { constants } = require('./constants')
 const states = db.states;
 const geoPoliticalZone = db.geoPoliticalZones;
+const { auditTrailController } = require("./auditTrail");
 
 exports.statesController = {
     create:(req, res) => {
         const state = req.body;
         states.bulkCreate(state)
             .then(data => {
+                trail = {
+                    actor: `${req.userId}`,
+                    action: ` ${req.body.stateName} has been created successfully`,
+                    type: "success",
+                }
+                auditTrailController.create(trail)
                 res.status(200).send({
                     success: true,
                     message: "States Added Successfully",
@@ -92,6 +99,12 @@ exports.statesController = {
                         message:"record not found"
                     })
                 }
+                trail = {
+                    actor: `${req.userId}`,
+                    action: ` ${req.body.stateName} has been updated`,
+                    type: "success",
+                }
+                auditTrailController.create(trail)
                 res.status(200)
                     .send(data);
             })
@@ -111,6 +124,12 @@ exports.statesController = {
                         message:"record not found"
                     })
                 }
+                trail = {
+                    actor: `${req.userId}`,
+                    action: `A state has been deleted`,
+                    type: "danger",
+                }
+                auditTrailController.create(trail)
                 res.status(200)
                     .send({
                         status: true,

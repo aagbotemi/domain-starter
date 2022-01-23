@@ -53,7 +53,7 @@ db.trainingCategories.belongsToMany(db.partnerOrganisation, {
   through: "partnerorganisationcategory",
 });
 
-db.states.hasOne(db.partnerOrganisation);
+db.states.hasMany(db.partnerOrganisation);
 db.partnerOrganisation.belongsTo(db.states);
 
 db.states.hasOne(db.cities);

@@ -74,6 +74,7 @@ db.beneficiaries.belongsTo(db.trainingCategories);
 db.partnerOrganisation.hasMany(db.trainingBatch);
 db.trainingBatch.belongsTo(db.partnerOrganisation);
 
-db.ROLES = ["user", "admin", "PO"]; // added newly
+db.users.hasMany(db.auditTrail);
+db.auditTrail.belongsTo(db.users);
 
 module.exports = db;

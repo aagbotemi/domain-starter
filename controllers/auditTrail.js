@@ -12,7 +12,11 @@ exports.auditTrailController = {
             });
     },
     getAll:(req, res) => {
-        auditTrail.findAll()
+        auditTrail.findAll({
+            include: {
+                model: user
+            },
+        })
         .then(data => {
             res.status(200).send({
                 status: true,

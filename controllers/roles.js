@@ -1,12 +1,19 @@
 const db = require('../models');
 const { constants } = require('./constants')
 const roles = db.roles;
+const { auditTrailController } = require("./auditTrail");
 
 exports.rolesController = {
     create:(req, res) => {
         const role = req.body;
         roles.create(role)
             .then(data => {
+                trail = {
+                    actor: `${req.userId}`,
+                    action: ` ${req.body.roleName} has been created successfully`,
+                    type: "success",
+                }
+                auditTrailController.create(trail)
                 res.status(200).send({
                     success: true,
                     message: "Role Added Successfully",
@@ -77,6 +84,12 @@ exports.rolesController = {
                         message:"record not found"
                     })
                 }
+                trail = {
+                    actor: `${req.userId}`,
+                    action: ` ${req.body.roleName} has been updated successfully`,
+                    type: "warning",
+                }
+                auditTrailController.create(trail)
                 res.status(200)
                     .send(data);
             })
@@ -96,6 +109,12 @@ exports.rolesController = {
                         message:"record not found"
                     })
                 }
+                trail = {
+                    actor: `${req.userId}`,
+                    action: `A role has been deleted successfully`,
+                    type: "danger",
+                }
+                auditTrailController.create(trail)
                 res.status(200)
                     .send({
                         status: true,

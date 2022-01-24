@@ -1,12 +1,19 @@
 const db = require('../models');
 const { constants } = require('./constants')
-const geoPoliticalZones  = db.geoPoliticalZones;
+const geoPoliticalZones = db.geoPoliticalZones;
+const { auditTrailController } = require("./auditTrail");
 
 exports.geoPoliticalZonesController = {
     create:(req, res) => {
         const zone = req.body;
         geoPoliticalZones.create(zone)
             .then(data => {
+                trail = {
+                    actor: `${req.userId}`,
+                    action: ` ${req.body.geoPoliticalZoneName} zone has been created successfully`,
+                    type: "success",
+                }
+                auditTrailController.create(trail)
                 res.status(200).send({
                     success: true,
                     message: "GeoPolitical Zones Added Successfully",
@@ -77,6 +84,12 @@ exports.geoPoliticalZonesController = {
                         message:"record not found"
                     })
                 }
+                trail = {
+                    actor: `${req.userId}`,
+                    action: ` ${req.body.geoPoliticalZoneName} zone has been updated`,
+                    type: "warning",
+                }
+                auditTrailController.create(trail)
                 res.status(200)
                     .send(data);
             })
@@ -96,6 +109,12 @@ exports.geoPoliticalZonesController = {
                         message:"record not found"
                     })
                 }
+                trail = {
+                    actor: `${req.userId}`,
+                    action: ` ${req.body.geoPoliticalZoneName} zone has been deleted`,
+                    type: "danger",
+                }
+                auditTrailController.create(trail)
                 res.status(200)
                     .send({
                         status: true,

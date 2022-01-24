@@ -9,6 +9,11 @@ router.post(
   usersController.create
 );
 
+router.post(
+  "/admin",
+  usersController.create
+);
+
 router.get(
   "/",
   jwtAuth.adminVerifyToken,
@@ -16,9 +21,20 @@ router.get(
 );
 
 router.get(
+  "/profile",
+  jwtAuth.generalVerifyToken,
+  usersController.getById
+);
+
+router.get(
   "/:id",
   jwtAuth.adminVerifyToken,
-  usersController.getById
+  usersController.getProfile
+);
+
+router.post(
+  "/reset-password",
+  usersController.forgotPassword
 );
 
 router.put(

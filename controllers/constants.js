@@ -1,6 +1,6 @@
 exports.constants = {
   handleErr: (err, res) => {
-    if (err.isArray) {
+    if (Array.isArray(err)) {
       const errObj = {};
 
       err.errors.map((error) => {
@@ -8,9 +8,10 @@ exports.constants = {
       });
 
       return res.status(400).send(errObj);
-    }else{
-      return res.status(400).send(err);
-
+    } else {
+      return res.status(400).send({
+        message: err.message || "Some error occurred.",
+      });
     }
   },
 };

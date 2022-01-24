@@ -7,19 +7,19 @@ router.get("/:id", jwtAuth.generalVerifyToken, trainingCategories.getById);
 router.get("/partnerorg/:id", jwtAuth.generalVerifyToken, trainingCategories.getPOsInCategory);
 
 
-router.get("/", jwtAuth.generalVerifyToken, trainingCategories.getAll);
+// router.get("/", jwtAuth.generalVerifyToken, trainingCategories.getAll);
 
 router.get(
-  "/all-categories",
+  "/",
   jwtAuth.generalVerifyToken,
   trainingCategories.getAllTrainingCategories
 );
 
-// router.get(
-//   "/categories",
-//   jwtAuth.poVerifyToken,
-//   trainingCategories.getPOTrainingCategories
-// );
+router.get(
+  "/po/categories/1",
+  jwtAuth.poVerifyToken,
+  trainingCategories.getPOTrainingCategories
+);
 
 router.post(
   "/",

@@ -2,12 +2,19 @@ const db = require('../models');
 const { constants } = require('./constants')
 const cities = db.cities;
 const states = require('../models/states');
+const { auditTrailController } = require("./auditTrail");
 
 exports.citiesController = {
     create:(req, res) => {
         const city = req.body;
         cities.create(city)
             .then(data => {
+                trail = {
+                    actor: `${req.userId}`,
+                    action: ` ${req.body.cityName} city created`,
+                    type: "success",
+                }
+                auditTrailController.create(trail)
                 res.status(200).send({
                     success: true,
                     message: "City Added Successfully",
@@ -86,6 +93,12 @@ exports.citiesController = {
                         message:"record not found"
                     })
                 }
+                trail = {
+                    actor: `${req.userId}`,
+                    action: `${req.body.cityName} has been updated`,
+                    type: "warning",
+                }
+                auditTrailController.create(trail)
                 res.status(200)
                     .send(data);
             })
@@ -105,6 +118,13 @@ exports.citiesController = {
                         message:"record not found"
                     })
                 }
+                trail = {
+                    actor: `${req.userId}`,
+                    action: "A city was deleted",
+                    type: "danger",
+                }
+                auditTrailController.create(trail)
+
                 res.status(200)
                     .send({
                         status: true,

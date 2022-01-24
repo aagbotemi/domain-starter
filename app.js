@@ -6,9 +6,9 @@ var logger = require("morgan");
 var cors = require("cors");
 
 const indexRouter = require("./routes/index");
-const authRouter = require('./routes/auth');
+const authRouter = require("./routes/auth");
 const usersRouter = require("./routes/users");
-const rolesRouter = require('./routes/roles');
+const rolesRouter = require("./routes/roles");
 const beneficiariesRouter = require("./routes/beneficiaries");
 const citiesRouter = require("./routes/cities");
 const statesRouter = require("./routes/states");
@@ -16,6 +16,8 @@ const zonesRouter = require("./routes/geoPoliticalZones");
 const categoriesRouter = require("./routes/trainingCategories");
 const batchRouter = require("./routes/trainingBatch");
 const partnerOrgRouter = require("./routes/partnerOrg");
+const dashboardRouter = require("./routes/dashboard");
+const auditTrailRouter = require("./routes/auditTrail");
 
 var app = express();
 app.use(cors());
@@ -32,19 +34,20 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use('/roles', rolesRouter);
-app.use('/auth', authRouter);
+app.use("/roles", rolesRouter);
+app.use("/auth", authRouter);
 app.use("/beneficiaries", beneficiariesRouter);
 app.use("/cities", citiesRouter);
 app.use("/states", statesRouter);
 app.use("/zones", zonesRouter);
 app.use("/trade-areas", categoriesRouter);
-app.use("/trainingBatch", batchRouter);
+app.use("/training-batch", batchRouter);
 app.use("/participating-organisation", partnerOrgRouter);
-
+app.use("/dashboard", dashboardRouter);
+app.use("/audit-trail", auditTrailRouter);
 
 const db = require("./models/index");
-db.sequelize.sync();
+db.sequelize.sync({ alter: true });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -63,4 +66,3 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
-

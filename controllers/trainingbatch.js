@@ -1,18 +1,31 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const trainingBatch = db.trainingBatch
+const trainingBatch = db.trainingBatch;
+const partnerorganisation = db.partnerOrganisation;
+const { auditTrailController } = require("./auditTrail");
+
 
 require("dotenv").config();
+
 
 exports.trainingBatch = {
   createTrainingBatch: (req, res) => {
     const batch = req.body;
+    batch.partnerorganisationId = req.poId;
     // category.partnerOrganisationId = req.userId;
+    // partnerorganisationId: req.poId,
+
 
     trainingBatch
       .create(batch)
       .then((data) => {
+        trail = {
+          actor: `${req.poId}`,
+          action: ` ${req.body.batchName} has been created successfully`,
+          type: "success",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({
           success: true,
           message: "Training batch Added Successfully",
@@ -29,12 +42,12 @@ exports.trainingBatch = {
       .findOne(
         {
           where: {
-            id: req.param.id,
+            id: req.params.id,
           },
         },
         {
           include: {
-            model: partnerOrganisation,
+            model: partnerorganisation,
           },
         }
       )
@@ -42,6 +55,7 @@ exports.trainingBatch = {
         if (!data) {
           res.status(400).send({
             message: "Record not found",
+            data: [],
           });
         }
         res.status(200).send(data);
@@ -58,12 +72,12 @@ exports.trainingBatch = {
       .findAll(
         {
           where: {
-            id: req.param.id,
+            id: req.params.id,
           },
         },
         {
           include: {
-            model: partnerOrganisation,
+            model: partnerorganisation,
           },
         }
       )
@@ -71,6 +85,7 @@ exports.trainingBatch = {
         if (!data) {
           res.status(400).send({
             message: "Record not found",
+            data: [],
           });
         }
         res.status(200).send(data);
@@ -86,7 +101,7 @@ exports.trainingBatch = {
     trainingBatch
       .findAll({
         include: {
-          model: partnerOrganisation,
+          model: partnerorganisation,
         },
       })
       .then((data) => {
@@ -107,16 +122,20 @@ exports.trainingBatch = {
     trainingBatch
       .findAll(
         {
-          where: {
-            partnerOrganisationId: req.userId,
-          },
+          include: {
+            model: partnerorganisation
+          }
         },
-        
+        {
+          where: {
+            partnerorganisationId: req.poId,
+          },
+        }
       )
       .then((data) => {
         res.status(200).send({
           success: true,
-          message: "All batches retrieved successfully",
+          message: "All training batch retrieved successfully",
           data,
         });
       })
@@ -143,6 +162,12 @@ exports.trainingBatch = {
             message: "Record not found",
           });
         }
+        trail = {
+          actor: `${req.poId}`,
+          action: ` ${req.body.batchName} has been updated`,
+          type: "warning",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
@@ -162,6 +187,12 @@ exports.trainingBatch = {
             message: "record not found",
           });
         }
+        trail = {
+          actor: `${req.poId}`,
+          action: `A training batch has been deleted`,
+          type: "danger",
+        }
+        auditTrailController.create(trail)
         res.status(200).send({
           message: "record deleted",
         });

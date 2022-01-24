@@ -32,15 +32,10 @@ exports.jwtAuth = {
     poVerifyToken: (req, res, next) => {
   
       let token = req.headers["authorization"].split(" ")[1];
-  
-  
       if (!token) return res.status(403).send({ message: "Unauthorised Access" });
-  
       verify(token, process.env.secret, (err, decode) => {
         if (err) return res.status(401).send({ message: "forbidden access" });
-  
-  
-        if (decode.userType !== "admin")
+        if (decode.userType !== "admin" ||  decode.userType !== "partner" )
           return res.status(401).send({ message: "forbidden access" });
   
         req.userId = decode.id;

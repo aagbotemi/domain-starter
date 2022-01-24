@@ -1,5 +1,6 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
+const { QueryTypes } = require('sequelize');
 const { constants } = require("./constants");
 const trainingCategories = db.trainingCategories
 const partnerOrganisation = db.partnerOrganisation
@@ -24,29 +25,46 @@ exports.trainingCategories = {
         constants.handleErr(err, res);
       });
   },
-  getAll:(req,res)=>{
-    trainingCategories.findAll().then(data=>{
-    res.status(200).send(data)
-    }).catch(err=>{
-        res.status(400).send({
-            message:err.message || "Could not fetch record"
-        })
+  getAll: (req, res) => {
+    trainingCategories.findAll().then(data => {
+      res.status(200).send(data)
+    }).catch(err => {
+      res.status(400).send({
+        message: err.message || "Could not fetch record"
+      })
 
     })
 
-},
+  },
+
+  getPOsInCategory: async (req, res) => {
+    const category = await db.sequelize.query(
+      `SELECT * FROM partnerorganisationcategory  inner 
+    join partnerorganisatons on partnerorganisationcategory.partnerOrganisatonId = partnerorganisatons.id 
+    WHERE categoryId = :category`,
+      {
+        replacements: { category: req.params.id },
+        type: QueryTypes.SELECT
+      }
+    );
+    res.status(200).send(category)
+
+  },
 
   getById: (req, res) => {
     trainingCategories
       .findOne(
         {
           where: {
-            id: req.param.id,
+            id: req.params.id,
           },
         },
         {
           include: {
-            model: partnerOrganisation,
+            model: db.partnerOrganisation,
+            through: {
+              attributes: []
+            }
           },
         }
       )
@@ -74,9 +92,12 @@ exports.trainingCategories = {
           },
         },
         {
-          include: {
-            model: partnerOrganisation,
-          },
+          include: [
+            {
+              model: db.partnerOrganisation
+
+            },
+          ],
         }
       )
       .then((data) => {
@@ -96,7 +117,11 @@ exports.trainingCategories = {
 
   getAllTrainingCategories: (req, res) => {
     trainingCategories
-      .findAll()
+      .findAll({
+        include: {
+          model: partnerOrganisation,
+        }
+      })
       .then((data) => {
         res.status(200).send({
           success: true,

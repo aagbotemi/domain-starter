@@ -28,18 +28,14 @@ exports.partnerOrgController = {
       .findOne(
         {
           where: {
-            id: req.param.id,
+            id: req.params.id,
           },
         },
         {
           include: [
             {
-              model: db.trainingCategories,
-              include: [
-                {
-                  model: db.trainingBatch,
-                },
-              ],
+              model: db.trainingCategories
+             
             },
           ],
         }

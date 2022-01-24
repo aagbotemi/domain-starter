@@ -4,6 +4,8 @@ const { trainingCategories } = require("../controllers/trainingCategories");
 const { jwtAuth } = require("../middleware/auth");
 
 router.get("/:id", jwtAuth.generalVerifyToken, trainingCategories.getById);
+router.get("/partnerorg/:id", jwtAuth.generalVerifyToken, trainingCategories.getPOsInCategory);
+
 
 router.get("/", jwtAuth.generalVerifyToken, trainingCategories.getAll);
 

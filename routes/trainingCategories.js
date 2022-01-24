@@ -15,11 +15,11 @@ router.get(
   trainingCategories.getAllTrainingCategories
 );
 
-router.get(
-  "/po/categories/1",
-  jwtAuth.poVerifyToken,
-  trainingCategories.getPOTrainingCategories
-);
+// router.get(
+//   "/po/categories/1",
+//   jwtAuth.poVerifyToken,
+//   trainingCategories.getPOTrainingCategories
+// );
 
 router.post(
   "/",

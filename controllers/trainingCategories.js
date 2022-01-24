@@ -44,20 +44,40 @@ exports.trainingCategories = {
     })
 
   },
+ 
 
   getPOsInCategory: async (req, res) => {
-    const category = await db.sequelize.query(
-      `SELECT * FROM partnerorganisationcategory  inner 
-    join partnerorganisatons on partnerorganisationcategory.partnerOrganisatonId = partnerorganisatons.id 
-    WHERE categoryId = :category`,
-      {
-        replacements: { category: req.params.id },
-        type: QueryTypes.SELECT
-      }
-    );
-    res.status(200).send(category)
+    try{
+      const category = await db.sequelize.query(
+        `SELECT * FROM partnerorganisationcategory  inner 
+      join partnerorganisatons on partnerorganisationcategory.partnerorganisatonId = partnerorganisatons.id 
+      WHERE categoryId = :category`,
+        {
+          replacements: { category: req.params.id },
+          type: QueryTypes.SELECT
+        }
+      );
+      res.status(200).send(category)
+    }catch (err) {
+      constants.handleErr(err, res);
+    }
+   
 
   },
+
+  // getPOsInCategory: async (req, res) => {
+  //   const category = await db.sequelize.query(
+  //     `SELECT * FROM partnerorganisationcategory  inner 
+  //   join categories on partnerorganisationcategory.categoryId = categories.id 
+  //   WHERE partnerOrganisationId = :partnerOrg`,
+  //     {
+  //       replacements: { partnerOrg: req.poId },
+  //       type: QueryTypes.SELECT
+  //     }
+  //   );
+  //   res.status(200).send(category)
+
+  // },
 
   getById: (req, res) => {
     trainingCategories
@@ -147,35 +167,35 @@ exports.trainingCategories = {
       });
   },
 
-  getPOTrainingCategories: (req, res) => {
-    db.trainingCategories
-      .findAll(
-        {
-          where: {
-            partnerorganisationId: req.poId,
-          },
-        },
-        {
-          include: {
-            model: trainingCategories,
-          },
-        }
-        )
-        .then((data) => {
-        res.status(200).send({
-          success: true,
-          message: "All training categories retrieved successfully",
-          data,
-        });
-      })
-      .catch((err) => {
-        console.log("error++++ ", err);
-        res.status(400).send({
-          message: err.message || "Could not find record",
-          data: [],
-        });
-      });
-  },
+  // getPOTrainingCategories: (req, res) => {
+  //   db.trainingCategories
+  //     .findAll(
+  //       {
+  //         where: {
+  //           partnerorganisationId: req.poId,
+  //         },
+  //       },
+  //       {
+  //         include: {
+  //           model: trainingCategories,
+  //         },
+  //       }
+  //       )
+  //       .then((data) => {
+  //       res.status(200).send({
+  //         success: true,
+  //         message: "All training categories retrieved successfully",
+  //         data,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.log("error++++ ", err);
+  //       res.status(400).send({
+  //         message: err.message || "Could not find record",
+  //         data: [],
+  //       });
+  //     });
+  // },
 
   update: (req, res) => {
     const category = req.body;

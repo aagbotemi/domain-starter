@@ -53,7 +53,7 @@ exports.trainingCategories = {
       join partnerorganisations on partnerorganisationcategory.partnerorganisationId = partnerorganisations.id 
       WHERE categoryId = :category`,
         {
-          replacements: { category: req.poId },
+          replacements: { category: req.params.id },
           type: QueryTypes.SELECT,
         }
       );
@@ -65,12 +65,13 @@ exports.trainingCategories = {
 
   getPOCategories: async (req, res) => {
     try {
+      
       const category = await db.sequelize.query(
         `SELECT * FROM partnerorganisationcategory  inner 
     join categories on partnerorganisationcategory.categoryId = categories.id 
-    WHERE partnerOrganisationId = :partnerOrg`,
+    WHERE partnerOrganisationId = req.poId`,
         {
-          replacements: { partnerOrg: req.params.id },
+          replacements: { partnerOrg: req.poId },
           type: QueryTypes.SELECT,
         }
       );

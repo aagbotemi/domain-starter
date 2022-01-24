@@ -11,7 +11,7 @@ router.get(
 );
 
 router.get(
-  "/categories/:id",
+  "/categories",
   jwtAuth.generalVerifyToken,
   trainingCategories.getPOCategories
 );

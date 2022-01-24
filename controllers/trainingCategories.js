@@ -53,7 +53,7 @@ exports.trainingCategories = {
       join partnerorganisations on partnerorganisationcategory.partnerorganisationId = partnerorganisations.id 
       WHERE categoryId = :category`,
         {
-          replacements: { category: req.params.id },
+          replacements: { category: req.poId },
           type: QueryTypes.SELECT,
         }
       );

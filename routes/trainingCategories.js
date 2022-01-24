@@ -11,7 +11,7 @@ router.get(
 );
 
 router.get(
-  "/partnerorg",
+  "/categories/:id",
   jwtAuth.generalVerifyToken,
   trainingCategories.getPOCategories
 );

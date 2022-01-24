@@ -68,9 +68,9 @@ exports.trainingCategories = {
       const category = await db.sequelize.query(
         `SELECT * FROM partnerorganisationcategory  inner 
     join categories on partnerorganisationcategory.categoryId = categories.id 
-    WHERE partnerOrganisationId = partnerOrg`,
+    WHERE partnerOrganisationId = :partnerOrg`,
         {
-          replacements: { partnerOrg: req.poId },
+          replacements: { partnerOrg: req.params.id },
           type: QueryTypes.SELECT,
         }
       );

@@ -122,11 +122,6 @@ exports.trainingBatch = {
     trainingBatch
       .findAll(
         {
-          include: {
-            model: partnerorganisation
-          }
-        },
-        {
           where: {
             partnerorganisationId: req.poId,
           },

@@ -117,11 +117,13 @@ exports.trainingBatch = {
 
   getPOTrainingBatch: (req, res) => {
     trainingBatch
-      .findAll({
-        where: {
-          partnerorganisationId: req.poId,
-        },
-      })
+      .findAll(
+        {
+          where: {
+            partnerorganisationId: req.poId,
+          },
+        }
+      )
       .then((data) => {
         res.status(200).send({
           success: true,

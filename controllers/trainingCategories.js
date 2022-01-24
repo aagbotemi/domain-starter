@@ -1,6 +1,6 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
-const { QueryTypes } = require('sequelize');
+const { QueryTypes } = require("sequelize");
 const { constants } = require("./constants");
 const trainingCategories = db.trainingCategories;
 const partnerOrganisation = db.partnerOrganisation;
@@ -20,8 +20,8 @@ exports.trainingCategories = {
           actor: `${req.poId}`,
           action: ` ${req.body.categoryName} category has been created successfully`,
           type: "success",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({
           success: true,
           message: "Training Category Added Successfully",
@@ -33,51 +33,52 @@ exports.trainingCategories = {
       });
   },
 
-  getAll:(req,res)=>{
-    trainingCategories.findAll().then(data=>{
-    res.status(200).send(data)
-    }).catch(err=>{
+  getAll: (req, res) => {
+    trainingCategories
+      .findAll()
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
         res.status(400).send({
-            message:err.message || "Could not fetch record"
-        })
-
-    })
-
+          message: err.message || "Could not fetch record",
+        });
+      });
   },
- 
 
   getPOsInCategory: async (req, res) => {
-    try{
+    try {
       const category = await db.sequelize.query(
         `SELECT * FROM partnerorganisationcategory  inner 
       join partnerorganisations on partnerorganisationcategory.partnerorganisationId = partnerorganisations.id 
       WHERE categoryId = :category`,
         {
           replacements: { category: req.params.id },
-          type: QueryTypes.SELECT
+          type: QueryTypes.SELECT,
         }
       );
-      res.status(200).send(category)
-    }catch (err) {
+      res.status(200).send(category);
+    } catch (err) {
       constants.handleErr(err, res);
     }
-   
-
   },
 
-  // getPOsInCategory: async (req, res) => {
-  //   const category = await db.sequelize.query(
-  //     `SELECT * FROM partnerorganisationcategory  inner 
-  //   join categories on partnerorganisationcategory.categoryId = categories.id 
-  //   WHERE partnerOrganisationId = :partnerOrg`,
-  //     {
-  //       replacements: { partnerOrg: req.poId },
-  //       type: QueryTypes.SELECT
-  //     }
-  //   );
-  //   res.status(200).send(category)
-
-  // },
+  getPOCategories: async (req, res) => {
+    try {
+      const category = await db.sequelize.query(
+        `SELECT * FROM partnerorganisationcategory  inner 
+    join categories on partnerorganisationcategory.categoryId = categories.id 
+    WHERE partnerOrganisationId = :partnerOrg`,
+        {
+          replacements: { partnerOrg: req.poId },
+          type: QueryTypes.SELECT,
+        }
+      );
+      res.status(200).send(category);
+    } catch (err) {
+      constants.handleErr(err, res);
+    }
+  },
 
   getById: (req, res) => {
     trainingCategories
@@ -91,8 +92,8 @@ exports.trainingCategories = {
           include: {
             model: db.partnerOrganisation,
             through: {
-              attributes: []
-            }
+              attributes: [],
+            },
           },
         }
       )
@@ -122,8 +123,7 @@ exports.trainingCategories = {
         {
           include: [
             {
-              model: db.partnerOrganisation
-
+              model: db.partnerOrganisation,
             },
           ],
         }
@@ -150,7 +150,7 @@ exports.trainingCategories = {
       .findAll({
         include: {
           model: partnerOrganisation,
-        }
+        },
       })
       .then((data) => {
         res.status(200).send({
@@ -217,8 +217,8 @@ exports.trainingCategories = {
           actor: `${req.poId}`,
           action: ` ${req.body.categoryName} has been updated`,
           type: "warning",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
@@ -242,8 +242,8 @@ exports.trainingCategories = {
           actor: `${req.poId}`,
           action: `A training category has been deleted`,
           type: "danger",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({
           message: "record deleted",
         });

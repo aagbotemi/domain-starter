@@ -5,9 +5,7 @@ const trainingBatch = db.trainingBatch;
 const partnerorganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
 
-
 require("dotenv").config();
-
 
 exports.trainingBatch = {
   createTrainingBatch: (req, res) => {
@@ -16,7 +14,6 @@ exports.trainingBatch = {
     // category.partnerOrganisationId = req.userId;
     // partnerorganisationId: req.poId,
 
-
     trainingBatch
       .create(batch)
       .then((data) => {
@@ -24,8 +21,8 @@ exports.trainingBatch = {
           actor: `${req.poId}`,
           action: ` ${req.body.batchName} has been created successfully`,
           type: "success",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({
           success: true,
           message: "Training batch Added Successfully",
@@ -122,11 +119,6 @@ exports.trainingBatch = {
     trainingBatch
       .findAll(
         {
-          include: {
-            model: partnerorganisation
-          }
-        },
-        {
           where: {
             partnerorganisationId: req.poId,
           },
@@ -148,7 +140,7 @@ exports.trainingBatch = {
 
   update: (req, res) => {
     const batch = req.body;
-    // category.id = req.param.id;
+    // category.id = req.params.id;
 
     trainingBatch
       .update(batch, {
@@ -166,8 +158,8 @@ exports.trainingBatch = {
           actor: `${req.poId}`,
           action: ` ${req.body.batchName} has been updated`,
           type: "warning",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
@@ -191,8 +183,8 @@ exports.trainingBatch = {
           actor: `${req.poId}`,
           action: `A training batch has been deleted`,
           type: "danger",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({
           message: "record deleted",
         });

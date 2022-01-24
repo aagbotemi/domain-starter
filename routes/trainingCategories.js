@@ -4,8 +4,17 @@ const { trainingCategories } = require("../controllers/trainingCategories");
 const { jwtAuth } = require("../middleware/auth");
 
 router.get("/:id", jwtAuth.generalVerifyToken, trainingCategories.getById);
-router.get("/partnerorg/:id", jwtAuth.generalVerifyToken, trainingCategories.getPOsInCategory);
+router.get(
+  "/partnerorg/:id",
+  jwtAuth.generalVerifyToken,
+  trainingCategories.getPOsInCategory
+);
 
+router.get(
+  "/categories/:id",
+  jwtAuth.generalVerifyToken,
+  trainingCategories.getPOCategories
+);
 
 // router.get("/", jwtAuth.generalVerifyToken, trainingCategories.getAll);
 
@@ -15,11 +24,11 @@ router.get(
   trainingCategories.getAllTrainingCategories
 );
 
-router.get(
-  "/po/categories/1",
-  jwtAuth.poVerifyToken,
-  trainingCategories.getPOTrainingCategories
-);
+// router.get(
+//   "/po/categories/1",
+//   jwtAuth.poVerifyToken,
+//   trainingCategories.getPOTrainingCategories
+// );
 
 router.post(
   "/",

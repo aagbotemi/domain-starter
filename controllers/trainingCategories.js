@@ -48,7 +48,7 @@ exports.trainingCategories = {
   getPOsInCategory: async (req, res) => {
     const category = await db.sequelize.query(
       `SELECT * FROM partnerorganisationcategory  inner 
-    join partnerorganisatons on partnerorganisationcategory.partnerOrganisatonId = partnerorganisatons.id 
+    join partnerorganisatons on partnerorganisationcategory.partnerorganisatonId = partnerorganisatons.id 
     WHERE categoryId = :category`,
       {
         replacements: { category: req.params.id },

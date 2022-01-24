@@ -148,7 +148,7 @@ exports.trainingBatch = {
 
   update: (req, res) => {
     const batch = req.body;
-    // category.id = req.param.id;
+    // category.id = req.params.id;
 
     trainingBatch
       .update(batch, {

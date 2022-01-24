@@ -179,7 +179,7 @@ exports.trainingCategories = {
 
   update: (req, res) => {
     const category = req.body;
-    // category.id = req.param.id;
+    // category.id = req.params.id;
 
     trainingCategories
       .update(category, {

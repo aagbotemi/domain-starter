@@ -11,13 +11,13 @@ router.post(
 
 router.get(
     "/",
-    jwtAuth.adminVerifyToken,
+    jwtAuth.generalVerifyToken,
     statesController.getAll
 );
 
 router.get(
     "/:id",
-    jwtAuth.adminVerifyToken,
+    jwtAuth.generalVerifyToken,
     statesController.getById
 );
 

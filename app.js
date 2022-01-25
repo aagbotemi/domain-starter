@@ -18,6 +18,8 @@ const batchRouter = require("./routes/trainingBatch");
 const partnerOrgRouter = require("./routes/partnerOrg");
 const dashboardRouter = require("./routes/dashboard");
 const auditTrailRouter = require("./routes/auditTrail");
+const employRouter = require("./routes/employ");
+const evictedRouter = require("./routes/evicted");
 
 var app = express();
 app.use(cors());
@@ -45,9 +47,13 @@ app.use("/training-batch", batchRouter);
 app.use("/participating-organisation", partnerOrgRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/audit-trail", auditTrailRouter);
+app.use("/employ", employRouter);
+app.use("/evicted", evictedRouter);
 
 const db = require("./models/index");
-db.sequelize.sync({ alter: true });
+const { employController } = require("./controllers/employ");
+const { evictedController } = require("./controllers/evicted");
+db.sequelize.sync();
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

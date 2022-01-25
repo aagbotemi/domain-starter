@@ -104,8 +104,6 @@ exports.beneficiariesController = {
           where: {
             partnerorganisationId: req.poId,
           },
-        },
-        {
           include: [
             {
               model: db.partnerOrganisation,
@@ -118,6 +116,8 @@ exports.beneficiariesController = {
             },
           ],
         }
+        
+         
       )
       .then((data) => {
         

@@ -15,7 +15,7 @@ exports.beneficiariesController = {
       .create(trainee)
       .then((data) => {
         trail = {
-          actor: `${req.poId}`,
+          userId: `${req.userId}`,
           action: `${req.body.firstName} ${req.body.lastName} added as a beneficiary`,
           type: "success",
         }
@@ -147,7 +147,7 @@ exports.beneficiariesController = {
           });
         }
         trail = {
-          actor: `${req.poId}`,
+          userId: `${req.userId}`,
           action: `${req.body.firstName} ${req.body.lastName} details has been updated`,
           type: "warning",
         }
@@ -173,7 +173,7 @@ exports.beneficiariesController = {
         }
 
         trail = {
-          actor: `${req.poId}`,
+          userId: `${req.userId}`,
           action: `A trainee details has been deleted`,
           type: "danger",
         }

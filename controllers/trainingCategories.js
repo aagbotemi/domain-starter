@@ -17,7 +17,7 @@ exports.trainingCategories = {
       .create(category)
       .then((data) => {
         trail = {
-          actor: `${req.poId}`,
+          userId: `${req.poId}`,
           action: ` ${req.body.categoryName} category has been created successfully`,
           type: "success",
         };
@@ -214,7 +214,7 @@ exports.trainingCategories = {
           });
         }
         trail = {
-          actor: `${req.poId}`,
+          userId: `${req.poId}`,
           action: ` ${req.body.categoryName} has been updated`,
           type: "warning",
         };
@@ -239,7 +239,7 @@ exports.trainingCategories = {
           });
         }
         trail = {
-          actor: `${req.poId}`,
+          userId: `${req.poId}`,
           action: `A training category has been deleted`,
           type: "danger",
         };

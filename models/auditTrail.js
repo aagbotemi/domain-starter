@@ -1,8 +1,8 @@
 module.exports = (sequelize, dataType) => {
     const auditTrail = sequelize.define("auditTrail", {
-        actor: {
-            type: dataType.STRING,
-        },
+        // actor: {
+        //     type: dataType.STRING,
+        // },
         action: {
             type: dataType.STRING,
         },

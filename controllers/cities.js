@@ -10,7 +10,7 @@ exports.citiesController = {
         cities.create(city)
             .then(data => {
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: ` ${req.body.cityName} city created`,
                     type: "success",
                 }
@@ -94,7 +94,7 @@ exports.citiesController = {
                     })
                 }
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: `${req.body.cityName} has been updated`,
                     type: "warning",
                 }
@@ -119,7 +119,7 @@ exports.citiesController = {
                     })
                 }
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: "A city was deleted",
                     type: "danger",
                 }

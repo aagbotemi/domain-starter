@@ -18,7 +18,7 @@ exports.usersController = {
       .create(user)
       .then((data) => {
         trail = {
-          actor: "Admin",
+          userId: `${req.userId}`,
           action: `${req.body.fullName} has been created successfully`,
           type: "success",
         }
@@ -151,7 +151,7 @@ exports.usersController = {
           });
         }
         trail = {
-          actor: `${req.userId}`,
+          userId: `${req.userId}`,
           action: ` ${req.body.fullName} has been updated`,
           type: "warning",
         }
@@ -204,7 +204,7 @@ exports.usersController = {
           });
         }
         trail = {
-          actor: `${req.userId}`,
+          userId: `${req.userId}`,
           action: `A users has been deleted`,
           type: "danger",
         }

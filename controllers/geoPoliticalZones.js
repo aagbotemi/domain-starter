@@ -9,7 +9,7 @@ exports.geoPoliticalZonesController = {
         geoPoliticalZones.create(zone)
             .then(data => {
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: ` ${req.body.geoPoliticalZoneName} zone has been created successfully`,
                     type: "success",
                 }
@@ -85,7 +85,7 @@ exports.geoPoliticalZonesController = {
                     })
                 }
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: ` ${req.body.geoPoliticalZoneName} zone has been updated`,
                     type: "warning",
                 }
@@ -110,7 +110,7 @@ exports.geoPoliticalZonesController = {
                     })
                 }
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: ` ${req.body.geoPoliticalZoneName} zone has been deleted`,
                     type: "danger",
                 }

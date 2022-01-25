@@ -16,7 +16,7 @@ exports.partnerOrgController = {
         .setCategories(po.categories)
         .then((data) => {
           trail = {
-            actor: `${req.userId}`,
+            userId: `${req.userId}`,
             action: ` ${req.body.organisationName} has been created successfully`,
             type: "success",
           }
@@ -108,7 +108,7 @@ exports.partnerOrgController = {
           });
         }
         trail = {
-          actor: `${req.userId}`,
+          userId: `${req.userId}`,
           action: ` ${req.body.organisationName} has been updated successfully`,
           type: "warning",
         }
@@ -133,7 +133,7 @@ exports.partnerOrgController = {
           });
         }
         trail = {
-          actor: `${req.userId}`,
+          userId: `${req.userId}`,
           action: `A partner organisation has been created successfully`,
           type: "danger",
         }

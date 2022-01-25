@@ -47,7 +47,7 @@ app.use("/dashboard", dashboardRouter);
 app.use("/audit-trail", auditTrailRouter);
 
 const db = require("./models/index");
-db.sequelize.sync();
+db.sequelize.sync({ alter: true });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

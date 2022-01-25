@@ -22,11 +22,15 @@ module.exports = (sequelize, dataType) => {
     gender: {
       type: dataType.STRING,
     },
-
+    stateOfOrigin: {
+      type: dataType.STRING,
+    },
     localGovernmentOfOrigin: {
       type: dataType.STRING,
     },
-
+    stateOfResidence: {
+      type: dataType.STRING,
+    },
     highestQualification: {
       type: dataType.STRING,
     },

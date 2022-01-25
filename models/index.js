@@ -63,17 +63,17 @@ db.states.belongsTo(db.geoPoliticalZones);
 db.partnerOrganisation.hasOne(db.beneficiaries);
 db.beneficiaries.belongsTo(db.partnerOrganisation);
 
-db.states.hasOne(db.beneficiaries);
-db.beneficiaries.belongsTo(db.states, {
-  foreignKey: "stateOfOrigin",
-  as: "stateOfOrigin",
-});
+// db.states.hasOne(db.beneficiaries);
+// db.beneficiaries.belongsTo(db.states, {
+//   foreignKey: "stateOfOrigin",
+//   as: "stateOfOrigin",
+// });
 
-db.states.hasOne(db.beneficiaries);
-db.beneficiaries.belongsTo(db.states, {
-  foreignKey: "stateOfResidence",
-  as: "stateOfResidence",
-});
+// db.states.hasOne(db.beneficiaries);
+// db.beneficiaries.belongsTo(db.states, {
+//   foreignKey: "stateOfResidence",
+//   as: "stateOfResidence",
+// });
 
 db.trainingBatch.hasOne(db.beneficiaries);
 db.beneficiaries.belongsTo(db.trainingBatch);

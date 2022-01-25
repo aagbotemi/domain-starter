@@ -51,9 +51,8 @@ app.use("/employ", employRouter);
 app.use("/evicted", evictedRouter);
 
 const db = require("./models/index");
-const { employController } = require("./controllers/employ");
-const { evictedController } = require("./controllers/evicted");
-db.sequelize.sync();
+
+db.sequelize.sync({ alter: true });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -3,6 +3,9 @@ const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
 const beneficiaries = db.beneficiaries;
 const { auditTrailController } = require("./auditTrail");
+const { evictedController } = require("./evicted");
+const { employController } = require("./employ");
+
 // const department = db.department;
 require("dotenv").config();
 
@@ -20,6 +23,30 @@ exports.beneficiariesController = {
           type: "success",
         };
         auditTrailController.create(trail);
+
+        if (
+          data.graduationStatus == "evicted" ||
+          data.graduationStatus == "dropped out"
+        ) {
+          evictedInfo = {
+            beneficiaryId: `${data.id}`,
+            reason: `${req.body.reason}`,
+            dateEvicted: `${req.body.dateEvicted}`,
+          };
+          evictedController.create(evictedInfo);
+        }
+        if (
+          data.employmentStatus == "employed" ||
+          data.employmentStatus == "self employed"
+        ) {
+          employInfo = {
+            beneficiaryId: `${data.id}`,
+            organisationName: `${req.body.organisationName}`,
+            organisationAddress: `${req.body.organisationAddress}`,
+            yearEmployed: `${req.body.yearEmployed}`,
+          };
+          employController.create(employInfo);
+        }
         res.status(200).send({
           success: true,
           message: "Trainee Added Successfully",
@@ -33,26 +60,22 @@ exports.beneficiariesController = {
 
   getById: (req, res) => {
     beneficiaries
-      .findOne(
-        {
-          where: {
-            id: req.params.id,
-          },
+      .findOne({
+        where: {
+          id: req.params.id,
         },
-        {
-          include: [
-            {
-              model: db.partnerOrganisation,
-            },
-            {
-              model: db.trainingCategories,
-            },
-            {
-              model: db.trainingBatch,
-            },
-          ],
-        }
-      )
+        include: [
+          {
+            model: db.partnerOrganisation,
+          },
+          {
+            model: db.trainingCategories,
+          },
+          {
+            model: db.trainingBatch,
+          },
+        ],
+      })
       .then((data) => {
         if (!data) {
           res.status(400).send({
@@ -87,6 +110,7 @@ exports.beneficiariesController = {
         res.status(200).send({
           success: true,
           message: "All beneficiaries retrieved successfully",
+          length: data.length,
           data,
         });
       })
@@ -99,32 +123,28 @@ exports.beneficiariesController = {
 
   getPOTrainees: (req, res) => {
     beneficiaries
-      .findAll(
-        {
-          where: {
-            partnerorganisationId: req.poId,
+      .findAll({
+        where: {
+          partnerorganisationId: req.poId,
+        },
+        include: [
+          {
+            model: db.partnerOrganisation,
           },
-          include: [
-            {
-              model: db.partnerOrganisation,
-            },
-            {
-              model: db.trainingCategories,
-            },
-            {
-              model: db.trainingBatch,
-            },
-          ],
-        }
-        
-         
-      )
+          {
+            model: db.trainingCategories,
+          },
+          {
+            model: db.trainingBatch,
+          },
+        ],
+      })
       .then((data) => {
-        
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
           data: data,
+          length: data.length,
         });
       })
       .catch((err) => {

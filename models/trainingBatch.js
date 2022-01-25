@@ -7,6 +7,12 @@ module.exports = (sequelize, dataType) => {
       batchDescriptiom: {
         type: dataType.STRING,
       },
+      startDate: {
+        type: dataType.DATE,
+      },
+      endDate: {
+        type: dataType.DATE,
+      },
      
     });
     return trainingBatch;

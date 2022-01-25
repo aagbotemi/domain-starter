@@ -102,7 +102,7 @@ exports.beneficiariesController = {
       .findAll(
         {
           where: {
-            id: req.params.id,
+            partnerorganisationId: req.poId,
           },
         },
         {
@@ -120,16 +120,11 @@ exports.beneficiariesController = {
         }
       )
       .then((data) => {
-        let traineeObj = [];
-        data.forEach((trainee) => {
-          if (trainee.partnerorganisationId === req.poId) {
-            traineeObj.push(trainee);
-          }
-        });
+        
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
-          data: userObj,
+          data: data,
         });
       })
       .catch((err) => {

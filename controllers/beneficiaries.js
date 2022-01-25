@@ -99,19 +99,26 @@ exports.beneficiariesController = {
 
   getPOTrainees: (req, res) => {
     beneficiaries
-      .findAll({
-        include: [
-          {
-            model: db.partnerOrganisation,
+      .findAll(
+        {
+          where: {
+            id: req.params.id,
           },
-          {
-            model: db.trainingCategories,
-          },
-          {
-            model: db.trainingBatch,
-          },
-        ],
-      })
+        },
+        {
+          include: [
+            {
+              model: db.partnerOrganisation,
+            },
+            {
+              model: db.trainingCategories,
+            },
+            {
+              model: db.trainingBatch,
+            },
+          ],
+        }
+      )
       .then((data) => {
         let traineeObj = [];
         data.forEach((trainee) => {

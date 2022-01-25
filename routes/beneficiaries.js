@@ -12,16 +12,12 @@ router.get(
 );
 
 router.get(
-  "/trainees",
+  "/po/trainees",
   jwtAuth.poVerifyToken,
   beneficiariesController.getPOTrainees
 );
 
-router.post(
-  "/",
-  jwtAuth.poVerifyToken,
-  beneficiariesController.createTrainee
-);
+router.post("/", jwtAuth.poVerifyToken, beneficiariesController.createTrainee);
 
 router.put(
   "/:id",
@@ -29,7 +25,6 @@ router.put(
   beneficiariesController.updateTrainee
 );
 
-router.delete('/:id', jwtAuth.poVerifyToken, beneficiariesController.delete);
-
+router.delete("/:id", jwtAuth.poVerifyToken, beneficiariesController.delete);
 
 module.exports = router;

@@ -18,8 +18,8 @@ exports.beneficiariesController = {
           userId: `${req.userId}`,
           action: `${req.body.firstName} ${req.body.lastName} added as a beneficiary`,
           type: "success",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({
           success: true,
           message: "Trainee Added Successfully",
@@ -115,7 +115,7 @@ exports.beneficiariesController = {
       .then((data) => {
         let traineeObj = [];
         data.forEach((trainee) => {
-          if (trainee.partnerOrganisationId === req.poId) {
+          if (trainee.partnerorganisationId === req.poId) {
             traineeObj.push(trainee);
           }
         });
@@ -150,8 +150,8 @@ exports.beneficiariesController = {
           userId: `${req.userId}`,
           action: `${req.body.firstName} ${req.body.lastName} details has been updated`,
           type: "warning",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
@@ -176,8 +176,8 @@ exports.beneficiariesController = {
           userId: `${req.userId}`,
           action: `A trainee details has been deleted`,
           type: "danger",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
 
         res.status(200).send({
           message: "record deleted",

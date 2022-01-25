@@ -38,8 +38,6 @@ db.geoPoliticalZones = require("./geoPoliticalZones")(sequelize, Sequelize);
 db.auditTrail = require("./auditTrail")(sequelize, Sequelize);
 // db.partnerorganisationcategory = require("./partnerorganisationcategory")(sequelize, Sequelize);
 
-
-
 db.users.belongsToMany(db.roles, { through: "usersRoles" });
 db.roles.belongsToMany(db.users, { through: "usersRoles" });
 
@@ -67,14 +65,14 @@ db.beneficiaries.belongsTo(db.partnerOrganisation);
 
 db.states.hasOne(db.beneficiaries);
 db.beneficiaries.belongsTo(db.states, {
-  foreignKey: "stateId",
-  as: "stateOfOrigin"
+  foreignKey: "stateOfOrigin",
+  as: "stateOfOrigin",
 });
 
 db.states.hasOne(db.beneficiaries);
 db.beneficiaries.belongsTo(db.states, {
-  foreignKey: "stateId",
-  as: "stateOfResidence"
+  foreignKey: "stateOfResidence",
+  as: "stateOfResidence",
 });
 
 db.trainingBatch.hasOne(db.beneficiaries);

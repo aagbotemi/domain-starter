@@ -102,7 +102,7 @@ exports.beneficiariesController = {
       .findAll(
         {
           where: {
-            id: req.poId,
+            partnerorganisationId: req.poId,
           },
         },
         {

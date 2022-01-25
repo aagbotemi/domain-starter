@@ -18,7 +18,7 @@ exports.trainingBatch = {
       .create(batch)
       .then((data) => {
         trail = {
-          userId: `${req.poId}`,
+          userId: `${req.userId}`,
           action: ` ${req.body.batchName} has been created successfully`,
           type: "success",
         };
@@ -155,7 +155,7 @@ exports.trainingBatch = {
           });
         }
         trail = {
-          userId: `${req.poId}`,
+          userId: `${req.userId}`,
           action: ` ${req.body.batchName} has been updated`,
           type: "warning",
         };
@@ -180,7 +180,7 @@ exports.trainingBatch = {
           });
         }
         trail = {
-          userId: `${req.poId}`,
+          userId: `${req.userId}`,
           action: `A training batch has been deleted`,
           type: "danger",
         };

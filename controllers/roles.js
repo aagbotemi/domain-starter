@@ -9,7 +9,7 @@ exports.rolesController = {
         roles.create(role)
             .then(data => {
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: ` ${req.body.roleName} has been created successfully`,
                     type: "success",
                 }
@@ -85,7 +85,7 @@ exports.rolesController = {
                     })
                 }
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: ` ${req.body.roleName} has been updated successfully`,
                     type: "warning",
                 }
@@ -110,7 +110,7 @@ exports.rolesController = {
                     })
                 }
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: `A role has been deleted successfully`,
                     type: "danger",
                 }

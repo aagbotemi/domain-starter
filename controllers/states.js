@@ -10,7 +10,7 @@ exports.statesController = {
         states.bulkCreate(state)
             .then(data => {
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: ` ${req.body.stateName} has been created successfully`,
                     type: "success",
                 }
@@ -100,7 +100,7 @@ exports.statesController = {
                     })
                 }
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: ` ${req.body.stateName} has been updated`,
                     type: "success",
                 }
@@ -125,7 +125,7 @@ exports.statesController = {
                     })
                 }
                 trail = {
-                    actor: `${req.userId}`,
+                    userId: `${req.userId}`,
                     action: `A state has been deleted`,
                     type: "danger",
                 }

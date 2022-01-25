@@ -31,13 +31,6 @@ exports.authController = {
 
         // if password is not valid
         if (!passwordIsValid) {
-          trail = {
-            actor: "anonymous",
-            action: `anonymous user with ${req.body.email} attempts login but failed`,
-            type: "danger",
-          }
-          auditTrailController.create(trail)
-
           return res.status(404).send({
             accessToken: null,
             message: "Invalid username or password",
@@ -63,22 +56,8 @@ exports.authController = {
           userData: payload,
           accessToken: token,
         });
-        trail = {
-          actor: `${req.body.email}`,
-          action: ` ${req.body.email} successfully logged in`,
-          type: "success",
-        }
-        auditTrailController.create(trail)
       })
       .catch((err) => {
-        
-        trail = {
-          actor: "anonymous",
-          action: `anonymous user with ${req.body.email} attempts login but failed`,
-          type: "danger",
-        }
-        auditManager.auditController(trail)
-        
         res.status(400).send({
           status: false,
           message: err.message || "Could not fetch record",

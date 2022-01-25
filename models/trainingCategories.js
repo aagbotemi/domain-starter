@@ -7,6 +7,9 @@ module.exports = (sequelize, dataType) => {
       categoryDescription: {
         type: dataType.STRING,
       },
+      duration: {
+        type: dataType.STRING,
+      },
     });
     return trainingCategories;
   };

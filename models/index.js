@@ -36,6 +36,9 @@ db.beneficiaries = require("./beneficiaries")(sequelize, Sequelize);
 db.trainingBatch = require("./trainingBatch")(sequelize, Sequelize);
 db.geoPoliticalZones = require("./geoPoliticalZones")(sequelize, Sequelize);
 db.auditTrail = require("./auditTrail")(sequelize, Sequelize);
+db.employ = require("./employ")(sequelize, Sequelize);
+db.evicted = require("./evicted")(sequelize, Sequelize);
+
 // db.partnerorganisationcategory = require("./partnerorganisationcategory")(sequelize, Sequelize);
 
 db.users.belongsToMany(db.roles, { through: "usersRoles" });
@@ -63,17 +66,11 @@ db.states.belongsTo(db.geoPoliticalZones);
 db.partnerOrganisation.hasOne(db.beneficiaries);
 db.beneficiaries.belongsTo(db.partnerOrganisation);
 
-// db.states.hasOne(db.beneficiaries);
-// db.beneficiaries.belongsTo(db.states, {
-//   foreignKey: "stateOfOrigin",
-//   as: "stateOfOrigin",
-// });
+db.beneficiaries.hasOne(db.employ);
+db.employ.belongsTo(db.beneficiaries);
 
-// db.states.hasOne(db.beneficiaries);
-// db.beneficiaries.belongsTo(db.states, {
-//   foreignKey: "stateOfResidence",
-//   as: "stateOfResidence",
-// });
+db.beneficiaries.hasOne(db.evicted);
+db.evicted.belongsTo(db.beneficiaries);
 
 db.trainingBatch.hasOne(db.beneficiaries);
 db.beneficiaries.belongsTo(db.trainingBatch);

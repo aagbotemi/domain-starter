@@ -2,10 +2,12 @@ var express = require("express");
 var router = express.Router();
 const { usersController } = require("../controllers/users");
 const { jwtAuth } = require("../middleware/auth");
+const { upload } = require("../middleware/upload");
 
 router.post(
   "/",
   jwtAuth.adminVerifyToken,
+  upload,
   usersController.create
 );
 

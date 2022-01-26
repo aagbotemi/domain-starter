@@ -5,25 +5,25 @@ const { jwtAuth } = require("../middleware/auth");
 
 router.post(
     "/",
-    jwtAuth.adminVerifyToken,
+    jwtAuth.generalVerifyToken,
     citiesController.create
 );
 
 router.get(
     "/",
-    jwtAuth.adminVerifyToken,
+    jwtAuth.generalVerifyToken,
     citiesController.getAll
 );
 
 router.get(
     "/:id",
-    jwtAuth.adminVerifyToken,
+    jwtAuth.generalVerifyToken,
     citiesController.getById
 );
 
 router.put(
     "/:id",
-    jwtAuth.adminVerifyToken,
+    jwtAuth.generalVerifyToken,
     citiesController.update
 );
 

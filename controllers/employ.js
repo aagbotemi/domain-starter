@@ -39,26 +39,26 @@ exports.employController = {
   },
 
   update: (req, res) => {
-    var updateInfo = req.body;
-    var filter = {
+    const updateInfo = req.body;
+    const filter = {
       where: {
-        id: parseInt(req.params.id),
+        id: req.params.id,
       },
-      include: [{ model: db.employ }],
+      include: { model: db.employ },
     };
 
     employ.findOne(filter)
-    .then(function (beneficiaryInfo) {
-      beneficiaryInfo.employ
+    .then((data) =>  {
+      data.employ
         .updateAttributes(updateInfo)
-        .then(function (data) {
+        .then((data) =>  {
           if (data[0] !== 1) {
             res.status(404).send({
               status: false,
               message: "record not found",
             });
           }
-          trail = {
+          const trail = {
             userId: `${req.userId}`,
             action: ` employment details zone has been updated`,
             type: "warning",

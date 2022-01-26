@@ -3,40 +3,20 @@ var router = express.Router();
 const { citiesController } = require("../controllers/cities");
 const { jwtAuth } = require("../middleware/auth");
 
-router.post(
-    "/",
-    jwtAuth.adminVerifyToken,
-    citiesController.create
-);
+router.post("/", jwtAuth.generalVerifyToken, citiesController.create);
+
+router.get("/", jwtAuth.generalVerifyToken, citiesController.getAll);
+
+router.get("/:id", jwtAuth.generalVerifyToken, citiesController.getById);
 
 router.get(
-    "/",
-    jwtAuth.adminVerifyToken,
-    citiesController.getAll
+  "/state/:id",
+  jwtAuth.generalVerifyToken,
+  citiesController.getStateById
 );
 
-router.get(
-    "/:id",
-    jwtAuth.adminVerifyToken,
-    citiesController.getById
-);
+router.put("/:id", jwtAuth.generalVerifyToken, citiesController.update);
 
-router.get(
-    "/state/:id",
-    jwtAuth.adminVerifyToken,
-    citiesController.getStateById
-);
-
-router.put(
-    "/:id",
-    jwtAuth.adminVerifyToken,
-    citiesController.update
-);
-
-router.delete(
-    "/:id",
-    jwtAuth.adminVerifyToken,
-    citiesController.delete
-);
+router.delete("/:id", jwtAuth.adminVerifyToken, citiesController.delete);
 
 module.exports = router;

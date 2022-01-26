@@ -74,6 +74,12 @@ exports.beneficiariesController = {
           {
             model: db.trainingBatch,
           },
+          {
+            model: db.employ,
+          },
+          {
+            model: db.evicted,
+          },
         ],
       })
       .then((data) => {
@@ -103,6 +109,12 @@ exports.beneficiariesController = {
           },
           {
             model: db.trainingBatch,
+          },
+          {
+            model: db.employ,
+          },
+          {
+            model: db.evicted,
           },
         ],
       })
@@ -136,6 +148,12 @@ exports.beneficiariesController = {
           },
           {
             model: db.trainingBatch,
+          },
+          {
+            model: db.employ,
+          },
+          {
+            model: db.evicted,
           },
         ],
       })

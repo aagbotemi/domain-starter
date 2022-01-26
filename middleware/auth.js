@@ -10,7 +10,6 @@ exports.jwtAuth = {
         .send({ message: "Unauthorised Access, missing authorization token" });
     }
     let token = headers.split(" ")[1];
-
     if (!token) return res.status(403).send({ message: "Unauthorised Access" });
 
     verify(token, process.env.secret, (err, decode) => {
@@ -21,8 +20,6 @@ exports.jwtAuth = {
 
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
-      
-
       next();
     });
   },

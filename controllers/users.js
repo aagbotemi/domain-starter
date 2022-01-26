@@ -4,16 +4,24 @@ const { constants } = require("./constants");
 const users = db.users;
 const partnerOrganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
+const multer = require("multer");
+const path = require("path");
 
 const Op = db.Sequelize.Op;
 
 exports.usersController = {
   create: (req, res) => {
-    const user = req.body;
+    // const user = req.body;
+    const user = {
+      fullName: req.body.fullName,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      password: req.body.password,
+      userName: req.body.userName,
+      userType: req.body.userType,
+      profileImage: req.file.path,
+    };
     user.password = bcrypt.hashSync(user.password, 10);
-    //     const userObj = await users.create(user);
-    //     userObj
-    //   .setPartnerOrganisations(user.po)
     users
       .create(user)
       .then((data) => {

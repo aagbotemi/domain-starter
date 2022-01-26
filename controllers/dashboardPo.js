@@ -5,11 +5,7 @@ const { Op } = require("sequelize");
 exports.dashPoController = {
   count: async (req, res) => {
     try {
-      const beneficiariesCount = await db.beneficiaries.count({
-        where: {
-          partnerorganisationId: req.poId,
-        },
-      });
+     
       const batchesCount = await db.trainingBatch.count({
         where: {
           partnerorganisationId: req.poId,

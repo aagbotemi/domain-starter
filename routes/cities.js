@@ -21,6 +21,12 @@ router.get(
     citiesController.getById
 );
 
+router.get(
+    "/state/:id",
+    jwtAuth.adminVerifyToken,
+    citiesController.getStateById
+);
+
 router.put(
     "/:id",
     jwtAuth.adminVerifyToken,

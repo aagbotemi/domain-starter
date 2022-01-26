@@ -80,6 +80,38 @@ exports.citiesController = {
                     })
         })
     },
+    getStateById:(req, res) => {
+        cities.findAll(
+            {
+                where: {
+                    stateId: req.params.id
+                }
+            },
+            {
+                include: {
+                    model: states,
+                },
+            }
+        )
+            .then(data =>{
+                if(data == undefined) {
+                    res.status(404).send({
+                        status: false,
+                        message: "record not found"
+                    })
+                }
+                res.status(200).send({
+                    status: true,
+                    data,
+                });
+            }).catch(err => {
+                res.status(400)
+                    .send({
+                        status: false,
+                        message: err.message || "Could not fetch record"
+                    })
+        })
+    },
     update:(req, res) => {
         const city = req.body
         cities.update(city, {

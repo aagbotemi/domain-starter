@@ -45,7 +45,7 @@ exports.employController = {
       where: {
         beneficiaryId: req.params.id,
       },
-      include: { model: db.employ },
+      
     };
 
     employ

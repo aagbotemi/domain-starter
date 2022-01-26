@@ -45,7 +45,6 @@ exports.evictedController = {
       where: {
         beneficiaryId: req.params.id,
       },
-      include: { model: db.evicted },
     };
 
     evicted

@@ -39,30 +39,41 @@ exports.employController = {
   },
 
   update: (req, res) => {
-    const employInfo = req.body;
-    employ
-      .update(employInfo, {
-        where: {
-          beneficiaryId: req.params.id,
-        },
-      })
-      .then((data) => {
-        if (data[0] !== 1) {
-          res.status(404).send({
-            status: false,
-            message: "record not found",
-          });
-        }
-        trail = {
-          userId: `${req.userId}`,
-          action: ` employment details zone has been updated`,
-          type: "warning",
-        };
-        auditTrailController.create(trail);
-        res.status(200).send({ message: "Record Updated" });
-      })
-      .catch((err) => {
+    var updateInfo = req.body;
+    var filter = {
+      where: {
+        id: parseInt(req.params.id),
+      },
+      include: [{ model: db.employ }],
+    };
+
+    employ.findOne(filter)
+    .then(function (beneficiaryInfo) {
+      beneficiaryInfo.employ
+        .updateAttributes(updateInfo)
+        .then(function (data) {
+          if (data[0] !== 1) {
+            res.status(404).send({
+              status: false,
+              message: "record not found",
+            });
+          }
+          trail = {
+            userId: `${req.userId}`,
+            action: ` employment details zone has been updated`,
+            type: "warning",
+          };
+          auditTrailController.create(trail);
+          res.status(200).send({ message: "Record Updated" });
+        })
+        .catch((err) => {
+          constants.handleErr(err, res);
+        });
+    })
+    .catch((err) => {
         constants.handleErr(err, res);
       });
   },
+
+   
 };

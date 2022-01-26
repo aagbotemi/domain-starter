@@ -2,6 +2,8 @@ const db = require("../models");
 const employ = db.employ;
 const user = db.users;
 const beneficiaries = db.beneficiaries;
+const { constants } = require("./constants");
+
 
 exports.employController = {
   create: (employInfo) => {
@@ -47,7 +49,7 @@ exports.employController = {
       include: { model: db.employ },
     };
 
-    employ.findOne(filter)
+    db.beneficiaries.findOne(filter)
     .then((data) =>  {
       data.employ
         .updateAttributes(updateInfo)

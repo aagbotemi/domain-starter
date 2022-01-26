@@ -2,6 +2,8 @@ const db = require("../models");
 const evicted = db.evicted;
 const user = db.users;
 const beneficiaries = db.beneficiaries;
+const { constants } = require("./constants");
+
 
 exports.evictedController = {
   create: (evictInfo) => {
@@ -39,29 +41,38 @@ exports.evictedController = {
   },
 
   update: (req, res) => {
-    const evictedInfo = req.body;
-    evicted
-      .update(evictedInfo, {
-        where: {
-          beneficiaryId: req.params.id,
-        },
-      })
-      .then((data) => {
-        if (data[0] !== 1) {
-          res.status(404).send({
-            status: false,
-            message: "record not found",
-          });
-        }
-        trail = {
-          userId: `${req.userId}`,
-          action: ` evicted details zone has been updated`,
-          type: "warning",
-        };
-        auditTrailController.create(trail);
-        res.status(200).send({ message: "Record Updated" });
-      })
-      .catch((err) => {
+    const updateInfo = req.body;
+    const filter = {
+      where: {
+        id: req.params.id,
+      },
+      include: { model: db.evicted },
+    };
+
+    db.beneficiaries.findOne(filter)
+    .then((data) =>  {
+      data.evicted
+        .updateAttributes(updateInfo)
+        .then((data) =>  {
+          if (data[0] !== 1) {
+            res.status(404).send({
+              status: false,
+              message: "record not found",
+            });
+          }
+          const trail = {
+            userId: `${req.userId}`,
+            action: ` evicted info details zone has been updated`,
+            type: "warning",
+          };
+          auditTrailController.create(trail);
+          res.status(200).send({ message: "Record Updated" });
+        })
+        .catch((err) => {
+          constants.handleErr(err, res);
+        });
+    })
+    .catch((err) => {
         constants.handleErr(err, res);
       });
   },

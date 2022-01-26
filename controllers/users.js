@@ -19,7 +19,7 @@ exports.usersController = {
       password: req.body.password,
       userName: req.body.userName,
       userType: req.body.userType,
-      profileImage: req.file.path,
+      profileImage: req.file ? req.file.path : null,
     };
     user.password = bcrypt.hashSync(user.password, 10);
     users

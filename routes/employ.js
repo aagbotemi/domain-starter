@@ -9,4 +9,10 @@ router.get(
     employController.getAll
 )
 
+router.put(
+    "/:id",
+    jwtAuth.generalVerifyToken,
+    employController.update
+);
+
 module.exports = router;

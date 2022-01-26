@@ -5,4 +5,11 @@ const { jwtAuth } = require("../middleware/auth");
 
 router.get("/", jwtAuth.generalVerifyToken, evictedController.getAll);
 
+router.put(
+    "/:id",
+    jwtAuth.generalVerifyToken,
+    evictedController.update
+);
+
+
 module.exports = router;

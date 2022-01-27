@@ -147,15 +147,18 @@ exports.beneficiariesController = {
             female.push(element);
           }
         });
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
+         const report = {
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
+         }
+        res.status(200).send({
+          success: true,
+          message: "All trainees retrieved successfully",
+          report,
           length: data.length,
-          data: data
+          data
           
         });
       })
@@ -200,13 +203,16 @@ exports.beneficiariesController = {
             female.push(element);
           }
         });
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
+        const report = {
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
+         }
+        res.status(200).send({
+          success: true,
+          message: "All trainees retrieved successfully",
+          report,
           length: data.length,
           data: data
           

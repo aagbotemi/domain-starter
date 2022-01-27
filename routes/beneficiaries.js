@@ -45,7 +45,7 @@ router.get(
 router.post(
   "/",
   jwtAuth.poVerifyToken,
-//   upload.fields([{ profileImage: 'avatar' }, { curriculumVitae: 'gallery' }]),
+  upload.fields([{ name: 'profileImage' }, { name: 'curriculumVitae' }]),
   beneficiariesController.createTrainee
 );
 

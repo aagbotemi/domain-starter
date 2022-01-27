@@ -34,8 +34,29 @@ exports.trainingCategories = {
   },
 
   getAll:(req,res)=>{
-    trainingCategories.findAll().then(data=>{
-    res.status(200).send(data)
+    trainingCategories.findAll({
+      include: db.beneficiaries
+    }).then(data=>{
+      const male = [];
+        const female = [];
+        data.forEach((element) => {
+          if (element.benficiary.gender == "male") {
+            male.push(element);
+          } else {
+            female.push(element);
+          }
+        });
+        res.status(200).send({
+          success: true,
+          message: "All trainees categories retrieved successfully",
+          data: data,
+          maleReport: male,
+          femaleReport: female,
+          maleCount: male.length,
+          femaleCount: female.length,
+          length: data.length,
+        });
+    // res.status(200).send(data)
     }).catch(err=>{
         res.status(400).send({
             message:err.message || "Could not fetch record"

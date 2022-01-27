@@ -24,7 +24,11 @@ router.get(
   beneficiariesController.getTraineesinState
 );
 
-router.get("/po/:state", jwtAuth.poVerifyToken, beneficiariesController.getPo);
+router.get(
+  "/po/:state",
+  jwtAuth.poVerifyToken,
+  beneficiariesController.getPOTraineesbyGraduationStatus
+);
 
 router.get(
   "/:grad",

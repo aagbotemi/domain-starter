@@ -175,7 +175,9 @@ exports.trainingCategories = {
           },
         },
         {
-          include: db.beneficiaries,
+          include: {
+            model: db.beneficiaries,
+          },
         }
       )
       .then((data) => {

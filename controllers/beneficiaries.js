@@ -150,12 +150,13 @@ exports.beneficiariesController = {
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
-          data: data,
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
           length: data.length,
+          data: data
+          
         });
       })
       .catch((err) => {
@@ -202,12 +203,13 @@ exports.beneficiariesController = {
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
-          data: data,
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
           length: data.length,
+          data: data
+          
         });
       })
       .catch((err) => {

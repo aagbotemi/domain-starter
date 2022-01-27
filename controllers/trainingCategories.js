@@ -168,21 +168,38 @@ exports.trainingCategories = {
 
   getAllTrainingCategories: (req, res) => {
     trainingCategories
-      .findAll(
-        {
-          include: {
-            model: partnerOrganisation,
-          },
+      .findAll({
+        include: {
+          model: partnerOrganisation,
         },
-        {
-          include: db.beneficiaries,
-        }
-      )
+      })
+      .then((data) => {
+        res.status(200).send({
+          success: true,
+          message: "All trainees categories retrieved successfully",
+          data,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+          data: [],
+        });
+      });
+  },
+
+  getAllTrainingCategoriesReport: (req, res) => {
+    trainingCategories
+      .findAll({
+        include: {
+          model: db.beneficiaries,
+        },
+      })
       .then((data) => {
         const male = [];
         const female = [];
         data.forEach((element) => {
-          if (element.benficiary.gender == "male") {
+          if (element.beneficiary.gender == "male") {
             male.push(element);
           } else {
             female.push(element);
@@ -198,6 +215,11 @@ exports.trainingCategories = {
           femaleCount: female.length,
           length: data.length,
         });
+        // res.status(200).send({
+        //   success: true,
+        //   message: "All trainees categories retrieved successfully",
+        //   data,
+        // });
       })
       .catch((err) => {
         res.status(400).send({

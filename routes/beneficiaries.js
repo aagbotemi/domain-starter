@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const { beneficiariesController } = require("../controllers/beneficiaries");
 const { jwtAuth } = require("../middleware/auth");
+const { upload } = require("../middleware/upload");
 
 router.get("/:id", jwtAuth.generalVerifyToken, beneficiariesController.getById);
 
@@ -17,7 +18,12 @@ router.get(
   beneficiariesController.getPOTrainees
 );
 
-router.post("/", jwtAuth.poVerifyToken, beneficiariesController.createTrainee);
+router.post(
+  "/",
+  jwtAuth.poVerifyToken,
+  upload.fields([{ profileImage: 'avatar' }, { curriculumVitae: 'gallery' }]),
+  beneficiariesController.createTrainee
+);
 
 router.put(
   "/:id",

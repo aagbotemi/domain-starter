@@ -35,7 +35,7 @@ module.exports = (sequelize, dataType) => {
       type: dataType.STRING,
     },
     profileImage: {
-      type: dataType.STRING(1234),
+      type: dataType.STRING,
     },
     trainingYear: {
       type: dataType.DATE,
@@ -47,7 +47,7 @@ module.exports = (sequelize, dataType) => {
       type: dataType.STRING,
     },
     curriculumVitae: {
-      type: dataType.STRING(1234),
+      type: dataType.STRING,
     },
   });
   return beneficiaries;

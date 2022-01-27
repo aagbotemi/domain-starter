@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 })
 
 function checkFileType(file, cb){
-    const filetypes = /jpg|jpeg|png/
+    const filetypes = /jpg|jpeg|png|pdf/
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
     const mimetype = filetypes.test(file.mimetype)
 
@@ -32,6 +32,6 @@ const upload = multer({
   fileFilter: function (req, file, cb) {
     checkFileType(file, cb)
   }
-}).single("profileImage")
+})
 
 module.exports = {upload};

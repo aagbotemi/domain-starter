@@ -263,7 +263,7 @@ exports.beneficiariesController = {
         where: {
           [Op.and]: [
             { partnerorganisationId: req.poId },
-            { stateId: "req.params.state" },
+            { stateOfResidence: "req.params.state" },
           ],
         },
         include: [
@@ -316,7 +316,114 @@ exports.beneficiariesController = {
     beneficiaries
       .findAll({
         where: {
-          stateId: "req.params.state",
+          stateOfResidence: "req.params.state",
+        },
+        include: [
+          {
+            model: db.partnerOrganisation,
+          },
+          {
+            model: db.trainingCategories,
+          },
+          {
+            model: db.trainingBatch,
+          },
+          {
+            model: db.employ,
+          },
+          {
+            model: db.evicted,
+          },
+        ],
+      })
+      .then((data) => {
+        const male = [];
+        const female = [];
+        data.forEach((element) => {
+          if (element.gender == "male") {
+            male.push(element);
+          } else {
+            female.push(element);
+          }
+        });
+        res.status(200).send({
+          success: true,
+          message: "All trainees retrieved successfully",
+          data: data,
+          maleReport: male,
+          femaleReport: female,
+          maleCount: male.length,
+          femaleCount: female.length,
+          length: data.length,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
+  getTraineesByGraduationStatus: (req, res) => {
+    beneficiaries
+      .findAll({
+        where: {
+          graduationStatus: "req.params.grad",
+        },
+        include: [
+          {
+            model: db.partnerOrganisation,
+          },
+          {
+            model: db.trainingCategories,
+          },
+          {
+            model: db.trainingBatch,
+          },
+          {
+            model: db.employ,
+          },
+          {
+            model: db.evicted,
+          },
+        ],
+      })
+      .then((data) => {
+        const male = [];
+        const female = [];
+        data.forEach((element) => {
+          if (element.gender == "male") {
+            male.push(element);
+          } else {
+            female.push(element);
+          }
+        });
+        res.status(200).send({
+          success: true,
+          message: "All trainees retrieved successfully",
+          data: data,
+          maleReport: male,
+          femaleReport: female,
+          maleCount: male.length,
+          femaleCount: female.length,
+          length: data.length,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
+  getPOTraineesbyGraduationStatus: (req, res) => {
+    beneficiaries
+      .findAll({
+        where: {
+          [Op.and]: [
+            { partnerorganisationId: req.poId },
+            { graduationStatus: "req.params.grad" },
+          ],
         },
         include: [
           {

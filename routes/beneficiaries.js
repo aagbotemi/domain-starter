@@ -18,15 +18,23 @@ router.get(
 );
 
 router.get(
-  "/states",
+  "/:state",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesinState
 );
 
+router.get("/po/:state", jwtAuth.poVerifyToken, beneficiariesController.getPo);
+
 router.get(
-  "/po/states",
+  "/:grad",
+  jwtAuth.adminVerifyToken,
+  beneficiariesController.getTraineesByGraduationStatus
+);
+
+router.get(
+  "/po/:grad",
   jwtAuth.poVerifyToken,
-  beneficiariesController.getPOTraineesinState
+  beneficiariesController.getPOTraineesbyGraduationStatus
 );
 
 router.post("/", jwtAuth.poVerifyToken, beneficiariesController.createTrainee);

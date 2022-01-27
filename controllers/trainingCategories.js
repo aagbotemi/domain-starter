@@ -1,6 +1,6 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
-const { QueryTypes } = require('sequelize');
+const { QueryTypes } = require("sequelize");
 const { constants } = require("./constants");
 const trainingCategories = db.trainingCategories;
 const partnerOrganisation = db.partnerOrganisation;
@@ -20,8 +20,8 @@ exports.trainingCategories = {
           userId: `${req.userId}`,
           action: ` ${req.body.categoryName} category has been created successfully`,
           type: "success",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({
           success: true,
           message: "Training Category Added Successfully",
@@ -33,11 +33,13 @@ exports.trainingCategories = {
       });
   },
 
-  getAll:(req,res)=>{
-    trainingCategories.findAll({
-      include: db.beneficiaries
-    }).then(data=>{
-      const male = [];
+  getAll: (req, res) => {
+    trainingCategories
+      .findAll({
+        include: db.beneficiaries,
+      })
+      .then((data) => {
+        const male = [];
         const female = [];
         data.forEach((element) => {
           if (element.benficiary.gender == "male") {
@@ -56,51 +58,47 @@ exports.trainingCategories = {
           femaleCount: female.length,
           length: data.length,
         });
-    // res.status(200).send(data)
-    }).catch(err=>{
+        // res.status(200).send(data)
+      })
+      .catch((err) => {
         res.status(400).send({
-            message:err.message || "Could not fetch record"
-        })
-
-    })
-
+          message: err.message || "Could not fetch record",
+        });
+      });
   },
- 
 
   getPOsInCategory: async (req, res) => {
-    try{
+    try {
       const category = await db.sequelize.query(
         `SELECT * FROM partnerorganisationcategory  inner 
       join partnerorganisations on partnerorganisationcategory.partnerorganisationId = partnerorganisations.id 
       WHERE categoryId = :category`,
         {
           replacements: { category: req.params.id },
-          type: QueryTypes.SELECT
+          type: QueryTypes.SELECT,
         }
       );
-      res.status(200).send(category)
-    }catch (err) {
+      res.status(200).send(category);
+    } catch (err) {
       constants.handleErr(err, res);
     }
-   
-
   },
 
   getPOCategories: async (req, res) => {
-    try{
-    const category = await db.sequelize.query(
-      `SELECT * FROM partnerorganisationcategory  inner 
+    try {
+      const category = await db.sequelize.query(
+        `SELECT * FROM partnerorganisationcategory  inner 
     join categories on partnerorganisationcategory.categoryId = categories.id 
     WHERE partnerOrganisationId = :partnerOrg`,
-      {
-        replacements: { partnerOrg: req.params.id },
-        type: QueryTypes.SELECT
-      }
-    );
-    res.status(200).send({category, count: category.length})
-  }catch (err) {
-    constants.handleErr(err, res);
-  }
+        {
+          replacements: { partnerOrg: req.params.id },
+          type: QueryTypes.SELECT,
+        }
+      );
+      res.status(200).send({ category, count: category.length });
+    } catch (err) {
+      constants.handleErr(err, res);
+    }
   },
 
   getById: (req, res) => {
@@ -115,8 +113,8 @@ exports.trainingCategories = {
           include: {
             model: db.partnerOrganisation,
             through: {
-              attributes: []
-            }
+              attributes: [],
+            },
           },
         }
       )
@@ -146,8 +144,7 @@ exports.trainingCategories = {
         {
           include: [
             {
-              model: db.partnerOrganisation
-
+              model: db.partnerOrganisation,
             },
           ],
         }
@@ -171,16 +168,35 @@ exports.trainingCategories = {
 
   getAllTrainingCategories: (req, res) => {
     trainingCategories
-      .findAll({
-        include: {
-          model: partnerOrganisation,
+      .findAll(
+        {
+          include: {
+            model: partnerOrganisation,
+          },
+        },
+        {
+          include: db.beneficiaries,
         }
-      })
+      )
       .then((data) => {
+        const male = [];
+        const female = [];
+        data.forEach((element) => {
+          if (element.benficiary.gender == "male") {
+            male.push(element);
+          } else {
+            female.push(element);
+          }
+        });
         res.status(200).send({
           success: true,
-          message: "All training categories retrieved successfully",
-          data,
+          message: "All trainees categories retrieved successfully",
+          data: data,
+          maleReport: male,
+          femaleReport: female,
+          maleCount: male.length,
+          femaleCount: female.length,
+          length: data.length,
         });
       })
       .catch((err) => {
@@ -190,8 +206,6 @@ exports.trainingCategories = {
         });
       });
   },
-
- 
 
   update: (req, res) => {
     const category = req.body;
@@ -213,8 +227,8 @@ exports.trainingCategories = {
           userId: `${req.userId}`,
           action: ` ${req.body.categoryName} has been updated`,
           type: "warning",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
@@ -238,8 +252,8 @@ exports.trainingCategories = {
           userId: `${req.userId}`,
           action: `A training category has been deleted`,
           type: "danger",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({
           message: "record deleted",
         });

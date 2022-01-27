@@ -173,12 +173,11 @@ exports.trainingCategories = {
           include: {
             model: partnerOrganisation,
           },
-        },
-        {
           include: {
             model: db.beneficiaries,
           },
-        }
+        },
+        
       )
       .then((data) => {
         // const male = [];

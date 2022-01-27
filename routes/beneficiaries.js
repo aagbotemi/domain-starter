@@ -18,6 +18,18 @@ router.get(
   beneficiariesController.getPOTrainees
 );
 
+router.get(
+  "/:states",
+  jwtAuth.adminVerifyToken,
+  beneficiariesController.getTraineesinState
+);
+
+router.get(
+  "/po/states",
+  jwtAuth.poVerifyToken,
+  beneficiariesController.getPOTraineesinState
+);
+
 router.post(
   "/",
   jwtAuth.poVerifyToken,

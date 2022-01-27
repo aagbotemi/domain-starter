@@ -24,6 +24,12 @@ router.get(
   trainingCategories.getAllTrainingCategories
 );
 
+router.get(
+  "/report",
+  jwtAuth.generalVerifyToken,
+  trainingCategories.getAllTrainingCategoriesReport
+);
+
 // router.get(
 //   "/po/categories/1",
 //   jwtAuth.poVerifyToken,

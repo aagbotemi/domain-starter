@@ -2,7 +2,7 @@ const db = require("../models");
 const employ = db.employ;
 const user = db.users;
 const beneficiaries = db.beneficiaries;
-const { constants } = require("./constants");
+
 
 exports.employController = {
   create: (employInfo) => {
@@ -43,37 +43,38 @@ exports.employController = {
     const updateInfo = req.body;
     const filter = {
       where: {
-        beneficiaryId: req.params.id,
+        id: req.params.id,
       },
-      
+      include: { model: db.employ },
     };
 
-    employ
-      .findOne(filter)
-      .then((data) => {
-        data
-          .updateAttributes(updateInfo)
-          .then((data) => {
-            if (data[0] !== 1) {
-              res.status(404).send({
-                status: false,
-                message: "record not found",
-              });
-            }
-            const trail = {
-              userId: `${req.userId}`,
-              action: ` employment details zone has been updated`,
-              type: "warning",
-            };
-            auditTrailController.create(trail);
-            res.status(200).send({ message: "Record Updated" });
-          })
-          .catch((err) => {
-            constants.handleErr(err, res);
-          });
-      })
-      .catch((err) => {
+    beneficiaries.findOne(filter)
+    .then((data) =>  {
+      data.employ
+        .updateAttributes(updateInfo)
+        .then((data) =>  {
+          if (data[0] !== 1) {
+            res.status(404).send({
+              status: false,
+              message: "record not found",
+            });
+          }
+         trail = {
+            userId: `${req.userId}`,
+            action: ` employment details zone has been updated`,
+            type: "warning",
+          };
+          auditTrailController.create(trail);
+          res.status(200).send({ message: "Record Updated" });
+        })
+        .catch((err) => {
+          constants.handleErr(err, res);
+        });
+    })
+    .catch((err) => {
         constants.handleErr(err, res);
       });
   },
+
+   
 };

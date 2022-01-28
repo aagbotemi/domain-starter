@@ -31,7 +31,7 @@ exports.beneficiariesController = {
       curriculumVitae: req.file ? req.file.path : null,
       trainingBatchId: req.body.trainingBatch,
       categoryId: req.body.categoryId,
-      partnerOrganisationId = req.poId
+      partnerOrganisationId: req.poId
     };
 
     // trainee.partnerOrganisationId = req.poId;

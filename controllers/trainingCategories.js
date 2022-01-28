@@ -48,14 +48,17 @@ exports.trainingCategories = {
             female.push(element);
           }
         });
-        res.status(200).send({
-          success: true,
-          message: "All trainees categories retrieved successfully",
-          data: data,
+        const report = {
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
+         }
+        res.status(200).send({
+          success: true,
+          message: "All trainees categories retrieved successfully",
+          data: data,
+          report,
           length: data.length,
         });
         // res.status(200).send(data)
@@ -205,14 +208,17 @@ exports.trainingCategories = {
             female.push(element);
           }
         });
-        res.status(200).send({
-          success: true,
-          message: "All trainees categories retrieved successfully",
-          data: data,
+        const report = {
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
+         }
+        res.status(200).send({
+          success: true,
+          message: "All trainees categories retrieved successfully",
+          data: data,
+          report,
           length: data.length,
         });
         // res.status(200).send({

@@ -29,9 +29,17 @@ exports.beneficiariesController = {
       graduationStatus: req.body.graduationStatus,
       employmentStatus: req.body.employmentStatus,
       curriculumVitae: req.file ? req.file.path : null,
+      trainingBatchId: req.body.trainingBatchId,
+      categoryId: req.body.categoryId,
+      partnerorganisationId: req.body.partnerorganisationId,
+      reason: req.body.reason,
+      dateEvicted: req.body.dateEvicted,
+      organisationName: req.body.organisationName,
+      organisationAddress: req.body.organisationAddress,
+      yearEmployed: req.body.yearEmployed,
     };
-    
-    trainee.partnerOrganisationId = req.poId;
+
+    // trainee.partnerOrganisationId = req.poId;
 
     beneficiaries
       .create(trainee)
@@ -147,16 +155,18 @@ exports.beneficiariesController = {
             female.push(element);
           }
         });
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
+        const report = {
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
+        };
+        res.status(200).send({
+          success: true,
+          message: "All trainees retrieved successfully",
+          report,
           length: data.length,
-          data: data
-          
+          data,
         });
       })
       .catch((err) => {
@@ -200,16 +210,18 @@ exports.beneficiariesController = {
             female.push(element);
           }
         });
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
+        const report = {
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
+        };
+        res.status(200).send({
+          success: true,
+          message: "All trainees retrieved successfully",
+          report,
+          data,
           length: data.length,
-          data: data
-          
         });
       })
       .catch((err) => {

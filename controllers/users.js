@@ -20,6 +20,7 @@ exports.usersController = {
       userName: req.body.userName,
       userType: req.body.userType,
       profileImage: req.file ? req.file.path : null,
+      partnerorganisationId: req.body.partnerorganisationId,
     };
     user.password = bcrypt.hashSync(user.password, 10);
     users
@@ -29,8 +30,8 @@ exports.usersController = {
           userId: `${req.userId}`,
           action: `${req.body.fullName} has been created successfully`,
           type: "success",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({
           success: true,
           message: "User Added Successfully",
@@ -162,8 +163,8 @@ exports.usersController = {
           userId: `${req.userId}`,
           action: ` ${req.body.fullName} has been updated`,
           type: "warning",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send(data);
       })
       .catch((err) => {
@@ -174,7 +175,8 @@ exports.usersController = {
   forgotPassword: async (req, res) => {
     const reset = req.body;
     reset.password = bcrypt.hashSync(reset.password, 10);
-    await users.findOne({
+    await users
+      .findOne({
         where: {
           email: req.body.email,
         },
@@ -182,16 +184,14 @@ exports.usersController = {
       .then((data) => {
         users.update(reset, {
           where: {
-            id: data.id
-          }
-        })
+            id: data.id,
+          },
+        });
       })
       .then((data) => {
-        res
-          .status(200)
-          .send({
-            message: "Password Changed successfully"
-          });
+        res.status(200).send({
+          message: "Password Changed successfully",
+        });
       })
       .catch((err) => {
         constants.handleErr(err, res);
@@ -215,8 +215,8 @@ exports.usersController = {
           userId: `${req.userId}`,
           action: `A users has been deleted`,
           type: "danger",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({
           status: true,
           message: "record deleted",

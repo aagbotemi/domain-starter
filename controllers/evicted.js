@@ -10,6 +10,15 @@ exports.evictedController = {
     evicted
       .create(evictedInfo)
       .then((data) => {
+        benficiaryInfo = {
+          graduationStatus: req.body.type,
+        };
+
+        beneficiaries.update(benficiaryInfo, {
+          where: {
+            beneficiaryId: req.body.beneficiaryId,
+          },
+        });
         trail = {
           userId: `${req.userId}`,
           action: ` ${req.body.beneficiaryId} eviction info has been created successfully`,
@@ -69,7 +78,6 @@ exports.evictedController = {
       });
   },
 
-
   update: (req, res) => {
     const info = req.body;
     // category.id = req.params.id;
@@ -98,7 +106,6 @@ exports.evictedController = {
         constants.handleErr(err, res);
       });
   },
-
 
   delete: (req, res) => {
     evicted

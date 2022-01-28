@@ -29,9 +29,14 @@ exports.beneficiariesController = {
       graduationStatus: req.body.graduationStatus,
       employmentStatus: req.body.employmentStatus,
       curriculumVitae: req.file ? req.file.path : null,
-      trainingBatchId: req.body.trainingBatch,
+      trainingBatchId: req.body.trainingBatchId,
       categoryId: req.body.categoryId,
-      partnerOrganisationId: req.poId
+      partnerorganisationId: req.body.partnerorganisationId,
+      reason: req.body.reason,
+      dateEvicted: req.body.dateEvicted,
+      organisationName: req.body.organisationName,
+      organisationAddress: req.body.organisationAddress,
+      yearEmployed: req.body.yearEmployed,
     };
 
     // trainee.partnerOrganisationId = req.poId;

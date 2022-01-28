@@ -9,6 +9,16 @@ exports.employController = {
     employ
       .create(employInfo)
       .then((data) => {
+        benficiaryInfo = {
+          employmentStatus: req.body.employmentStatus,
+        };
+
+        beneficiaries.update(benficiaryInfo, {
+          where: {
+            beneficiaryId: req.body.beneficiaryId,
+          },
+        });
+
         trail = {
           userId: `${req.userId}`,
           action: ` ${req.body.beneficiaryId} employ info has been created successfully`,
@@ -37,7 +47,6 @@ exports.employController = {
         },
       })
       .then((data) => {
-        
         res.status(200).send(data);
       })
       .catch((err) => {
@@ -46,7 +55,6 @@ exports.employController = {
         });
       });
   },
-
 
   getAll: (req, res) => {
     employ

@@ -73,37 +73,28 @@ exports.employController = {
   },
 
   update: (req, res) => {
-    const updateInfo = req.body;
-    const filter = {
-      where: {
-        id: req.params.id,
-      },
-      include: { model: db.employ },
-    };
+    const info = req.body;
+    // category.id = req.params.id;
 
-    beneficiaries
-      .findOne(filter)
+    employ
+      .update(info, {
+        where: {
+          beneficiaryId: req.params.id,
+        },
+      })
       .then((data) => {
-        data.employ
-          .updateAttributes(updateInfo)
-          .then((data) => {
-            if (data[0] !== 1) {
-              res.status(404).send({
-                status: false,
-                message: "record not found",
-              });
-            }
-            trail = {
-              userId: `${req.userId}`,
-              action: ` employment details zone has been updated`,
-              type: "warning",
-            };
-            auditTrailController.create(trail);
-            res.status(200).send({ message: "Record Updated" });
-          })
-          .catch((err) => {
-            constants.handleErr(err, res);
+        if (data[0] !== 1) {
+          res.status(400).send({
+            message: "Record not found",
           });
+        }
+        trail = {
+          userId: `${req.userId}`,
+          action: ` ${req.body.beneficiaryId} has been updated`,
+          type: "warning",
+        };
+        auditTrailController.create(trail);
+        res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
         constants.handleErr(err, res);

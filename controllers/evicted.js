@@ -69,42 +69,36 @@ exports.evictedController = {
       });
   },
 
+
   update: (req, res) => {
-    const updateInfo = req.body;
-    const filter = {
-      where: {
-        beneficiaryId: req.params.id,
-      },
-    };
+    const info = req.body;
+    // category.id = req.params.id;
 
     evicted
-      .findOne(filter)
+      .update(info, {
+        where: {
+          beneficiaryId: req.params.id,
+        },
+      })
       .then((data) => {
-        data
-          .updateAttributes(updateInfo)
-          .then((data) => {
-            if (data[0] !== 1) {
-              res.status(404).send({
-                status: false,
-                message: "record not found",
-              });
-            }
-            const trail = {
-              userId: `${req.userId}`,
-              action: ` evicted info details zone has been updated`,
-              type: "warning",
-            };
-            auditTrailController.create(trail);
-            res.status(200).send({ message: "Record Updated" });
-          })
-          .catch((err) => {
-            constants.handleErr(err, res);
+        if (data[0] !== 1) {
+          res.status(400).send({
+            message: "Record not found",
           });
+        }
+        trail = {
+          userId: `${req.userId}`,
+          action: ` ${req.body.beneficiaryId} has been updated`,
+          type: "warning",
+        };
+        auditTrailController.create(trail);
+        res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
         constants.handleErr(err, res);
       });
   },
+
 
   delete: (req, res) => {
     evicted

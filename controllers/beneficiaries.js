@@ -29,9 +29,12 @@ exports.beneficiariesController = {
       graduationStatus: req.body.graduationStatus,
       employmentStatus: req.body.employmentStatus,
       curriculumVitae: req.file ? req.file.path : null,
+      trainingBatchId: req.body.trainingBatch,
+      categoryId: req.body.categoryId,
+      partnerOrganisationId = req.poId
     };
-    
-    trainee.partnerOrganisationId = req.poId;
+
+    // trainee.partnerOrganisationId = req.poId;
 
     beneficiaries
       .create(trainee)
@@ -147,19 +150,18 @@ exports.beneficiariesController = {
             female.push(element);
           }
         });
-         const report = {
+        const report = {
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
-         }
+        };
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
           report,
           length: data.length,
-          data
-          
+          data,
         });
       })
       .catch((err) => {
@@ -208,14 +210,13 @@ exports.beneficiariesController = {
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
-         }
+        };
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
           report,
+          data,
           length: data.length,
-          data: data
-          
         });
       })
       .catch((err) => {

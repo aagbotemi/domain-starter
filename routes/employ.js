@@ -3,16 +3,14 @@ var router = express.Router();
 const { employController } = require("../controllers/employ");
 const { jwtAuth } = require("../middleware/auth");
 
-router.get(
-    '/',
-    jwtAuth.generalVerifyToken,
-    employController.getAll
-)
+router.post("/", jwtAuth.generalVerifyToken, employController.create);
 
-router.put(
-    "/:id",
-    jwtAuth.generalVerifyToken,
-    employController.update
-);
+router.get("/", jwtAuth.generalVerifyToken, employController.getAll);
+
+router.get("/:id", jwtAuth.generalVerifyToken, employController.getById);
+
+router.put("/:id", jwtAuth.generalVerifyToken, employController.update);
+
+router.delete("/:id", jwtAuth.generalVerifyToken, employController.delete);
 
 module.exports = router;

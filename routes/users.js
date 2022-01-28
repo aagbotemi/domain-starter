@@ -7,7 +7,6 @@ const { upload } = require("../middleware/upload");
 router.post(
   "/",
   jwtAuth.adminVerifyToken,
-  upload.single("profileImage"),
   usersController.create
 );
 

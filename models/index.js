@@ -38,6 +38,7 @@ db.geoPoliticalZones = require("./geoPoliticalZones")(sequelize, Sequelize);
 db.auditTrail = require("./auditTrail")(sequelize, Sequelize);
 db.employ = require("./employ")(sequelize, Sequelize);
 db.evicted = require("./evicted")(sequelize, Sequelize);
+db.fileUpload = require("./fileUpload")(sequelize, Sequelize);
 
 // db.partnerorganisationcategory = require("./partnerorganisationcategory")(sequelize, Sequelize);
 

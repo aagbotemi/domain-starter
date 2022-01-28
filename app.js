@@ -21,6 +21,7 @@ const dashboardPoRouter = require("./routes/dashboardPo");
 const auditTrailRouter = require("./routes/auditTrail");
 const employRouter = require("./routes/employ");
 const evictedRouter = require("./routes/evicted");
+const fileUploadRouter = require("./routes/fileUpload");
 
 var app = express();
 app.use(cors());
@@ -51,6 +52,7 @@ app.use("/dashboardPo", dashboardPoRouter);
 app.use("/audit-trail", auditTrailRouter);
 app.use("/employ", employRouter);
 app.use("/evicted", evictedRouter);
+app.use("/file-upload", fileUploadRouter);
 
 const db = require("./models/index");
 db.sequelize.sync();

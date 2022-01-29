@@ -216,6 +216,7 @@ exports.beneficiariesController = {
           maleCount: male.length,
           femaleCount: female.length,
         };
+        data.push(report);
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",

@@ -108,14 +108,14 @@ exports.employController = {
         },
       })
       .then((data) => {
-       
+        res.status(200).send({ message: "Record Updated" });
+
         trail = {
           userId: `${req.userId}`,
           action: ` ${req.body.beneficiaryId} has been updated`,
           type: "warning",
         };
         auditTrailController.create(trail);
-        res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
         constants.handleErr(err, res);

@@ -48,8 +48,10 @@ router.post("/",
         else if (err) {
             return res.status(400).send(err);
         }
-        // Display uploaded image for user validation
-        res.send(`${req.file.path}`);
+        // remove the public(string) before the first slash
+        const path = req.file.path;
+        const pathToReturn  = path.split("/").shift().join("/");
+        res.send(`${pathToReturn}`);
     });
 });
 

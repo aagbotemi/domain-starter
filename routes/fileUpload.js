@@ -49,9 +49,9 @@ router.post("/",
             return res.status(400).send(err);
         }
         // remove the public(string) before the first slash
-        const path = req.file.path;
-        const pathToReturn  = path.split("/").shift().join("/");
-        res.send(`${pathToReturn}`);
+        let path = req.file.path;
+        const pathToReturn  = path.substring(path.indexOf("/") + 1);
+        res.send(pathToReturn);
     });
 });
 

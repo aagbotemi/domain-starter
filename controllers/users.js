@@ -11,17 +11,17 @@ const Op = db.Sequelize.Op;
 
 exports.usersController = {
   create: (req, res) => {
-    // const user = req.body;
-    const user = {
-      fullName: req.body.fullName,
-      email: req.body.email,
-      phoneNumber: req.body.phoneNumber,
-      password: req.body.password,
-      userName: req.body.userName,
-      userType: req.body.userType,
-      profileImage: req.file ? req.file.path : null,
-      partnerorganisationId: req.body.partnerorganisationId,
-    };
+    const user = req.body;
+    // const user = {
+    //   fullName: req.body.fullName,
+    //   email: req.body.email,
+    //   phoneNumber: req.body.phoneNumber,
+    //   password: req.body.password,
+    //   userName: req.body.userName,
+    //   userType: req.body.userType,
+    //   profileImage: req.file ? req.file.path : null,
+    //   partnerorganisationId: req.body.partnerorganisationId,
+    // };
     user.password = bcrypt.hashSync(user.password, 10);
     users
       .create(user)

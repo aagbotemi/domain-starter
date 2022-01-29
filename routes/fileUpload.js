@@ -1,14 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { fileUploadController } = require("../controllers/fileUpload");
-const { jwtAuth } = require("../middleware/auth");
-const { upload } = require("../middleware/upload");
 const multer = require("multer")
 const path = require("path")
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
-        cb(null, 'images')
+        cb(null, '../public/uploads')
     },
     filename(req, file, cb){
         cb(null, `${file.fieldname}${Date.now()}${path.extname(file.originalname)}`)

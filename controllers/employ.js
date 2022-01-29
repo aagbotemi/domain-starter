@@ -56,6 +56,23 @@ exports.employController = {
       });
   },
 
+  getByBeneficiaryId: (req, res) => {
+    employ
+      .findOne({
+        where: {
+          beneficiaryId: req.params.id,
+        }
+       
+      })
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
   getAll: (req, res) => {
     employ
       .findAll({
@@ -87,22 +104,18 @@ exports.employController = {
     employ
       .update(info, {
         where: {
-          beneficiaryId: req.params.id,
+          beneficiaryId: req.body.beneficiaryId,
         },
       })
       .then((data) => {
-        if (data[0] !== 1) {
-          res.status(400).send({
-            message: "Record not found",
-          });
-        }
+        res.status(200).send({ message: "Record Updated" });
+
         trail = {
           userId: `${req.userId}`,
           action: ` ${req.body.beneficiaryId} has been updated`,
           type: "warning",
         };
         auditTrailController.create(trail);
-        res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
         constants.handleErr(err, res);

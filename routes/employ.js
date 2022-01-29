@@ -9,7 +9,11 @@ router.get("/", jwtAuth.generalVerifyToken, employController.getAll);
 
 router.get("/:id", jwtAuth.generalVerifyToken, employController.getById);
 
+router.get("/beneficiary/:id", jwtAuth.generalVerifyToken, employController.getByBeneficiaryId);
+
+
 router.put("/:id", jwtAuth.generalVerifyToken, employController.update);
+
 
 router.delete("/:id", jwtAuth.generalVerifyToken, employController.delete);
 

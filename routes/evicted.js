@@ -15,11 +15,11 @@ router.get(
     evictedController.getById
 );
 
-router.put(
-    "/:id",
-    jwtAuth.generalVerifyToken,
-    evictedController.update
-);
+// router.put(
+//     "/:id",
+//     jwtAuth.generalVerifyToken,
+//     evictedController.update
+// );
 
 router.delete(
     "/:id",

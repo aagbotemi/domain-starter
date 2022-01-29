@@ -5,36 +5,116 @@ const beneficiaries = db.beneficiaries;
 const { constants } = require("./constants");
 
 exports.evictedController = {
-  create: (req, res) => {
-    const evictedInfo = req.body;
-    evicted
-      .create(evictedInfo)
-      .then((data) => {
-        benficiaryInfo = {
-          graduationStatus: req.body.type,
-        };
+  create: async function updateOrCreate(req, res) {
+    // First try to find the record
+    const foundItem = await evicted.findOne({
+      where: {
+        beneficiaryId: req.body.beneficiaryId,
+      },
+    });
+    if (!foundItem) {
+      const evictedInfo = req.body;
+      const data = await evicted.create(evictedInfo);
+      benficiaryInfo = {
+        graduationStatus: req.body.type,
+      };
 
-        beneficiaries.update(benficiaryInfo, {
-          where: {
-            beneficiaryId: req.body.beneficiaryId,
-          },
-        });
-        trail = {
-          userId: `${req.userId}`,
-          action: ` ${req.body.beneficiaryId} eviction info has been created successfully`,
-          type: "success",
-        };
-        auditTrailController.create(trail);
-        res.status(200).send({
-          success: true,
-          message: "eviction info Added Successfully",
-          data: data,
-        });
-      })
-      .catch((err) => {
-        constants.handleErr(err, res);
+      beneficiaries.update(benficiaryInfo, {
+        where: {
+          beneficiaryId: req.body.beneficiaryId,
+        },
       });
+      trail = {
+        userId: `${req.userId}`,
+        action: ` ${req.body.beneficiaryId} eviction info has been created successfully`,
+        type: "success",
+      };
+      auditTrailController.create(trail);
+      res.status(200).send({
+        success: true,
+        message: "eviction info Added Successfully",
+        data: data,
+      });
+    }
+    // Found an item, update it
+    const info = req.body;
+    const item = await evicted.update(info, {
+      where: {
+        beneficiaryId: req.body.beneficiaryId,
+      },
+    });
+    if (item[0] !== 1) {
+      res.status(400).send({
+        message: "Record not found",
+      });
+    }
+    trail = {
+      userId: `${req.userId}`,
+      action: ` ${req.body.beneficiaryId} has been updated`,
+      type: "warning",
+    };
+    auditTrailController.create(trail);
+    res.status(200).send({ message: "Record Updated" });
   },
+
+  // update: (req, res) => {
+  //   const info = req.body;
+  //   // category.id = req.params.id;
+
+  //   evicted
+  //     .update(info, {
+  //       where: {
+  //         beneficiaryId: req.params.id,
+  //       },
+  //     })
+  //     .then((data) => {
+  //       if (data[0] !== 1) {
+  //         res.status(400).send({
+  //           message: "Record not found",
+  //         });
+  //       }
+  //       trail = {
+  //         userId: `${req.userId}`,
+  //         action: ` ${req.body.beneficiaryId} has been updated`,
+  //         type: "warning",
+  //       };
+  //       auditTrailController.create(trail);
+  //       res.status(200).send({ message: "Record Updated" });
+  //     })
+  //     .catch((err) => {
+  //       constants.handleErr(err, res);
+  //     });
+  // },
+  // create: (req, res) => {
+  //   const evictedInfo = req.body;
+  //   evicted
+  //     .create(evictedInfo)
+  //     .then((data) => {
+  //       benficiaryInfo = {
+  //         graduationStatus: req.body.type,
+  //       };
+
+  //       beneficiaries.update(benficiaryInfo, {
+  //         where: {
+  //           beneficiaryId: req.body.beneficiaryId,
+  //         },
+  //       });
+  //       trail = {
+  //         userId: `${req.userId}`,
+  //         action: ` ${req.body.beneficiaryId} eviction info has been created successfully`,
+  //         type: "success",
+  //       };
+  //       auditTrailController.create(trail);
+  //       res.status(200).send({
+  //         success: true,
+  //         message: "eviction info Added Successfully",
+  //         data: data,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       constants.handleErr(err, res);
+  //     });
+  // },
   getById: (req, res) => {
     evicted
       .findOne({
@@ -75,35 +155,6 @@ exports.evictedController = {
           status: false,
           message: err.message || "Could not fetch record",
         });
-      });
-  },
-
-  update: (req, res) => {
-    const info = req.body;
-    // category.id = req.params.id;
-
-    evicted
-      .update(info, {
-        where: {
-          beneficiaryId: req.params.id,
-        },
-      })
-      .then((data) => {
-        if (data[0] !== 1) {
-          res.status(400).send({
-            message: "Record not found",
-          });
-        }
-        trail = {
-          userId: `${req.userId}`,
-          action: ` ${req.body.beneficiaryId} has been updated`,
-          type: "warning",
-        };
-        auditTrailController.create(trail);
-        res.status(200).send({ message: "Record Updated" });
-      })
-      .catch((err) => {
-        constants.handleErr(err, res);
       });
   },
 

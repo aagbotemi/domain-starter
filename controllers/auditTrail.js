@@ -13,11 +13,33 @@ exports.auditTrailController = {
                 console.log(err)
             });
     },
-    getAll:(req, res) => {
+    getAuditPerUser:(req, res) => {
         auditTrail.findAll({
             where: {
                 userId: req.userId,
             },
+            include: [{
+                model: user,
+                include: [partnerOrganisation]
+            }],
+        })
+        .then(data => {
+            res.status(200).send({
+                status: true,
+                length: data.length,
+                data,
+            })
+        })
+        .catch(err => {
+            res.status(400)
+                .send({
+                    status: false,
+                    message: err.message || "Could not fetch record"
+                })
+        })
+    },
+    getAuditForAdmin:(req, res) => {
+        auditTrail.findAll({
             include: [{
                 model: user,
                 include: [partnerOrganisation]

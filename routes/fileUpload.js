@@ -5,7 +5,7 @@ const path = require("path")
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
-        cb(null, 'public/uploads')
+        cb(null, '../public/uploads/')
     },
     filename(req, file, cb){
         cb(null, `${file.fieldname}${Date.now()}${path.extname(file.originalname)}`)
@@ -25,7 +25,7 @@ function checkFileType(file, cb){
 }
 
 router.post("/",
-    // jwtAuth.generalVerifyToken,
+    jwtAuth.generalVerifyToken,
     (req, res) => {
     const upload = multer({
         storage: storage,
@@ -36,16 +36,16 @@ router.post("/",
     upload(req, res, function(err) {
         
         if (req.fileValidationError) {
-            return res.send(req.fileValidationError);
+            return res.sendStatus(400).send(req.fileValidationError);
         }
         else if (!req.file) {
-            return res.send('Please select a file to upload');
+            return res.sendStatus(400).send('Please select a file to upload');
         }
         else if (err instanceof multer.MulterError) {
-            return res.send(err);
+            return res.sendStatus(400).send(err);
         }
         else if (err) {
-            return res.send(err);
+            return res.sendStatus(400).send(err);
         }
         // Display uploaded image for user validation
         res.send(`${req.file.path}`);

@@ -15,8 +15,11 @@ exports.auditTrailController = {
     },
     getAll:(req, res) => {
         auditTrail.findAll({
+            where: {
+                userId: req.userId,
+            },
             include: [{
-                model: user, 
+                model: user,
                 include: [partnerOrganisation]
             }],
         })

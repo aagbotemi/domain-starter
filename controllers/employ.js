@@ -108,11 +108,7 @@ exports.employController = {
         },
       })
       .then((data) => {
-        if (data[0] !== 1) {
-          res.status(400).send({
-            message: "Record not found",
-          });
-        }
+       
         trail = {
           userId: `${req.userId}`,
           action: ` ${req.body.beneficiaryId} has been updated`,

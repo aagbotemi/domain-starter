@@ -6,7 +6,13 @@ const { jwtAuth } = require("../middleware/auth");
 router.get(
     '/',
     jwtAuth.generalVerifyToken,
-    auditTrailController.getAll
+    auditTrailController.getAuditPerUser
+)
+
+router.get(
+    '/admin',
+    jwtAuth.adminVerifyToken,
+    auditTrailController.getAuditForAdmin
 )
 
 module.exports = router;

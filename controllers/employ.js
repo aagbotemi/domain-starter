@@ -56,6 +56,23 @@ exports.employController = {
       });
   },
 
+  getByBeneficiaryId: (req, res) => {
+    employ
+      .findOne({
+        where: {
+          beneficiaryId: req.params.id,
+        }
+       
+      })
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
   getAll: (req, res) => {
     employ
       .findAll({

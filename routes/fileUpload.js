@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer")
-const path = require("path")
+const path = require("path");
+const { jwtAuth } = require("../middleware/auth");
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {

@@ -12,32 +12,32 @@ require("dotenv").config();
 
 exports.beneficiariesController = {
   createTrainee: (req, res) => {
-    // const trainee = req.body;
-    const trainee = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      middleName: req.body.middleName,
-      email: req.body.email,
-      phoneNumber: req.body.phoneNumber,
-      gender: req.body.gender,
-      stateOfOrigin: req.body.stateOfOrigin,
-      localGovernmentOfOrigin: req.body.localGovernmentOfOrigin,
-      stateOfResidence: req.body.stateOfResidence,
-      highestQualification: req.body.highestQualification,
-      profileImage: req.file ? req.file.path : null,
-      trainingYear: req.body.trainingYear,
-      graduationStatus: req.body.graduationStatus,
-      employmentStatus: req.body.employmentStatus,
-      curriculumVitae: req.file ? req.file.path : null,
-      trainingBatchId: req.body.trainingBatchId,
-      categoryId: req.body.categoryId,
-      partnerorganisationId: req.body.partnerorganisationId,
-      reason: req.body.reason,
-      dateEvicted: req.body.dateEvicted,
-      organisationName: req.body.organisationName,
-      organisationAddress: req.body.organisationAddress,
-      yearEmployed: req.body.yearEmployed,
-    };
+    const trainee = req.body;
+    // const trainee = {
+    //   firstName: req.body.firstName,
+    //   lastName: req.body.lastName,
+    //   middleName: req.body.middleName,
+    //   email: req.body.email,
+    //   phoneNumber: req.body.phoneNumber,
+    //   gender: req.body.gender,
+    //   stateOfOrigin: req.body.stateOfOrigin,
+    //   localGovernmentOfOrigin: req.body.localGovernmentOfOrigin,
+    //   stateOfResidence: req.body.stateOfResidence,
+    //   highestQualification: req.body.highestQualification,
+    //   profileImage: req.file ? req.file.path : null,
+    //   trainingYear: req.body.trainingYear,
+    //   graduationStatus: req.body.graduationStatus,
+    //   employmentStatus: req.body.employmentStatus,
+    //   curriculumVitae: req.file ? req.file.path : null,
+    //   trainingBatchId: req.body.trainingBatchId,
+    //   categoryId: req.body.categoryId,
+    //   partnerorganisationId: req.body.partnerorganisationId,
+    //   reason: req.body.reason,
+    //   dateEvicted: req.body.dateEvicted,
+    //   organisationName: req.body.organisationName,
+    //   organisationAddress: req.body.organisationAddress,
+    //   yearEmployed: req.body.yearEmployed,
+    // };
 
     // trainee.partnerOrganisationId = req.poId;
 

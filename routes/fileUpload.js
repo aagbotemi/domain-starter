@@ -3,18 +3,46 @@ const router = express.Router();
 const { fileUploadController } = require("../controllers/fileUpload");
 const { jwtAuth } = require("../middleware/auth");
 const { upload } = require("../middleware/upload");
+const multer = require("multer")
+const path = require("path")
 
-router.post(
-    "/",
+const storage = multer.diskStorage({
+    destination(req, file, cb) {
+        cb(null, 'images')
+    },
+    filename(req, file, cb){
+        cb(null, `${file.fieldname}${Date.now()}${path.extname(file.originalname)}`)
+    }
+})
+
+function checkFileType(file, cb){
+    const filetypes = /jpg|jpeg|png|pdf/
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
+    const mimetype = filetypes.test(file.mimetype)
+
+    if(extname && mimetype){
+        return cb(null, true)
+    }else {
+        cb('Unsupported file type')
+    }
+}
+
+router.post("/",
     // jwtAuth.generalVerifyToken,
     (req, res) => {
+    const upload = multer({
+        storage: storage,
+        fileFilter: function (req, file, cb) {
+            checkFileType(file, cb)
+        }
+    }).single("file")
     upload(req, res, function(err) {
-
+        
         if (req.fileValidationError) {
             return res.send(req.fileValidationError);
         }
         else if (!req.file) {
-            return res.send('Please select an image to upload');
+            return res.send('Please select a file to upload');
         }
         else if (err instanceof multer.MulterError) {
             return res.send(err);
@@ -22,12 +50,9 @@ router.post(
         else if (err) {
             return res.send(err);
         }
-
         // Display uploaded image for user validation
         res.send(`${req.file.path}`);
     });
 });
-
-router.get("/", jwtAuth.generalVerifyToken, fileUploadController.getFile);
 
 module.exports = router;

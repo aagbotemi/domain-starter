@@ -36,16 +36,16 @@ router.post("/",
     upload(req, res, function(err) {
         
         if (req.fileValidationError) {
-            return res.sendStatus(400).send(req.fileValidationError);
+            return res.status(400).send(req.fileValidationError);
         }
         else if (!req.file) {
-            return res.sendStatus(400).send('Please select a file to upload');
+            return res.status(400).send('Please select a file to upload');
         }
         else if (err instanceof multer.MulterError) {
-            return res.sendStatus(400).send(err);
+            return res.status(400).send(err);
         }
         else if (err) {
-            return res.sendStatus(400).send(err);
+            return res.status(400).send(err);
         }
         // Display uploaded image for user validation
         res.send(`${req.file.path}`);

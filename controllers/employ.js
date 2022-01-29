@@ -104,7 +104,7 @@ exports.employController = {
     employ
       .update(info, {
         where: {
-          beneficiaryId: req.params.id,
+          beneficiaryId: req.body.beneficiaryId,
         },
       })
       .then((data) => {

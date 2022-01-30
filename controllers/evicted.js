@@ -27,7 +27,7 @@ exports.evictedController = {
       });
       trail = {
         userId: `${req.userId}`,
-        action: ` ${req.body.beneficiaryId} eviction info has been created successfully`,
+        action: `created an eviction info for a beneficiary`,
         type: "success",
       };
       auditTrailController.create(trail);
@@ -61,7 +61,7 @@ exports.evictedController = {
     });
     trail = {
       userId: `${req.userId}`,
-      action: ` ${req.body.beneficiaryId} has been updated`,
+      action: `updated beneficiary details`,
       type: "warning",
     };
     auditTrailController.create(trail);
@@ -185,7 +185,7 @@ exports.evictedController = {
         }
         trail = {
           userId: `${req.userId}`,
-          action: ` ${req.body.beneficiaryId} evicted info has been deleted`,
+          action: `deleted a beneficiary eviction details`,
           type: "danger",
         };
         auditTrailController.create(trail);

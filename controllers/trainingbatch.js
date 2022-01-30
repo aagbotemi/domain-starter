@@ -156,7 +156,7 @@ exports.trainingBatch = {
         }
         trail = {
           userId: `${req.userId}`,
-          action: ` ${req.body.batchName} has been updated`,
+          action: `A training batch has been updated`,
           type: "warning",
         };
         auditTrailController.create(trail);

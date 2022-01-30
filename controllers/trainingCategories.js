@@ -255,7 +255,7 @@ exports.trainingCategories = {
         }
         trail = {
           userId: `${req.userId}`,
-          action: ` ${req.body.categoryName} has been updated`,
+          action: `A training category has been updated`,
           type: "warning",
         };
         auditTrailController.create(trail);

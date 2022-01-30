@@ -26,7 +26,7 @@ exports.employController = {
       });
       trail = {
         userId: `${req.userId}`,
-        action: ` ${req.body.beneficiaryId} employment info has been created successfully`,
+        action: `successfully created employment info for a beneficiary`,
         type: "success",
       };
       auditTrailController.create(trail);
@@ -59,7 +59,7 @@ exports.employController = {
     });
     trail = {
       userId: `${req.userId}`,
-      action: ` ${req.body.beneficiaryId} has been updated`,
+      action: `updated beneficiary details`,
       type: "warning",
     };
     auditTrailController.create(trail);
@@ -173,7 +173,7 @@ exports.employController = {
 
         trail = {
           userId: `${req.userId}`,
-          action: ` ${req.body.beneficiaryId} has been updated`,
+          action: `updated beneficiary details`,
           type: "warning",
         };
         auditTrailController.create(trail);
@@ -199,7 +199,7 @@ exports.employController = {
         }
         trail = {
           userId: `${req.userId}`,
-          action: ` ${req.body.beneficiaryId} employment info has been deleted`,
+          action: `deleted a beneficiary employment details`,
           type: "danger",
         };
         auditTrailController.create(trail);

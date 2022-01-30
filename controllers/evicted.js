@@ -49,6 +49,7 @@ exports.evictedController = {
         message: "Record not found",
       });
     }
+    
     benficiaryInfo = {
       graduationStatus: req.body.type,
     };

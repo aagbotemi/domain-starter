@@ -88,4 +88,7 @@ db.auditTrail.belongsTo(db.users);
 db.partnerOrganisation.hasMany(db.auditTrail);
 db.auditTrail.belongsTo(db.partnerOrganisation);
 
+db.beneficiaries.hasMany(db.auditTrail);
+db.auditTrail.belongsTo(db.beneficiaries);
+
 module.exports = db;

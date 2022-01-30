@@ -3,6 +3,7 @@ const evicted = db.evicted;
 const user = db.users;
 const beneficiaries = db.beneficiaries;
 const { constants } = require("./constants");
+const { auditTrailController } = require("./auditTrail");
 
 exports.evictedController = {
   create: async function updateOrCreate(req, res) {

@@ -194,47 +194,16 @@ exports.trainingCategories = {
   getAllTrainingCategoriesReport: (req, res) => {
     trainingCategories
       .findAll({
-        include: {
+        include: [{
           model: db.beneficiaries,
-        },
+        }],
       })
       .then((data) => {
-        // const male = [];
-        // const female = [];
-        // for(let i = 0; i<=data.length; i++){
-        //   const gender = data[i].beneficiary.gender
-        //   console.log(gender);
-        //   if (gender === "male") {
-        //     male.push(data[i]);
-        //   } else {
-        //     female.push(data[i]);
-        //   }
-        // }
-        // data.forEach((element) => {
-        //   if (element.beneficiary.gender === "male") {
-        //     male.push(element);
-        //   } else {
-        //     female.push(element);
-        //   }
-        // });
-        // const report = {
-        //   maleReport: male,
-        //   femaleReport: female,
-        //   maleCount: male.length,
-        //   femaleCount: female.length,
-        // };
         res.status(200).send({
           success: true,
           message: "All trainees categories retrieved successfully",
-          data: data,
-          // report,
-          length: data.length,
+          data,
         });
-        // res.status(200).send({
-        //   success: true,
-        //   message: "All trainees categories retrieved successfully",
-        //   data,
-        // });
       })
       .catch((err) => {
         res.status(400).send({
@@ -242,6 +211,56 @@ exports.trainingCategories = {
           data: [],
         });
       });
+    // trainingCategories
+    //   .findAll({
+    //     include: {
+    //       model: db.beneficiaries,
+    //     },
+    //   })
+    //   .then((data) => {
+    //     // const male = [];
+    //     // const female = [];
+    //     // for(let i = 0; i<=data.length; i++){
+    //     //   const gender = data[i].beneficiary.gender
+    //     //   console.log(gender);
+    //     //   if (gender === "male") {
+    //     //     male.push(data[i]);
+    //     //   } else {
+    //     //     female.push(data[i]);
+    //     //   }
+    //     // }
+    //     // data.forEach((element) => {
+    //     //   if (element.beneficiary.gender === "male") {
+    //     //     male.push(element);
+    //     //   } else {
+    //     //     female.push(element);
+    //     //   }
+    //     // });
+    //     // const report = {
+    //     //   maleReport: male,
+    //     //   femaleReport: female,
+    //     //   maleCount: male.length,
+    //     //   femaleCount: female.length,
+    //     // };
+    //     res.status(200).send({
+    //       success: true,
+    //       message: "All trainees categories retrieved successfully",
+    //       data: data,
+    //       // report,
+    //       length: data.length,
+    //     });
+    //     // res.status(200).send({
+    //     //   success: true,
+    //     //   message: "All trainees categories retrieved successfully",
+    //     //   data,
+    //     // });
+    //   })
+    //   .catch((err) => {
+    //     res.status(400).send({
+    //       message: err.message || "Could not find record",
+    //       data: [],
+    //     });
+    //   });
   },
 
   update: (req, res) => {

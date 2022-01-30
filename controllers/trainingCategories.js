@@ -235,6 +235,8 @@ exports.trainingCategories = {
       });
   },
 
+  
+
   update: (req, res) => {
     const category = req.body;
     // category.id = req.params.id;

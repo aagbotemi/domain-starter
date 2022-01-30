@@ -7,6 +7,16 @@ exports.dashController = {
       const partnerOrganisationCount = await db.partnerOrganisation.count();
       const trainingCategoriesCount = await db.trainingCategories.count();
       const beneficiariesCount = await db.beneficiaries.count();
+      const maleCount = await db.beneficiaries.count({
+        where: {
+          gender: "male",
+        },
+      });
+      const femaleCount = await db.beneficiaries.count({
+        where: {
+           gender: "female",
+        },
+      });
       
       const employCount2 = await db.beneficiaries.count({
         where: {
@@ -24,6 +34,8 @@ exports.dashController = {
         },
       });
       const value = {
+        maleCount,
+        femaleCount,
         partnerOrganisationCount,
         trainingCategoriesCount,
         beneficiariesCount,

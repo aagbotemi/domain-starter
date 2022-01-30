@@ -204,7 +204,7 @@ exports.trainingCategories = {
         for(const i = 0; i<=data.length; i++){
           const gender = data[i].beneficiary.gender
           console.log(gender);
-          if (ender === "male") {
+          if (gender === "male") {
             male.push(data[i]);
           } else {
             female.push(data[i]);

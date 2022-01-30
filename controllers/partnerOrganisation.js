@@ -125,6 +125,39 @@ exports.partnerOrgController = {
       });
   },
 
+  updatePartnerOrgStates: (req, res) => {
+ 
+
+    db.partnerOrganisation
+      .findOne({
+        where: {
+          id: req.params.id,
+        },
+      })
+      .then((data) => {
+        db.states.findAll({where: {id: req.body.stateId}})
+        .then((data2) => {
+          data.setStates(data2)
+
+          trail = {
+            userId: `${req.userId}`,
+            action: ` ${req.body.categoryName} has been updated`,
+            type: "warning",
+          };
+          auditTrailController.create(trail);
+
+          res.status(200).send({ message: "Record Updated" });
+        })
+        .catch((err) => {
+          constants.handleErr(err, res);
+        });
+
+      })
+      .catch((err) => {
+        constants.handleErr(err, res);
+      });
+  },
+
   updatePartnerOrg: (req, res) => {
     const po = req.body;
 

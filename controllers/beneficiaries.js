@@ -150,8 +150,8 @@ exports.beneficiariesController = {
   },
 
   getAllBeneficiariesbyYear: (req, res) => {
-    const startedDate = new Date(req.body.startDate);
-    const endDate = new Date(req.body.endDate);
+    const startedDate = new Date(req.body.startDate - 1);
+    const endDate = new Date(req.body.endDate + 1);
     beneficiaries
       .findAll(
         {
@@ -265,8 +265,8 @@ exports.beneficiariesController = {
   },
 
   getPOTraineesbyYearRange: (req, res) => {
-    const startedDate = new Date(req.body.startDate);
-    const endDate = new Date(req.body.endDate);
+    const startedDate = new Date(req.body.startDate - 1);
+    const endDate = new Date(req.body.endDate + 1);
     beneficiaries
       .findAll({
         where: {
@@ -294,26 +294,25 @@ exports.beneficiariesController = {
         ],
       })
       .then((data) => {
-        const male = [];
-        const female = [];
-        data.forEach((element) => {
-          if (element.gender == "male") {
-            male.push(element);
-          } else {
-            female.push(element);
-          }
-        });
-        const report = {
-          maleReport: male,
-          femaleReport: female,
-          maleCount: male.length,
-          femaleCount: female.length,
-        };
+        // const male = [];
+        // const female = [];
+        // data.forEach((element) => {
+        //   if (element.gender == "male") {
+        //     male.push(element);
+        //   } else {
+        //     female.push(element);
+        //   }
+        // });
+        // const report = {
+        //   maleReport: male,
+        //   femaleReport: female,
+        //   maleCount: male.length,
+        //   femaleCount: female.length,
+        // };
 
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
-          report,
           data,
           length: data.length,
         });

@@ -53,7 +53,7 @@ exports.trainingCategories = {
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
-         }
+        };
         res.status(200).send({
           success: true,
           message: "All trainees categories retrieved successfully",
@@ -173,10 +173,8 @@ exports.trainingCategories = {
     trainingCategories
       .findAll({
         include: {
-          model: partnerOrganisation,
+          model: db.beneficiaries,
         },
-        
-
       })
       .then((data) => {
         res.status(200).send({
@@ -215,7 +213,7 @@ exports.trainingCategories = {
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
-         }
+        };
         res.status(200).send({
           success: true,
           message: "All trainees categories retrieved successfully",
@@ -236,8 +234,6 @@ exports.trainingCategories = {
         });
       });
   },
-
-  
 
   update: (req, res) => {
     const category = req.body;

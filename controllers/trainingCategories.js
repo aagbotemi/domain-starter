@@ -201,13 +201,22 @@ exports.trainingCategories = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
-          if (element.beneficiary.gender === "male") {
-            male.push(element);
+        for(const i = 0; i<=data.length; i++){
+          const gender = data[i].beneficiary.gender
+          console.log(gender);
+          if (gender === "male") {
+            male.push(data[i]);
           } else {
-            female.push(element);
+            female.push(data[i]);
           }
-        });
+        }
+        // data.forEach((element) => {
+        //   if (element.beneficiary.gender === "male") {
+        //     male.push(element);
+        //   } else {
+        //     female.push(element);
+        //   }
+        // });
         const report = {
           maleReport: male,
           femaleReport: female,

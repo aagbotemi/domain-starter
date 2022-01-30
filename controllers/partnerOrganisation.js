@@ -93,8 +93,6 @@ exports.partnerOrgController = {
   },
 
   updatePartnerOrgCategories: (req, res) => {
- 
-
     db.partnerOrganisation
       .findOne({
         where: {

@@ -2,6 +2,7 @@ const db = require("../models");
 const auditTrail = db.auditTrail;
 const user = db.users;
 const partnerOrganisation = db.partnerOrganisation;
+const beneficiaries = db.beneficiaries;
 
 exports.auditTrailController = {
     create:(trail) => {
@@ -18,10 +19,17 @@ exports.auditTrailController = {
             where: {
                 userId: req.userId,
             },
-            include: [{
-                model: user,
-                include: [partnerOrganisation]
-            }],
+            include: [
+                {
+                    model: user,
+                },
+                {
+                    model: beneficiaries,
+                },
+                {
+                    model: partnerOrganisation,
+                },
+            ],
         })
         .then(data => {
             res.status(200).send({
@@ -40,10 +48,17 @@ exports.auditTrailController = {
     },
     getAuditForAdmin:(req, res) => {
         auditTrail.findAll({
-            include: [{
-                model: user,
-                include: [partnerOrganisation]
-            }],
+            include: [
+                {
+                    model: user,
+                },
+                {
+                    model: beneficiaries,
+                },
+                {
+                    model: partnerOrganisation,
+                },
+            ],
         })
         .then(data => {
             res.status(200).send({

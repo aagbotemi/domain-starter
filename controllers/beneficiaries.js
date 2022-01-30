@@ -155,7 +155,12 @@ exports.beneficiariesController = {
     beneficiaries
       .findAll(
         {
-          where: { trainingYear: { [Op.between]: [startedDate, endDate] } },
+          where: {
+            [Op.and]: {
+              [Op.gte]: startedDate,
+              [Op.lte]: endDate,
+            },
+          },
         },
         {
           include: [
@@ -383,66 +388,22 @@ exports.beneficiariesController = {
       });
   },
 
-  getPOTraineesinState: (req, res) => {
-    beneficiaries
-      .findAll({
-        where: {
-          [Op.and]: [
-            { partnerorganisationId: req.poId },
-            { stateOfResidence: "req.params.state" },
-          ],
-        },
-        include: [
-          {
-            model: db.partnerOrganisation,
-          },
-          {
-            model: db.trainingCategories,
-          },
-          {
-            model: db.trainingBatch,
-          },
-          {
-            model: db.employ,
-          },
-          {
-            model: db.evicted,
-          },
-        ],
-      })
-      .then((data) => {
-        const male = [];
-        const female = [];
-        data.forEach((element) => {
-          if (element.gender == "male") {
-            male.push(element);
-          } else {
-            female.push(element);
-          }
-        });
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
-          data: data,
-          maleReport: male,
-          femaleReport: female,
-          maleCount: male.length,
-          femaleCount: female.length,
-          length: data.length,
-        });
-      })
-      .catch((err) => {
-        res.status(400).send({
-          message: err.message || "Could not find record",
-        });
-      });
-  },
-
   getTraineesinState: (req, res) => {
+    const po = req.body.partnerorganisationId;
+    const state = req.body.stateOfResidence;
+    if (po == "all") {
+      var condition = { stateOfResidence: state };
+    } else if (state == "all") {
+      var condition = { partnerorganisationId: po };
+    } else {
+      var condition = {
+        [Op.and]: [{ partnerorganisationId: po }, { stateOfResidence: state }],
+      };
+    }
     beneficiaries
       .findAll({
         where: {
-          stateOfResidence: "req.params.state",
+          condition,
         },
         include: [
           {
@@ -490,11 +451,22 @@ exports.beneficiariesController = {
       });
   },
 
-  getTraineesByGraduationStatus: (req, res) => {
+  getTraineesbyGender: (req, res) => {
+    const po = req.body.partnerorganisationId;
+    const gender = req.body.gender;
+    if (po == "all") {
+      var condition = { gender: gender };
+    } else if (gender == "all") {
+      var condition = { partnerorganisationId: po };
+    } else {
+      var condition = {
+        [Op.and]: [{ partnerorganisationId: po }, { gender: gender }],
+      };
+    }
     beneficiaries
       .findAll({
         where: {
-          graduationStatus: "req.params.grad",
+          condition,
         },
         include: [
           {
@@ -542,14 +514,88 @@ exports.beneficiariesController = {
       });
   },
 
-  getPOTraineesbyGraduationStatus: (req, res) => {
+  getTraineesinTradeArea: (req, res) => {
+    const po = req.body.partnerorganisationId;
+    const categoryId = req.body.categoryId;
+    if (po == "all") {
+      var condition = { categoryId: categoryId };
+    } else if (categoryId == "all") {
+      var condition = { partnerorganisationId: po };
+    } else {
+      var condition = {
+        [Op.and]: [{ partnerorganisationId: po }, { categoryId: categoryId }],
+      };
+    }
     beneficiaries
       .findAll({
         where: {
-          [Op.and]: [
-            { partnerorganisationId: req.poId },
-            { graduationStatus: "req.params.grad" },
-          ],
+          condition,
+        },
+        include: [
+          {
+            model: db.partnerOrganisation,
+          },
+          {
+            model: db.trainingCategories,
+          },
+          {
+            model: db.trainingBatch,
+          },
+          {
+            model: db.employ,
+          },
+          {
+            model: db.evicted,
+          },
+        ],
+      })
+      .then((data) => {
+        const male = [];
+        const female = [];
+        data.forEach((element) => {
+          if (element.gender == "male") {
+            male.push(element);
+          } else {
+            female.push(element);
+          }
+        });
+        res.status(200).send({
+          success: true,
+          message: "All trainees retrieved successfully",
+          data: data,
+          maleReport: male,
+          femaleReport: female,
+          maleCount: male.length,
+          femaleCount: female.length,
+          length: data.length,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
+  getTraineesbyGradStatus: (req, res) => {
+    const po = req.body.partnerorganisationId;
+    const graduationStatus = req.body.graduationStatus;
+    if (po == "all") {
+      var condition = { graduationStatus: graduationStatus };
+    } else if (graduationStatus == "all") {
+      var condition = { partnerorganisationId: po };
+    } else {
+      var condition = {
+        [Op.and]: [
+          { partnerorganisationId: po },
+          { graduationStatus: graduationStatus },
+        ],
+      };
+    }
+    beneficiaries
+      .findAll({
+        where: {
+          condition,
         },
         include: [
           {

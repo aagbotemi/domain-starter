@@ -86,7 +86,7 @@ exports.geoPoliticalZonesController = {
                 }
                 trail = {
                     userId: `${req.userId}`,
-                    action: ` ${req.body.geoPoliticalZoneName} zone has been updated`,
+                    action: `A Geopolitical Zone zone has been updated`,
                     type: "warning",
                 }
                 auditTrailController.create(trail)
@@ -111,7 +111,7 @@ exports.geoPoliticalZonesController = {
                 }
                 trail = {
                     userId: `${req.userId}`,
-                    action: ` ${req.body.geoPoliticalZoneName} zone has been deleted`,
+                    action: `A Geopolitical zone has been deleted`,
                     type: "danger",
                 }
                 auditTrailController.create(trail)

@@ -106,7 +106,7 @@ exports.partnerOrgController = {
 
           trail = {
             userId: `${req.userId}`,
-            action: ` ${req.body.categoryName} has been updated`,
+            action: `A partner organisation has been updated`,
             type: "warning",
           };
           auditTrailController.create(trail);
@@ -173,7 +173,7 @@ exports.partnerOrgController = {
         }
         trail = {
           userId: `${req.userId}`,
-          action: ` ${req.body.organisationName} has been updated successfully`,
+          action: `A partner organisation has been updated successfully`,
           type: "warning",
         }
         auditTrailController.create(trail)
@@ -198,7 +198,7 @@ exports.partnerOrgController = {
         }
         trail = {
           userId: `${req.userId}`,
-          action: `A partner organisation has been created successfully`,
+          action: `A partner organisation has been deleted successfully`,
           type: "danger",
         }
         auditTrailController.create(trail)

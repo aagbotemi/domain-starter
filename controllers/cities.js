@@ -127,7 +127,7 @@ exports.citiesController = {
                 }
                 trail = {
                     userId: `${req.userId}`,
-                    action: `${req.body.cityName} has been updated`,
+                    action: `A city has been updated`,
                     type: "warning",
                 }
                 auditTrailController.create(trail)

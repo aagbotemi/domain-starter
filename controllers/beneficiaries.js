@@ -19,7 +19,7 @@ exports.beneficiariesController = {
       .then((data) => {
         trail = {
           userId: `${req.userId}`,
-          action: `${req.body.firstName} ${req.body.lastName} added as a beneficiary`,
+          action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
           type: "success",
         };
         auditTrailController.create(trail);
@@ -341,7 +341,7 @@ exports.beneficiariesController = {
         }
         trail = {
           userId: `${req.userId}`,
-          action: `${req.body.firstName} ${req.body.lastName} details has been updated`,
+          action: `A trainee details has been updated`,
           type: "warning",
         };
         auditTrailController.create(trail);

@@ -1,6 +1,6 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
-const { QueryTypes } = require("sequelize");
+const { QueryTypes, DatabaseError } = require("sequelize");
 const { constants } = require("./constants");
 const trainingCategories = db.trainingCategories;
 const partnerOrganisation = db.partnerOrganisation;
@@ -175,6 +175,8 @@ exports.trainingCategories = {
         include: {
           model: partnerOrganisation,
         },
+        
+
       })
       .then((data) => {
         res.status(200).send({
@@ -201,8 +203,8 @@ exports.trainingCategories = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
-          if (element.beneficiary.gender == "male") {
+        data.beneficiaries.forEach((element) => {
+          if (element.gender == "male") {
             male.push(element);
           } else {
             female.push(element);

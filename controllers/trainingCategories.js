@@ -1,6 +1,6 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
-const { QueryTypes } = require("sequelize");
+const { QueryTypes, DatabaseError } = require("sequelize");
 const { constants } = require("./constants");
 const trainingCategories = db.trainingCategories;
 const partnerOrganisation = db.partnerOrganisation;
@@ -53,7 +53,7 @@ exports.trainingCategories = {
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
-         }
+        };
         res.status(200).send({
           success: true,
           message: "All trainees categories retrieved successfully",
@@ -173,7 +173,7 @@ exports.trainingCategories = {
     trainingCategories
       .findAll({
         include: {
-          model: partnerOrganisation,
+          model: db.partnerOrganisation,
         },
       })
       .then((data) => {
@@ -202,7 +202,7 @@ exports.trainingCategories = {
         const male = [];
         const female = [];
         data.forEach((element) => {
-          if (element.beneficiary.gender == "male") {
+          if (element.beneficiary.gender === "male") {
             male.push(element);
           } else {
             female.push(element);
@@ -213,7 +213,7 @@ exports.trainingCategories = {
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
-         }
+        };
         res.status(200).send({
           success: true,
           message: "All trainees categories retrieved successfully",
@@ -234,8 +234,6 @@ exports.trainingCategories = {
         });
       });
   },
-
-  
 
   update: (req, res) => {
     const category = req.body;

@@ -201,7 +201,7 @@ exports.trainingCategories = {
       .then((data) => {
         const male = [];
         const female = [];
-        for(const i = 0; i<=data.length; i++){
+        for(let i = 0; i<=data.length; i++){
           const gender = data[i].beneficiary.gender
           console.log(gender);
           if (gender === "male") {

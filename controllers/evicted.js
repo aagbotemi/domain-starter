@@ -22,7 +22,7 @@ exports.evictedController = {
 
       beneficiaries.update(benficiaryInfo, {
         where: {
-          beneficiaryId: req.body.beneficiaryId,
+          id: req.body.beneficiaryId,
         },
       });
       trail = {
@@ -49,6 +49,15 @@ exports.evictedController = {
         message: "Record not found",
       });
     }
+    benficiaryInfo = {
+      graduationStatus: req.body.type,
+    };
+
+    beneficiaries.update(benficiaryInfo, {
+      where: {
+        id: req.body.beneficiaryId,
+      },
+    });
     trail = {
       userId: `${req.userId}`,
       action: ` ${req.body.beneficiaryId} has been updated`,

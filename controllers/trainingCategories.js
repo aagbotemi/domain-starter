@@ -173,7 +173,7 @@ exports.trainingCategories = {
     trainingCategories
       .findAll({
         include: {
-          model: db.beneficiaries,
+          model: db.partnerOrganisation,
         },
       })
       .then((data) => {
@@ -201,8 +201,8 @@ exports.trainingCategories = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.beneficiaries.forEach((element) => {
-          if (element.gender == "male") {
+        data.forEach((element) => {
+          if (element.beneficiary.gender === "male") {
             male.push(element);
           } else {
             female.push(element);

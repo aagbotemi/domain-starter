@@ -21,7 +21,7 @@ exports.employController = {
 
       beneficiaries.update(benficiaryInfo, {
         where: {
-          beneficiaryId: req.body.beneficiaryId,
+          id: req.body.beneficiaryId,
         },
       });
       trail = {
@@ -48,6 +48,11 @@ exports.employController = {
         message: "Record not found",
       });
     }
+    beneficiaries.update(benficiaryInfo, {
+      where: {
+        id: req.body.beneficiaryId,
+      },
+    });
     trail = {
       userId: `${req.userId}`,
       action: ` ${req.body.beneficiaryId} has been updated`,

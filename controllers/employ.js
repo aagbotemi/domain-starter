@@ -2,6 +2,7 @@ const db = require("../models");
 const employ = db.employ;
 const user = db.users;
 const beneficiaries = db.beneficiaries;
+const { auditTrailController } = require("./auditTrail");
 
 exports.employController = {
   create: async function updateOrCreate(req, res) {

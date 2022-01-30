@@ -48,6 +48,10 @@ exports.employController = {
         message: "Record not found",
       });
     }
+
+    benficiaryInfo = {
+      employmentStatus: req.body.employmentStatus,
+    };
     beneficiaries.update(benficiaryInfo, {
       where: {
         id: req.body.beneficiaryId,

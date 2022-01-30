@@ -13,33 +13,6 @@ require("dotenv").config();
 exports.beneficiariesController = {
   createTrainee: (req, res) => {
     const trainee = req.body;
-    // const trainee = {
-    //   firstName: req.body.firstName,
-    //   lastName: req.body.lastName,
-    //   middleName: req.body.middleName,
-    //   email: req.body.email,
-    //   phoneNumber: req.body.phoneNumber,
-    //   gender: req.body.gender,
-    //   stateOfOrigin: req.body.stateOfOrigin,
-    //   localGovernmentOfOrigin: req.body.localGovernmentOfOrigin,
-    //   stateOfResidence: req.body.stateOfResidence,
-    //   highestQualification: req.body.highestQualification,
-    //   profileImage: req.file ? req.file.path : null,
-    //   trainingYear: req.body.trainingYear,
-    //   graduationStatus: req.body.graduationStatus,
-    //   employmentStatus: req.body.employmentStatus,
-    //   curriculumVitae: req.file ? req.file.path : null,
-    //   trainingBatchId: req.body.trainingBatchId,
-    //   categoryId: req.body.categoryId,
-    //   partnerorganisationId: req.body.partnerorganisationId,
-    //   reason: req.body.reason,
-    //   dateEvicted: req.body.dateEvicted,
-    //   organisationName: req.body.organisationName,
-    //   organisationAddress: req.body.organisationAddress,
-    //   yearEmployed: req.body.yearEmployed,
-    // };
-
-    // trainee.partnerOrganisationId = req.poId;
 
     beneficiaries
       .create(trainee)
@@ -176,6 +149,65 @@ exports.beneficiariesController = {
       });
   },
 
+  getAllBeneficiariesbyYear: (req, res) => {
+    const startedDate = new Date(req.body.startDate);
+    const endDate = new Date(req.body.endDate);
+    beneficiaries
+      .findAll(
+        {
+          where: { createdAt: { [Op.between]: [startedDate, endDate] } },
+        },
+        {
+          include: [
+            {
+              model: db.partnerOrganisation,
+            },
+            {
+              model: db.trainingCategories,
+            },
+            {
+              model: db.trainingBatch,
+            },
+            {
+              model: db.employ,
+            },
+            {
+              model: db.evicted,
+            },
+          ],
+        }
+      )
+      .then((data) => {
+        const male = [];
+        const female = [];
+        data.forEach((element) => {
+          if (element.gender == "male") {
+            male.push(element);
+          } else {
+            female.push(element);
+          }
+        });
+        const report = {
+          maleReport: male,
+          femaleReport: female,
+          maleCount: male.length,
+          femaleCount: female.length,
+        };
+        res.status(200).send({
+          success: true,
+          message: "All trainees retrieved successfully",
+          report,
+          length: data.length,
+          data,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
   getPOTrainees: (req, res) => {
     beneficiaries
       .findAll({
@@ -231,6 +263,68 @@ exports.beneficiariesController = {
         });
       });
   },
+
+  getPOTraineesbyYearRange: (req, res) => {
+    const startedDate = new Date(req.body.startDate);
+    const endDate = new Date(req.body.endDate);
+    beneficiaries
+      .findAll({
+        where: {
+          [Op.and]: [
+            { partnerorganisationId: req.poId },
+            { createdAt: { [Op.between]: [startedDate, endDate] } },
+          ],
+        },
+        include: [
+          {
+            model: db.partnerOrganisation,
+          },
+          {
+            model: db.trainingCategories,
+          },
+          {
+            model: db.trainingBatch,
+          },
+          {
+            model: db.employ,
+          },
+          {
+            model: db.evicted,
+          },
+        ],
+      })
+      .then((data) => {
+        const male = [];
+        const female = [];
+        data.forEach((element) => {
+          if (element.gender == "male") {
+            male.push(element);
+          } else {
+            female.push(element);
+          }
+        });
+        const report = {
+          maleReport: male,
+          femaleReport: female,
+          maleCount: male.length,
+          femaleCount: female.length,
+        };
+        data.push(report);
+        res.status(200).send({
+          success: true,
+          message: "All trainees retrieved successfully",
+          report,
+          data,
+          length: data.length,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
   updateTrainee: (req, res) => {
     const trainee = req.body;
 

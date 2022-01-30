@@ -12,9 +12,21 @@ router.get(
 );
 
 router.get(
+  "/range",
+  jwtAuth.adminVerifyToken,
+  beneficiariesController.getAllBeneficiariesbyYear
+);
+
+router.get(
   "/po/trainees",
   jwtAuth.poVerifyToken,
   beneficiariesController.getPOTrainees
+);
+
+router.get(
+  "/po/range",
+  jwtAuth.poVerifyToken,
+  beneficiariesController.getPOTraineesbyYearRange
 );
 
 router.get(
@@ -41,11 +53,7 @@ router.get(
   beneficiariesController.getPOTraineesbyGraduationStatus
 );
 
-router.post(
-  "/",
-  jwtAuth.poVerifyToken,
-  beneficiariesController.createTrainee
-);
+router.post("/", jwtAuth.poVerifyToken, beneficiariesController.createTrainee);
 
 router.put(
   "/:id",

@@ -14,7 +14,7 @@ exports.employController = {
     });
     if (!foundItem) {
       const employInfo = req.body;
-      const data = await evicted.create(employInfo);
+      const data = await employ.create(employInfo);
       benficiaryInfo = {
         employmentStatus: req.body.employmentStatus,
       };
@@ -114,8 +114,7 @@ exports.employController = {
       .findOne({
         where: {
           beneficiaryId: req.params.id,
-        }
-       
+        },
       })
       .then((data) => {
         res.status(200).send(data);

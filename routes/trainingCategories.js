@@ -25,7 +25,7 @@ router.get(
 );
 
 router.get(
-  "/admin/report",
+  "/report",
   jwtAuth.generalVerifyToken,
   trainingCategories.getAllTrainingCategoriesReport
 );

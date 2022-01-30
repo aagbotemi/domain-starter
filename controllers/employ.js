@@ -37,7 +37,7 @@ exports.employController = {
       });
     }
     // Found an item, update it
-    const info = { employmentStatus: req.body.employmentStatus };
+    const info = req.body;
     const item = await employ.update(info, {
       where: {
         beneficiaryId: req.body.beneficiaryId,

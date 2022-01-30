@@ -96,7 +96,7 @@ exports.partnerOrgController = {
  
 
     db.partnerOrganisation
-      .find({
+      .findOne({
         where: {
           id: req.params.id,
         },

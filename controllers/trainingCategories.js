@@ -199,17 +199,17 @@ exports.trainingCategories = {
         },
       })
       .then((data) => {
-        const male = [];
-        const female = [];
-        for(let i = 0; i<=data.length; i++){
-          const gender = data[i].beneficiary.gender
-          console.log(gender);
-          if (gender === "male") {
-            male.push(data[i]);
-          } else {
-            female.push(data[i]);
-          }
-        }
+        // const male = [];
+        // const female = [];
+        // for(let i = 0; i<=data.length; i++){
+        //   const gender = data[i].beneficiary.gender
+        //   console.log(gender);
+        //   if (gender === "male") {
+        //     male.push(data[i]);
+        //   } else {
+        //     female.push(data[i]);
+        //   }
+        // }
         // data.forEach((element) => {
         //   if (element.beneficiary.gender === "male") {
         //     male.push(element);
@@ -217,17 +217,17 @@ exports.trainingCategories = {
         //     female.push(element);
         //   }
         // });
-        const report = {
-          maleReport: male,
-          femaleReport: female,
-          maleCount: male.length,
-          femaleCount: female.length,
-        };
+        // const report = {
+        //   maleReport: male,
+        //   femaleReport: female,
+        //   maleCount: male.length,
+        //   femaleCount: female.length,
+        // };
         res.status(200).send({
           success: true,
           message: "All trainees categories retrieved successfully",
           data: data,
-          report,
+          // report,
           length: data.length,
         });
         // res.status(200).send({

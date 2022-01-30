@@ -92,6 +92,39 @@ exports.partnerOrgController = {
       });
   },
 
+  updatePartnerOrgCategories: (req, res) => {
+ 
+
+    db.partnerOrganisation
+      .find({
+        where: {
+          id: req.params.id,
+        },
+      })
+      .then((data) => {
+        db.trainingCategories.findAll({where: {id: req.body.categories}})
+        .then((data2) => {
+          data.setCategories(data2)
+
+          trail = {
+            userId: `${req.userId}`,
+            action: ` ${req.body.categoryName} has been updated`,
+            type: "warning",
+          };
+          auditTrailController.create(trail);
+
+          res.status(200).send({ message: "Record Updated" });
+        })
+        .catch((err) => {
+          constants.handleErr(err, res);
+        });
+
+      })
+      .catch((err) => {
+        constants.handleErr(err, res);
+      });
+  },
+
   updatePartnerOrg: (req, res) => {
     const po = req.body;
 

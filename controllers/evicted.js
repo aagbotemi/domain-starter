@@ -49,7 +49,7 @@ exports.evictedController = {
         message: "Record not found",
       });
     }
-    
+
     benficiaryInfo = {
       graduationStatus: req.body.type,
     };
@@ -198,4 +198,7 @@ exports.evictedController = {
         constants.handleErr(err, res);
       });
   },
+
+
+  
 };

@@ -30,28 +30,35 @@ router.get(
 );
 
 router.get(
-  "/:state",
+  "/state",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesinState
 );
 
-router.get(
-  "/po/:state",
-  jwtAuth.poVerifyToken,
-  beneficiariesController.getPOTraineesbyGraduationStatus
-);
 
 router.get(
-  "/:grad",
+  "/grad",
   jwtAuth.adminVerifyToken,
-  beneficiariesController.getTraineesByGraduationStatus
+  beneficiariesController.getTraineesbyGradStatus
 );
 
 router.get(
-  "/po/:grad",
-  jwtAuth.poVerifyToken,
-  beneficiariesController.getPOTraineesbyGraduationStatus
+  "/gender",
+  jwtAuth.adminVerifyToken,
+  beneficiariesController.getTraineesbyGender
 );
+
+router.get(
+  "/trade-area",
+  jwtAuth.adminVerifyToken,
+  beneficiariesController.getTraineesinTradeArea
+);
+
+// router.get(
+//   "/po/:grad",
+//   jwtAuth.poVerifyToken,
+//   beneficiariesController.getPOTraineesbyGraduationStatus
+// );
 
 router.post("/", jwtAuth.poVerifyToken, beneficiariesController.createTrainee);
 

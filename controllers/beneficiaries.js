@@ -155,7 +155,7 @@ exports.beneficiariesController = {
     beneficiaries
       .findAll(
         {
-          where: { createdAt: { [Op.between]: [startedDate, endDate] } },
+          where: { trainingYear: { [Op.between]: [startedDate, endDate] } },
         },
         {
           include: [
@@ -248,7 +248,7 @@ exports.beneficiariesController = {
           maleCount: male.length,
           femaleCount: female.length,
         };
-        
+
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
@@ -272,7 +272,7 @@ exports.beneficiariesController = {
         where: {
           [Op.and]: [
             { partnerorganisationId: req.poId },
-            { createdAt: { [Op.between]: [startedDate, endDate] } },
+            { trainingYear: { [Op.between]: [startedDate, endDate] } },
           ],
         },
         include: [
@@ -309,7 +309,7 @@ exports.beneficiariesController = {
           maleCount: male.length,
           femaleCount: female.length,
         };
-     
+
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",

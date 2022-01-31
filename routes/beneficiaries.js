@@ -12,7 +12,7 @@ router.get(
 );
 
 router.get(
-  "report/range",
+  "/report/range",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getAllBeneficiariesbyYear
 );

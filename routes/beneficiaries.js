@@ -43,7 +43,7 @@ router.get(
 );
 
 router.get(
-  "/report-gender",
+  "/report/gender",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesbyGender
 );

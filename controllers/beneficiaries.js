@@ -460,9 +460,8 @@ exports.beneficiariesController = {
     }
     beneficiaries
       .findAll({
-        where: {
-          condition,
-        },
+        where: condition,
+
         include: [
           {
             model: db.partnerOrganisation,

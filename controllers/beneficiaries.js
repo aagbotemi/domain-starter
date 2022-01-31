@@ -151,9 +151,8 @@ exports.beneficiariesController = {
       .findAll(
         {
           where: {
-            [Op.and]: {
-              [Op.gte]: startedDate,
-              [Op.lte]: endDate,
+            trainingYear: {
+              $between: [startedDate, endDate]
             },
           },
         },
@@ -270,9 +269,8 @@ exports.beneficiariesController = {
     beneficiaries
       .findAll({
         where: {
-          [Op.and]: {
-            [Op.gte]: startedDate,
-            [Op.lte]: endDate,
+          trainingYear: {
+            $between: [startedDate, endDate]
           },
         },
         include: [

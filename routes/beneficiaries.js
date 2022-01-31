@@ -12,7 +12,7 @@ router.get(
 );
 
 router.get(
-  "/range",
+  "report/range",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getAllBeneficiariesbyYear
 );
@@ -30,14 +30,14 @@ router.get(
 );
 
 router.get(
-  "/state",
+  "report/state",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesinState
 );
 
 
 router.get(
-  "/grad",
+  "/report/grad",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesbyGradStatus
 );
@@ -49,7 +49,7 @@ router.get(
 );
 
 router.get(
-  "/repoort-trade-area",
+  "/report/trade-area",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesinTradeArea
 );

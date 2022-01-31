@@ -145,8 +145,8 @@ exports.beneficiariesController = {
   },
 
   getAllBeneficiariesbyYear: (req, res) => {
-    const startedDate = new Date(req.body.startDate - 1);
-    const endDate = new Date(req.body.endDate + 1);
+    const startedDate = new Date(req.body.startDate);
+    const endDate = new Date(req.body.endDate);
     beneficiaries
       .findAll(
         {
@@ -265,8 +265,8 @@ exports.beneficiariesController = {
   },
 
   getPOTraineesbyYearRange: (req, res) => {
-    const startedDate = new Date(req.body.startDate - 1);
-    const endDate = new Date(req.body.endDate + 1);
+    const startedDate = new Date(req.body.startDate);
+    const endDate = new Date(req.body.endDate);
     beneficiaries
       .findAll({
         where: {

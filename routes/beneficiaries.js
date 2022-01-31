@@ -30,7 +30,7 @@ router.get(
 );
 
 router.get(
-  "report/state",
+  "/report/state",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesinState
 );

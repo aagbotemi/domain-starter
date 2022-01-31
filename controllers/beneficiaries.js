@@ -389,7 +389,7 @@ exports.beneficiariesController = {
     } else if (state == "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && state == "all") {
-      var condition = null;
+      var condition = {};
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { stateOfResidence: state }],
@@ -453,7 +453,7 @@ exports.beneficiariesController = {
     } else if (gender == "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && gender == "all") {
-      var condition = null;
+      var condition = {};
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { gender: gender }],
@@ -517,7 +517,7 @@ exports.beneficiariesController = {
     } else if (categoryId == "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && categoryId == "all") {
-      var condition = null;
+      var condition = {};
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { categoryId: categoryId }],
@@ -581,7 +581,7 @@ exports.beneficiariesController = {
     } else if (graduationStatus == "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && graduationStatus == "all") {
-      var condition = null;
+      var condition = {};
     } else {
       var condition = {
         [Op.and]: [

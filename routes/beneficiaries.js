@@ -11,7 +11,7 @@ router.get(
   beneficiariesController.getAllBeneficiaries
 );
 
-router.get(
+router.post(
   "/report/range",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getAllBeneficiariesbyYear
@@ -23,32 +23,32 @@ router.get(
   beneficiariesController.getPOTrainees
 );
 
-router.get(
+router.post(
   "/po/range",
   jwtAuth.poVerifyToken,
   beneficiariesController.getPOTraineesbyYearRange
 );
 
-router.get(
+router.post(
   "/report/state",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesinState
 );
 
 
-router.get(
+router.post(
   "/report/grad",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesbyGradStatus
 );
 
-router.get(
+router.post(
   "/report/gender",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesbyGender
 );
 
-router.get(
+router.post(
   "/report/trade-area",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesinTradeArea

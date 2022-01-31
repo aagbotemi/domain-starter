@@ -83,11 +83,6 @@ exports.beneficiariesController = {
         ],
       })
       .then((data) => {
-        if (!data) {
-          res.status(400).send({
-            message: "Record not found",
-          });
-        }
         res.status(200).send(data);
       })
       .catch((err) => {

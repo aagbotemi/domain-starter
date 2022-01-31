@@ -389,7 +389,20 @@ exports.beneficiariesController = {
     } else if (state == "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && state == "all") {
-      var condition = {};
+      var condition = {
+        [Op.and]: [
+          {
+            partnerorganisationId: {
+              [Op.not]: null,
+            },
+          },
+          {
+            stateOfResidence: {
+              [Op.not]: null,
+            },
+          },
+        ],
+      };
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { stateOfResidence: state }],
@@ -453,7 +466,20 @@ exports.beneficiariesController = {
     } else if (gender == "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && gender == "all") {
-      var condition = {};
+      var condition = {
+        [Op.and]: [
+          {
+            partnerorganisationId: {
+              [Op.not]: null,
+            },
+          },
+          {
+            gender: {
+              [Op.not]: null,
+            },
+          },
+        ],
+      };
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { gender: gender }],
@@ -517,7 +543,20 @@ exports.beneficiariesController = {
     } else if (categoryId == "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && categoryId == "all") {
-      var condition = {};
+      var condition = {
+        [Op.and]: [
+          {
+            partnerorganisationId: {
+              [Op.not]: null,
+            },
+          },
+          {
+            categoryId: {
+              [Op.not]: null,
+            },
+          },
+        ],
+      };
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { categoryId: categoryId }],
@@ -581,7 +620,20 @@ exports.beneficiariesController = {
     } else if (graduationStatus == "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && graduationStatus == "all") {
-      var condition = {};
+      var condition = {
+        [Op.and]: [
+          {
+            partnerorganisationId: {
+              [Op.not]: null,
+            },
+          },
+          {
+            graduationStatus: {
+              [Op.not]: null,
+            },
+          },
+        ],
+      };
     } else {
       var condition = {
         [Op.and]: [

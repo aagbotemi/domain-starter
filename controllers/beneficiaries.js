@@ -152,7 +152,7 @@ exports.beneficiariesController = {
         {
           where: {
             trainingYear: {
-              $between: [startedDate, endDate]
+              $between: [startedDate, endDate],
             },
           },
         },
@@ -270,7 +270,7 @@ exports.beneficiariesController = {
       .findAll({
         where: {
           trainingYear: {
-            $between: [startedDate, endDate]
+            $between: [startedDate, endDate],
           },
         },
         include: [
@@ -388,6 +388,8 @@ exports.beneficiariesController = {
       var condition = { stateOfResidence: state };
     } else if (state == "all") {
       var condition = { partnerorganisationId: po };
+    } else if (po == "all" && state == "all") {
+      var condition = null;
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { stateOfResidence: state }],
@@ -450,6 +452,8 @@ exports.beneficiariesController = {
       var condition = { gender: gender };
     } else if (gender == "all") {
       var condition = { partnerorganisationId: po };
+    } else if (po == "all" && gender == "all") {
+      var condition = null;
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { gender: gender }],
@@ -512,6 +516,8 @@ exports.beneficiariesController = {
       var condition = { categoryId: categoryId };
     } else if (categoryId == "all") {
       var condition = { partnerorganisationId: po };
+    } else if (po == "all" && categoryId == "all") {
+      var condition = null;
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { categoryId: categoryId }],
@@ -574,6 +580,8 @@ exports.beneficiariesController = {
       var condition = { graduationStatus: graduationStatus };
     } else if (graduationStatus == "all") {
       var condition = { partnerorganisationId: po };
+    } else if (po == "all" && graduationStatus == "all") {
+      var condition = null;
     } else {
       var condition = {
         [Op.and]: [

@@ -384,25 +384,12 @@ exports.beneficiariesController = {
   getTraineesinState: (req, res) => {
     const po = req.body.partnerorganisationId;
     const state = req.body.stateOfResidence;
-    if (po == "all") {
+    if (po == "all" && state != "all") {
       var condition = { stateOfResidence: state };
-    } else if (state == "all") {
+    } else if (state == "all" && po != "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && state == "all") {
-      var condition = {
-        [Op.and]: [
-          {
-            partnerorganisationId: {
-              [Op.not]: null,
-            },
-          },
-          {
-            stateOfResidence: {
-              [Op.not]: null,
-            },
-          },
-        ],
-      };
+      var condition = null;
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { stateOfResidence: state }],
@@ -461,9 +448,9 @@ exports.beneficiariesController = {
   getTraineesbyGender: (req, res) => {
     const po = req.body.partnerorganisationId;
     const gender = req.body.gender;
-    if (po == "all") {
+    if (po == "all" && gender != "all") {
       var condition = { gender: gender };
-    } else if (gender == "all") {
+    } else if (gender == "all" && po != "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && gender == "all") {
       var condition = {
@@ -538,25 +525,12 @@ exports.beneficiariesController = {
   getTraineesinTradeArea: (req, res) => {
     const po = req.body.partnerorganisationId;
     const categoryId = req.body.categoryId;
-    if (po == "all") {
+    if (po == "all" && categoryId != "all") {
       var condition = { categoryId: categoryId };
-    } else if (categoryId == "all") {
+    } else if (categoryId == "all" && po != "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && categoryId == "all") {
-      var condition = {
-        [Op.and]: [
-          {
-            partnerorganisationId: {
-              [Op.not]: null,
-            },
-          },
-          {
-            categoryId: {
-              [Op.not]: null,
-            },
-          },
-        ],
-      };
+      var condition = {};
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { categoryId: categoryId }],
@@ -615,25 +589,12 @@ exports.beneficiariesController = {
   getTraineesbyGradStatus: (req, res) => {
     const po = req.body.partnerorganisationId;
     const graduationStatus = req.body.graduationStatus;
-    if (po == "all") {
+    if (po == "all" && graduationStatus != "all") {
       var condition = { graduationStatus: graduationStatus };
-    } else if (graduationStatus == "all") {
+    } else if (graduationStatus == "all" && po != "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && graduationStatus == "all") {
-      var condition = {
-        [Op.and]: [
-          {
-            partnerorganisationId: {
-              [Op.not]: null,
-            },
-          },
-          {
-            graduationStatus: {
-              [Op.not]: null,
-            },
-          },
-        ],
-      };
+      var condition = {};
     } else {
       var condition = {
         [Op.and]: [

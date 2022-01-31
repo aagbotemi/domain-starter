@@ -43,13 +43,13 @@ router.get(
 );
 
 router.get(
-  "/gender",
+  "/report-gender",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesbyGender
 );
 
 router.get(
-  "/trade-area",
+  "/repoort-trade-area",
   jwtAuth.adminVerifyToken,
   beneficiariesController.getTraineesinTradeArea
 );

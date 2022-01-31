@@ -270,10 +270,10 @@ exports.beneficiariesController = {
     beneficiaries
       .findAll({
         where: {
-          [Op.and]: [
-            { partnerorganisationId: req.poId },
-            { trainingYear: { [Op.between]: [startedDate, endDate] } },
-          ],
+          [Op.and]: {
+            [Op.gte]: startedDate,
+            [Op.lte]: endDate,
+          },
         },
         include: [
           {

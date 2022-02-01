@@ -16,7 +16,7 @@ exports.partnerOrgController = {
         po.stateId
       );
 
-      participatingOrgState.setCategories(po.categories).then((data) => {
+      participatingOrg.setCategories(po.categories).then((data) => {
         trail = {
           userId: `${req.userId}`,
           action: ` ${req.body.organisationName} has been created successfully`,
@@ -27,6 +27,7 @@ exports.partnerOrgController = {
           success: true,
           message: "Partner Organisation Added Successfully",
           data: data,
+          participatingOrgState
         });
       });
     } catch (err) {

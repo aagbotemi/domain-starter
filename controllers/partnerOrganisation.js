@@ -12,26 +12,23 @@ exports.partnerOrgController = {
       const po = req.body;
 
       const participatingOrg = await partnerOrganisation.create(po);
-      participatingOrg
-        .setCategories(po.categories)
-        .then((data1) => {
-          data1.setStates(po.stateId).then((data) => {
-            trail = {
-              userId: `${req.userId}`,
-              action: ` ${req.body.organisationName} has been created successfully`,
-              type: "success",
-            };
-            auditTrailController.create(trail);
-            res.status(200).send({
-              success: true,
-              message: "Partner Organisation Added Successfully",
-              data: data,
-            });
-          });
-        })
-        .catch((err) => {
-          constants.handleErr(err, res);
+      const participatingOrgState = await partnerOrganisation.setStates(
+        po.stateId
+      );
+
+      participatingOrgState.setCategories(po.categories).then((data) => {
+        trail = {
+          userId: `${req.userId}`,
+          action: ` ${req.body.organisationName} has been created successfully`,
+          type: "success",
+        };
+        auditTrailController.create(trail);
+        res.status(200).send({
+          success: true,
+          message: "Partner Organisation Added Successfully",
+          data: data,
         });
+      });
     } catch (err) {
       constants.handleErr(err, res);
     }

@@ -64,7 +64,7 @@ db.cities.belongsTo(db.states);
 db.geoPoliticalZones.hasOne(db.states);
 db.states.belongsTo(db.geoPoliticalZones);
 
-db.partnerOrganisation.hasOne(db.beneficiaries);
+db.partnerOrganisation.hasOne(db.beneficiaries, {onDelete: 'cascade', hooks: true});
 db.beneficiaries.belongsTo(db.partnerOrganisation);
 
 db.beneficiaries.hasOne(db.employ);
@@ -79,7 +79,7 @@ db.beneficiaries.belongsTo(db.trainingBatch);
 db.trainingCategories.hasOne(db.beneficiaries);
 db.beneficiaries.belongsTo(db.trainingCategories);
 
-db.partnerOrganisation.hasMany(db.trainingBatch);
+db.partnerOrganisation.hasMany(db.trainingBatch, {onDelete: 'cascade', hooks: true});
 db.trainingBatch.belongsTo(db.partnerOrganisation);
 
 db.users.hasMany(db.auditTrail);

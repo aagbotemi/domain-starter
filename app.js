@@ -56,7 +56,7 @@ app.use("/file-upload", fileUploadRouter);
 app.use('/uploads', express.static('./uploads'));
 
 const db = require("./models/index");
-db.sequelize.sync({ alter: true });
+db.sequelize.sync();
 
 app.use("/images", express.static("./images"));
 

@@ -555,6 +555,21 @@ exports.beneficiariesController = {
             female.push(element);
           }
         });
+        const employCount2 = await db.beneficiaries.count({
+          where: {
+            employmentStatus: "employed",
+          },
+        });
+        const employCount1 = await db.beneficiaries.count({
+          where: {
+            employmentStatus: "self employed",
+          },
+        });
+        const unemployCount = await db.beneficiaries.count({
+          where: {
+            employmentStatus: "unemployed",
+          },
+        });
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
@@ -563,6 +578,9 @@ exports.beneficiariesController = {
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
+          unemployCount,
+          employCount: employCount1,
+          selfEmployCount: employCount2,
           length: data.length,
         });
       })

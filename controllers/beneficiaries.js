@@ -383,16 +383,16 @@ exports.beneficiariesController = {
 
   getTraineesinState: (req, res) => {
     const po = req.body.partnerorganisationId;
-    const state = req.body.stateOfResidence;
+    const state = req.body.stateOfOrigin;
     if (po == "all" && state != "all") {
-      var condition = { stateOfResidence: state };
+      var condition = { stateOfOrigin: state };
     } else if (state == "all" && po != "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && state == "all") {
       var condition = null;
     } else {
       var condition = {
-        [Op.and]: [{ partnerorganisationId: po }, { stateOfResidence: state }],
+        [Op.and]: [{ partnerorganisationId: po }, { stateOfOrigin: state }],
       };
     }
     beneficiaries

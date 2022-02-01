@@ -45,7 +45,7 @@ db.fileUpload = require("./fileUpload")(sequelize, Sequelize);
 db.users.belongsToMany(db.roles, { through: "usersRoles" });
 db.roles.belongsToMany(db.users, { through: "usersRoles" });
 
-db.partnerOrganisation.hasMany(db.users);
+db.partnerOrganisation.hasMany(db.users, {onDelete: 'cascade', hooks: true});
 db.users.belongsTo(db.partnerOrganisation);
 
 db.partnerOrganisation.belongsToMany(db.trainingCategories, {
@@ -55,8 +55,12 @@ db.trainingCategories.belongsToMany(db.partnerOrganisation, {
   through: "partnerorganisationcategory",
 });
 
-db.states.hasMany(db.partnerOrganisation);
-db.partnerOrganisation.belongsTo(db.states);
+db.states.belongsToMany(db.partnerOrganisation, {
+  through: "partnerorganisationstate",
+});
+db.partnerOrganisation.belongsToMany(db.states, {
+  through: "partnerorganisationstate",
+});
 
 db.states.hasOne(db.cities);
 db.cities.belongsTo(db.states);

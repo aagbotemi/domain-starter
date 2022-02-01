@@ -12,7 +12,7 @@ exports.partnerOrgController = {
       const po = req.body;
 
       const participatingOrg = await partnerOrganisation.create(po);
-      const participatingOrgState = await partnerOrganisation.setStates(
+      const participatingOrgState = await participatingOrg.setStates(
         po.stateId
       );
 

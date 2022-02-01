@@ -14,6 +14,7 @@ exports.partnerOrgController = {
       const participatingOrg = await partnerOrganisation.create(po);
       participatingOrg
         .setCategories(po.categories)
+        .setStates(po.stateId)
         .then((data) => {
           trail = {
             userId: `${req.userId}`,

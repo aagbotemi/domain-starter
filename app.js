@@ -23,7 +23,7 @@ const employRouter = require("./routes/employ");
 const evictedRouter = require("./routes/evicted");
 const fileUploadRouter = require("./routes/fileUpload");
 
-var app = express();
+var app = express({alter: true});
 app.use(cors());
 
 // view engine setup

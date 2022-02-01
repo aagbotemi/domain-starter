@@ -8,7 +8,7 @@ router.post("/", jwtAuth.adminVerifyToken, statesController.create);
 router.get("/", jwtAuth.generalVerifyToken, statesController.getAll);
 
 router.get(
-  "/states/:id",
+  "/po/:id",
   jwtAuth.generalVerifyToken,
   statesController.getPOStates
 );

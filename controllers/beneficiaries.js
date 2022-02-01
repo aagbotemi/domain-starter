@@ -585,7 +585,7 @@ exports.beneficiariesController = {
     } else if (graduationStatus == "all" && po != "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && graduationStatus == "all") {
-      var condition = all;
+      var condition = null;
     } else {
       var condition = {
         [Op.and]: [

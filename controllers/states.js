@@ -54,6 +54,22 @@ exports.statesController = {
                     })
             })
     },
+    getPOStates: async (req, res) => {
+        try {
+          const state = await db.sequelize.query(
+            `SELECT * FROM partnerorganisationstate  inner 
+        join states on partnerorganisationstate.stateId = states.id 
+        WHERE partnerOrganisationId = :partnerOrg`,
+            {
+              replacements: { partnerOrg: req.params.id },
+              type: QueryTypes.SELECT,
+            }
+          );
+          res.status(200).send({ state, count: state.length });
+        } catch (err) {
+          constants.handleErr(err, res);
+        }
+      },
     getById:(req, res) => {
         states.findOne(
             {

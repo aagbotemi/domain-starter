@@ -33,7 +33,7 @@ router.put(
 router.put(
   "/states/:id",
   jwtAuth.adminVerifyToken,
-  partnerOrgController.updatePartnerOrgCategories
+  partnerOrgController.updatePartnerOrgStates
 );
 router.delete('/:id', jwtAuth.adminVerifyToken, partnerOrgController.delete);
 

@@ -5,7 +5,6 @@ const { Op } = require("sequelize");
 exports.dashPoController = {
   count: async (req, res) => {
     try {
-     
       const batchesCount = await db.trainingBatch.count({
         where: {
           partnerorganisationId: req.poId,
@@ -57,7 +56,7 @@ exports.dashPoController = {
         employCount: parseInt(employCount1 + employCount2),
         unemployCount,
         beneficiariesCount,
-        batchesCount
+        batchesCount,
       };
 
       res.status(200).send({
@@ -66,5 +65,23 @@ exports.dashPoController = {
     } catch (err) {
       constants.handleErr(err, res);
     }
+  },
+
+  genderInBatch: (req, res) => {
+    beneficiaries
+      .count({ where: { trainingBatch: req.body.batches } })
+      .then((data) => {
+        res.status(200).send({
+          status: true,
+          length: data.length,
+          data,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          status: false,
+          message: err.message || "Could not fetch record",
+        });
+      });
   },
 };

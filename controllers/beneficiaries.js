@@ -545,24 +545,28 @@ exports.beneficiariesController = {
           },
         ],
       })
-      .then((data) => {
-        const male = [];
-        const female = [];
+      .then( (data) => {
+        const employed = [];
+        const selfEmploy = [];
+        const unemploy = [];
+
         data.forEach((element) => {
-          if (element.gender == "male") {
-            male.push(element);
+          if (element.employmentStatus == "employed") {
+            employed.push(element);
+          }else if(element.employmentStatus == "self employed") {
+            selfEmploy.push(element);
           } else {
-            female.push(element);
+            unemploy.push(element);
           }
         });
+      
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
           data: data,
-          maleReport: male,
-          femaleReport: female,
-          maleCount: male.length,
-          femaleCount: female.length,
+          unemployCount: unemploy.length,
+          employCount: employed.length,
+          selfEmployCount: selfEmploy.length,
           length: data.length,
         });
       })

@@ -29,6 +29,12 @@ router.put(
   partnerOrgController.updatePartnerOrgCategories
 );
 
+
+router.put(
+  "/states/:id",
+  jwtAuth.adminVerifyToken,
+  partnerOrgController.updatePartnerOrgStates
+);
 router.delete('/:id', jwtAuth.adminVerifyToken, partnerOrgController.delete);
 
 

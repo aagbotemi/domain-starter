@@ -29,7 +29,7 @@ module.exports = (sequelize, dataType) => {
       type: dataType.STRING,
     },
     dateOfBirth: {
-      type: dataType.STRING,
+      type: dataType.DATE,
     },
     stateOfResidence: {
       type: dataType.STRING,

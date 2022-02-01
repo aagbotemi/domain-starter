@@ -545,7 +545,7 @@ exports.beneficiariesController = {
           },
         ],
       })
-      .then((data) => {
+      .then(async (data) => {
         const male = [];
         const female = [];
         data.forEach((element) => {

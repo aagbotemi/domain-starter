@@ -28,6 +28,9 @@ module.exports = (sequelize, dataType) => {
     localGovernmentOfOrigin: {
       type: dataType.STRING,
     },
+    dateOfBirth: {
+      type: dataType.STRING,
+    },
     stateOfResidence: {
       type: dataType.STRING,
     },

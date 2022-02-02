@@ -53,7 +53,7 @@ app.use("/audit-trail", auditTrailRouter);
 app.use("/employ", employRouter);
 app.use("/evicted", evictedRouter);
 app.use("/file-upload", fileUploadRouter);
-app.use('/uploads', express.static('./uploads'));
+app.use("/uploads", express.static("./uploads"));
 
 const db = require("./models/index");
 db.sequelize.sync();

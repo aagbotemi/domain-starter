@@ -8,33 +8,31 @@ require("dotenv").config();
 
 exports.partnerOrgController = {
   createPartnerOrg: async (req, res) => {
-    try{
+    try {
       const po = req.body;
 
       const participatingOrg = await partnerOrganisation.create(po);
-      participatingOrg
-        .setCategories(po.categories)
-        .then((data) => {
-          trail = {
-            userId: `${req.userId}`,
-            action: ` ${req.body.organisationName} has been created successfully`,
-            type: "success",
-          }
-          auditTrailController.create(trail)
-          res.status(200).send({
-            success: true,
-            message: "Partner Organisation Added Successfully",
-            data: data,
-          });
-        })
-        .catch((err) => {
-          constants.handleErr(err, res);
+      const participatingOrgState = await participatingOrg.setStates(
+        po.stateId
+      );
+
+      participatingOrg.setCategories(po.categories).then((data) => {
+        trail = {
+          userId: `${req.userId}`,
+          action: ` ${req.body.organisationName} has been created successfully`,
+          type: "success",
+        };
+        auditTrailController.create(trail);
+        res.status(200).send({
+          success: true,
+          message: "Partner Organisation Added Successfully",
+          data: data,
+          participatingOrgState
         });
-    }catch(err){
+      });
+    } catch (err) {
       constants.handleErr(err, res);
-      
     }
-    
   },
 
   getById: (req, res) => {
@@ -73,8 +71,7 @@ exports.partnerOrgController = {
       .findAll({
         include: [
           {
-            model: db.trainingCategories
-           
+            model: db.trainingCategories,
           },
         ],
       })
@@ -100,23 +97,23 @@ exports.partnerOrgController = {
         },
       })
       .then((data) => {
-        db.trainingCategories.findAll({where: {id: req.body.categories}})
-        .then((data2) => {
-          data.setCategories(data2)
+        db.trainingCategories
+          .findAll({ where: { id: req.body.categories } })
+          .then((data2) => {
+            data.setCategories(data2);
 
-          trail = {
-            userId: `${req.userId}`,
-            action: `A partner organisation has been updated`,
-            type: "warning",
-          };
-          auditTrailController.create(trail);
+            trail = {
+              userId: `${req.userId}`,
+              action: `A partner organisation has been updated`,
+              type: "warning",
+            };
+            auditTrailController.create(trail);
 
-          res.status(200).send({ message: "Record Updated" });
-        })
-        .catch((err) => {
-          constants.handleErr(err, res);
-        });
-
+            res.status(200).send({ message: "Record Updated" });
+          })
+          .catch((err) => {
+            constants.handleErr(err, res);
+          });
       })
       .catch((err) => {
         constants.handleErr(err, res);
@@ -124,8 +121,6 @@ exports.partnerOrgController = {
   },
 
   updatePartnerOrgStates: (req, res) => {
- 
-
     db.partnerOrganisation
       .findOne({
         where: {
@@ -133,23 +128,23 @@ exports.partnerOrgController = {
         },
       })
       .then((data) => {
-        db.states.findAll({where: {id: req.body.stateId}})
-        .then((data2) => {
-          data.setStates(data2)
+        db.states
+          .findAll({ where: { id: req.body.stateId } })
+          .then((data2) => {
+            data.setStates(data2);
 
-          trail = {
-            userId: `${req.userId}`,
-            action: `A category name has been updated`,
-            type: "warning",
-          };
-          auditTrailController.create(trail);
+            trail = {
+              userId: `${req.userId}`,
+              action: `A category name has been updated`,
+              type: "warning",
+            };
+            auditTrailController.create(trail);
 
-          res.status(200).send({ message: "Record Updated" });
-        })
-        .catch((err) => {
-          constants.handleErr(err, res);
-        });
-
+            res.status(200).send({ message: "Record Updated" });
+          })
+          .catch((err) => {
+            constants.handleErr(err, res);
+          });
       })
       .catch((err) => {
         constants.handleErr(err, res);
@@ -175,8 +170,8 @@ exports.partnerOrgController = {
           userId: `${req.userId}`,
           action: `A partner organisation has been updated successfully`,
           type: "warning",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({ message: "Record Updated" });
       })
       .catch((err) => {
@@ -200,8 +195,8 @@ exports.partnerOrgController = {
           userId: `${req.userId}`,
           action: `A partner organisation has been deleted successfully`,
           type: "danger",
-        }
-        auditTrailController.create(trail)
+        };
+        auditTrailController.create(trail);
         res.status(200).send({
           message: "record deleted",
         });

@@ -383,16 +383,16 @@ exports.beneficiariesController = {
 
   getTraineesinState: (req, res) => {
     const po = req.body.partnerorganisationId;
-    const state = req.body.stateOfResidence;
+    const state = req.body.stateOfOrigin;
     if (po == "all" && state != "all") {
-      var condition = { stateOfResidence: state };
+      var condition = { stateOfOrigin: state };
     } else if (state == "all" && po != "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && state == "all") {
       var condition = null;
     } else {
       var condition = {
-        [Op.and]: [{ partnerorganisationId: po }, { stateOfResidence: state }],
+        [Op.and]: [{ partnerorganisationId: po }, { stateOfOrigin: state }],
       };
     }
     beneficiaries
@@ -585,7 +585,7 @@ exports.beneficiariesController = {
     } else if (graduationStatus == "all" && po != "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && graduationStatus == "all") {
-      var condition = all;
+      var condition = null;
     } else {
       var condition = {
         [Op.and]: [
@@ -617,23 +617,30 @@ exports.beneficiariesController = {
         ],
       })
       .then((data) => {
-        const male = [];
-        const female = [];
+        const graduated = [];
+        const inTraining = [];
+        const exited = [];
+        const droppedOut = [];
+
         data.forEach((element) => {
-          if (element.gender == "male") {
-            male.push(element);
-          } else {
-            female.push(element);
+          if (element.graduationStatus == "graduated") {
+            graduated.push(element);
+          }else if(element.graduationStatus == "in-training"){
+            inTraining.push(element);
+          } else if(element.graduationStatus == "exited"){
+            exited.push(element);
+          }else{
+            droppedOut.push(element);
           }
         });
         res.status(200).send({
           success: true,
           message: "All trainees retrieved successfully",
           data: data,
-          maleReport: male,
-          femaleReport: female,
-          maleCount: male.length,
-          femaleCount: female.length,
+          graduated: graduated.length,
+          inTraining: inTraining.length,
+          exited: exited.length,
+          droppedOut: droppedOut.length,
           length: data.length,
         });
       })

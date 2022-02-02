@@ -101,7 +101,7 @@ exports.statesController = {
                 }
                 trail = {
                     userId: `${req.userId}`,
-                    action: ` ${req.body.stateName} has been updated`,
+                    action: `A state has been updated`,
                     type: "success",
                 }
                 auditTrailController.create(trail)

@@ -139,7 +139,7 @@ exports.partnerOrgController = {
 
           trail = {
             userId: `${req.userId}`,
-            action: ` ${req.body.categoryName} has been updated`,
+            action: `A category name has been updated`,
             type: "warning",
           };
           auditTrailController.create(trail);

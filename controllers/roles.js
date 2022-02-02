@@ -86,7 +86,7 @@ exports.rolesController = {
                 }
                 trail = {
                     userId: `${req.userId}`,
-                    action: ` ${req.body.roleName} has been updated successfully`,
+                    action: `A role has been updated successfully`,
                     type: "warning",
                 }
                 auditTrailController.create(trail)

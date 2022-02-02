@@ -161,7 +161,7 @@ exports.usersController = {
         }
         trail = {
           userId: `${req.userId}`,
-          action: ` ${req.body.fullName} has been updated`,
+          action: `A user details has been updated`,
           type: "warning",
         };
         auditTrailController.create(trail);

@@ -35,7 +35,6 @@ router.post(
   beneficiariesController.getTraineesinState
 );
 
-
 router.post(
   "/report/grad",
   jwtAuth.adminVerifyToken,

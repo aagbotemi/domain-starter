@@ -23,8 +23,10 @@ module.exports = (sequelize, dataType) => {
       type: dataType.STRING,
       allowNull: false,
     },
-
     profileImage: {
+      type: dataType.STRING,
+    },
+    resetLink: {
       type: dataType.STRING,
     },
   });

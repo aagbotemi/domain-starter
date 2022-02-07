@@ -1,6 +1,8 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
+const { getPagination, getPagingData } = require("./pagination");
+
 const beneficiaries = db.beneficiaries;
 const { auditTrailController } = require("./auditTrail");
 const { evictedController } = require("./evicted");
@@ -93,8 +95,13 @@ exports.beneficiariesController = {
   },
 
   getAllBeneficiaries: (req, res) => {
+    const { page, size } = req.query;
+
+    const { limit, offset } = getPagination(page, size);
     beneficiaries
-      .findAll({
+      .findAndCountAll({
+        limit,
+        offset,
         include: [
           {
             model: db.partnerOrganisation,
@@ -129,13 +136,18 @@ exports.beneficiariesController = {
           maleCount: male.length,
           femaleCount: female.length,
         };
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
-          report,
-          length: data.length,
-          data,
-        });
+        const response = getPagingData(data, page, limit);
+        response.report = report;
+
+        res.status(200).send(response);
+        // res.status(200).send({
+
+        //   success: true,
+        //   message: "All trainees retrieved successfully",
+        //   report,
+        //   length: data.length,
+        //   data,
+        // });
       })
       .catch((err) => {
         res.status(400).send({
@@ -208,8 +220,13 @@ exports.beneficiariesController = {
   },
 
   getPOTrainees: (req, res) => {
+    const { page, size } = req.query;
+
+    const { limit, offset } = getPagination(page, size);
     beneficiaries
       .findAll({
+        limit,
+        offset,
         where: {
           partnerorganisationId: req.poId,
         },
@@ -248,13 +265,18 @@ exports.beneficiariesController = {
           femaleCount: female.length,
         };
 
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
-          report,
-          data,
-          length: data.length,
-        });
+        const response = getPagingData(data, page, limit);
+        response.report = report;
+
+        res.status(200).send(response);
+
+        // res.status(200).send({
+        //   success: true,
+        //   message: "All trainees retrieved successfully",
+        //   report,
+        //   data,
+        //   length: data.length,
+        // });
       })
       .catch((err) => {
         res.status(400).send({
@@ -384,6 +406,9 @@ exports.beneficiariesController = {
   getTraineesinState: (req, res) => {
     const po = req.body.partnerorganisationId;
     const state = req.body.stateOfOrigin;
+    const { page, size } = req.query;
+
+    const { limit, offset } = getPagination(page, size);
     if (po == "all" && state != "all") {
       var condition = { stateOfOrigin: state };
     } else if (state == "all" && po != "all") {
@@ -397,6 +422,8 @@ exports.beneficiariesController = {
     }
     beneficiaries
       .findAll({
+        limit,
+        offset,
         where: condition,
 
         include: [
@@ -427,16 +454,27 @@ exports.beneficiariesController = {
             female.push(element);
           }
         });
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
-          data: data,
+        const report = {
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
-          length: data.length,
-        });
+        };
+
+        const response = getPagingData(data, page, limit);
+        response.report = report;
+
+        res.status(200).send(response);
+        // res.status(200).send({
+        //   success: true,
+        //   message: "All trainees retrieved successfully",
+        //   data: data,
+        //   maleReport: male,
+        //   femaleReport: female,
+        //   maleCount: male.length,
+        //   femaleCount: female.length,
+        //   length: data.length,
+        // });
       })
       .catch((err) => {
         res.status(400).send({
@@ -448,12 +486,15 @@ exports.beneficiariesController = {
   getTraineesbyGender: (req, res) => {
     const po = req.body.partnerorganisationId;
     const gender = req.body.gender;
+    const { page, size } = req.query;
+
+    const { limit, offset } = getPagination(page, size);
     if (po == "all" && gender != "all") {
       var condition = { gender: gender };
     } else if (gender == "all" && po != "all") {
       var condition = { partnerorganisationId: po };
     } else if (po == "all" && gender == "all") {
-      var condition = null
+      var condition = null;
     } else {
       var condition = {
         [Op.and]: [{ partnerorganisationId: po }, { gender: gender }],
@@ -461,6 +502,8 @@ exports.beneficiariesController = {
     }
     beneficiaries
       .findAll({
+        limit,
+        offset,
         where: condition,
 
         include: [
@@ -491,16 +534,28 @@ exports.beneficiariesController = {
             female.push(element);
           }
         });
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
-          data: data,
+
+        const report = {
           maleReport: male,
           femaleReport: female,
           maleCount: male.length,
           femaleCount: female.length,
-          length: data.length,
-        });
+        };
+
+        const response = getPagingData(data, page, limit);
+        response.report = report;
+        res.status(200).send(response);
+
+        // res.status(200).send({
+        //   success: true,
+        //   message: "All trainees retrieved successfully",
+        //   data: data,
+        //   maleReport: male,
+        //   femaleReport: female,
+        //   maleCount: male.length,
+        //   femaleCount: female.length,
+        //   length: data.length,
+        // });
       })
       .catch((err) => {
         res.status(400).send({
@@ -512,6 +567,9 @@ exports.beneficiariesController = {
   getTraineesinTradeArea: (req, res) => {
     const po = req.body.partnerorganisationId;
     const categoryId = req.body.categoryId;
+    const { page, size } = req.query;
+
+    const { limit, offset } = getPagination(page, size);
     if (po == "all" && categoryId != "all") {
       var condition = { categoryId: categoryId };
     } else if (categoryId == "all" && po != "all") {
@@ -525,6 +583,8 @@ exports.beneficiariesController = {
     }
     beneficiaries
       .findAll({
+        limit,
+        offset,
         where: condition,
 
         include: [
@@ -545,7 +605,7 @@ exports.beneficiariesController = {
           },
         ],
       })
-      .then( (data) => {
+      .then((data) => {
         const employed = [];
         const selfEmploy = [];
         const unemploy = [];
@@ -553,22 +613,32 @@ exports.beneficiariesController = {
         data.forEach((element) => {
           if (element.employmentStatus == "employed") {
             employed.push(element);
-          }else if(element.employmentStatus == "self employed") {
+          } else if (element.employmentStatus == "self employed") {
             selfEmploy.push(element);
           } else {
             unemploy.push(element);
           }
         });
-      
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
-          data: data,
+
+        const report = {
           unemployCount: unemploy.length,
           employCount: employed.length,
           selfEmployCount: selfEmploy.length,
-          length: data.length,
-        });
+        };
+
+        const response = getPagingData(data, page, limit);
+        response.report = report;
+        res.status(200).send(response);
+
+        // res.status(200).send({
+        //   success: true,
+        //   message: "All trainees retrieved successfully",
+        //   data: data,
+        //   unemployCount: unemploy.length,
+        //   employCount: employed.length,
+        //   selfEmployCount: selfEmploy.length,
+        //   length: data.length,
+        // });
       })
       .catch((err) => {
         res.status(400).send({
@@ -580,6 +650,9 @@ exports.beneficiariesController = {
   getTraineesbyGradStatus: (req, res) => {
     const po = req.body.partnerorganisationId;
     const graduationStatus = req.body.graduationStatus;
+    const { page, size } = req.query;
+
+    const { limit, offset } = getPagination(page, size);
     if (po == "all" && graduationStatus != "all") {
       var condition = { graduationStatus: graduationStatus };
     } else if (graduationStatus == "all" && po != "all") {
@@ -596,6 +669,8 @@ exports.beneficiariesController = {
     }
     beneficiaries
       .findAll({
+        limit,
+        offset,
         where: condition,
 
         include: [
@@ -625,24 +700,35 @@ exports.beneficiariesController = {
         data.forEach((element) => {
           if (element.graduationStatus == "graduated") {
             graduated.push(element);
-          }else if(element.graduationStatus == "in-training"){
+          } else if (element.graduationStatus == "in-training") {
             inTraining.push(element);
-          } else if(element.graduationStatus == "exited"){
+          } else if (element.graduationStatus == "exited") {
             exited.push(element);
-          }else{
+          } else {
             droppedOut.push(element);
           }
         });
-        res.status(200).send({
-          success: true,
-          message: "All trainees retrieved successfully",
-          data: data,
+
+        const report = {
           graduated: graduated.length,
           inTraining: inTraining.length,
           exited: exited.length,
           droppedOut: droppedOut.length,
-          length: data.length,
-        });
+        };
+
+        const response = getPagingData(data, page, limit);
+        response.report = report;
+        res.status(200).send(response);
+        // res.status(200).send({
+        //   success: true,
+        //   message: "All trainees retrieved successfully",
+        //   data: data,
+        //   graduated: graduated.length,
+        //   inTraining: inTraining.length,
+        //   exited: exited.length,
+        //   droppedOut: droppedOut.length,
+        //   length: data.length,
+        // });
       })
       .catch((err) => {
         res.status(400).send({

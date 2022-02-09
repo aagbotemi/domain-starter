@@ -1,6 +1,8 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
+const { getPagination, getPagingData } = require("./pagination");
+
 const partnerOrganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
 
@@ -27,7 +29,7 @@ exports.partnerOrgController = {
           success: true,
           message: "Partner Organisation Added Successfully",
           data: data,
-          participatingOrgState
+          participatingOrgState,
         });
       });
     } catch (err) {
@@ -67,8 +69,13 @@ exports.partnerOrgController = {
   },
 
   getAllPartnerOrg: (req, res) => {
+    const { page, size } = req.query;
+
+    const { limit, offset } = getPagination(page, size);
     partnerOrganisation
-      .findAll({
+      .findAndCountAll({
+        limit,
+        offset,
         include: [
           {
             model: db.trainingCategories,
@@ -76,11 +83,9 @@ exports.partnerOrgController = {
         ],
       })
       .then((data) => {
-        res.status(200).send({
-          success: true,
-          message: "All partner Organisation retrieved successfully",
-          data,
-        });
+        const response = getPagingData(data, page, limit);
+
+        res.status(200).send(response);
       })
       .catch((err) => {
         res.status(400).send({

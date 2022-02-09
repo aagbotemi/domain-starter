@@ -160,7 +160,7 @@ exports.beneficiariesController = {
     const startedDate = new Date(req.body.startDate);
     const endDate = new Date(req.body.endDate);
     beneficiaries
-      .findAll(
+      .findAndCountAll(
         {
           where: {
             trainingYear: {
@@ -224,7 +224,7 @@ exports.beneficiariesController = {
 
     const { limit, offset } = getPagination(page, size);
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         limit,
         offset,
         where: {
@@ -289,7 +289,7 @@ exports.beneficiariesController = {
     const startedDate = new Date(req.body.startDate);
     const endDate = new Date(req.body.endDate);
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         where: {
           trainingYear: {
             $between: [startedDate, endDate],
@@ -421,7 +421,7 @@ exports.beneficiariesController = {
       };
     }
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         limit,
         offset,
         where: condition,
@@ -501,7 +501,7 @@ exports.beneficiariesController = {
       };
     }
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         limit,
         offset,
         where: condition,
@@ -582,7 +582,7 @@ exports.beneficiariesController = {
       };
     }
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         limit,
         offset,
         where: condition,
@@ -668,7 +668,7 @@ exports.beneficiariesController = {
       };
     }
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         limit,
         offset,
         where: condition,

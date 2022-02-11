@@ -7,6 +7,8 @@ const beneficiaries = db.beneficiaries;
 const { auditTrailController } = require("./auditTrail");
 const { evictedController } = require("./evicted");
 const { employController } = require("./employ");
+const { usersController } = require("./users");
+
 const { Op } = require("sequelize");
 
 // const department = db.department;
@@ -19,6 +21,19 @@ exports.beneficiariesController = {
     beneficiaries
       .create(trainee)
       .then((data) => {
+
+
+        const userData = {
+            fullName: `${data.firstName} ${data.lastName} ${data.middleName}`,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            password: data.firstName,
+            userName: data.firstName,
+            userType: "benficiary",
+            partnerorganisationId: data.partnerorganisationId,
+          };
+
+        usersController.create(userData);
         trail = {
           userId: `${req.userId}`,
           action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
@@ -160,7 +175,7 @@ exports.beneficiariesController = {
     const startedDate = new Date(req.body.startDate);
     const endDate = new Date(req.body.endDate);
     beneficiaries
-      .findAll(
+      .findAndCountAll(
         {
           where: {
             trainingYear: {
@@ -224,7 +239,7 @@ exports.beneficiariesController = {
 
     const { limit, offset } = getPagination(page, size);
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         limit,
         offset,
         where: {
@@ -289,7 +304,7 @@ exports.beneficiariesController = {
     const startedDate = new Date(req.body.startDate);
     const endDate = new Date(req.body.endDate);
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         where: {
           trainingYear: {
             $between: [startedDate, endDate],
@@ -421,7 +436,7 @@ exports.beneficiariesController = {
       };
     }
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         limit,
         offset,
         where: condition,
@@ -501,7 +516,7 @@ exports.beneficiariesController = {
       };
     }
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         limit,
         offset,
         where: condition,
@@ -582,7 +597,7 @@ exports.beneficiariesController = {
       };
     }
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         limit,
         offset,
         where: condition,
@@ -668,7 +683,7 @@ exports.beneficiariesController = {
       };
     }
     beneficiaries
-      .findAll({
+      .findAndCountAll({
         limit,
         offset,
         where: condition,

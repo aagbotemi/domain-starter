@@ -35,6 +35,7 @@ exports.fileUploadController = {
         checkFileType(file, cb);
       },
     }).single("file");
+    
     upload(req, res, function (err) {
       if (req.fileValidationError) {
         return res.status(400).send(req.fileValidationError);

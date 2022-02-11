@@ -9,28 +9,45 @@ const { auditTrailController } = require("./auditTrail");
 require("dotenv").config();
 
 exports.partnerOrgController = {
-  importFromExcel: (req, res) => {
-    const po = req.body;
-    const participatingOrg = await partnerOrganisation.create(po);
-    const participatingOrgState = await participatingOrg.setStates(
-      po.stateId
-    );
-    const pathToExcel = fileUploadController.upload(req, data);
-    readXlsxFile(pathToExcel).then((rows) => {
-      participatingOrg
-      .setCategories(po.categories)
-      .bulkCreate(rows)
-      .then((datas) => {
+  importFromExcel: async (req, res) => {
+    try{
+      const pathToExcel = fileUploadController.upload(req);
+      readXlsxFile(pathToExcel).then((rows) => {
+        const participatingOrgs = await partnerOrganisation.bulkcreate(rows);
+        participatingOrgs.forEach(participatingOrg => {
+          for (let index = 0; index < rows.length; index++) {
+            if(rows[index].organisationName == participatingOrg.organisationName){
+              const participatingOrgState = await participatingOrg.setStates(
+                rows[index].stateId
+              );
+              participatingOrg.setCategories(rows[index].categories)
+              .then((data) => {
+                trail = {
+                  userId: `${req.userId}`,
+                  action: ` ${participatingOrg.organisationName} has been created successfully`,
+                  type: "success",
+                };
+                auditTrailController.create(trail);
+               
+              });
+            }
+            
+          }
+          
+          
+        });
         res.status(200).send({
           success: true,
-          message: "Trainee Added Successfully",
-          data: datas,
+          message: "Partner Organisation Added Successfully",
+          // data: data,
+          // participatingOrgState,
         });
+        
       })
-      .catch((err) => {
-        constants.handleErr(err, res);
-      });
-    })
+    }catch (err) {
+      constants.handleErr(err, res);
+    }
+   
     
   },
   createPartnerOrg: async (req, res) => {

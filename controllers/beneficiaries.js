@@ -17,7 +17,7 @@ require("dotenv").config();
 
 exports.beneficiariesController = {
   importFromExcel: (req, res) => {
-    const pathToExcel = fileUploadController.upload(req, data);
+    const pathToExcel = fileUploadController.upload(req);
     readXlsxFile(pathToExcel).then((rows) => {
       beneficiaries
       .bulkCreate(rows)

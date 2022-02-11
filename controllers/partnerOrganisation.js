@@ -2,13 +2,37 @@ const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
 const { getPagination, getPagingData } = require("./pagination");
-
+const readXlsxFile = require("read-excel-file/node");
 const partnerOrganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
 
 require("dotenv").config();
 
 exports.partnerOrgController = {
+  importFromExcel: (req, res) => {
+    const po = req.body;
+    const participatingOrg = await partnerOrganisation.create(po);
+    const participatingOrgState = await participatingOrg.setStates(
+      po.stateId
+    );
+    const pathToExcel = fileUploadController.upload(req, data);
+    readXlsxFile(pathToExcel).then((rows) => {
+      participatingOrg
+      .setCategories(po.categories)
+      .bulkCreate(rows)
+      .then((datas) => {
+        res.status(200).send({
+          success: true,
+          message: "Trainee Added Successfully",
+          data: datas,
+        });
+      })
+      .catch((err) => {
+        constants.handleErr(err, res);
+      });
+    })
+    
+  },
   createPartnerOrg: async (req, res) => {
     try {
       const po = req.body;

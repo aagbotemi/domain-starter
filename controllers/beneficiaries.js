@@ -29,7 +29,7 @@ exports.beneficiariesController = {
             phoneNumber: data.phoneNumber,
             password: data.firstName,
             userName: data.firstName,
-            userType: "benficiary",
+            userType: "beneficiary",
             partnerorganisationId: data.partnerorganisationId,
           };
   
@@ -91,7 +91,7 @@ exports.beneficiariesController = {
           phoneNumber: data.phoneNumber,
           password: data.firstName,
           userName: data.firstName,
-          userType: "benficiary",
+          userType: "beneficiary",
           partnerorganisationId: data.partnerorganisationId,
         };
 

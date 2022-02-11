@@ -64,11 +64,12 @@ exports.beneficiariesController = {
             };
             employController.create(employInfo);
           }
-          res.status(200).send({
-            success: true,
-            message: "Trainee Added Successfully",
-            data: data,
-          });
+          
+        });
+        res.status(200).send({
+          success: true,
+          message: "Trainee Added Successfully",
+          data: datas,
         });
       })
       .catch((err) => {

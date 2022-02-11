@@ -7,6 +7,8 @@ const beneficiaries = db.beneficiaries;
 const { auditTrailController } = require("./auditTrail");
 const { evictedController } = require("./evicted");
 const { employController } = require("./employ");
+const { usersController } = require("./users");
+
 const { Op } = require("sequelize");
 
 // const department = db.department;
@@ -19,6 +21,19 @@ exports.beneficiariesController = {
     beneficiaries
       .create(trainee)
       .then((data) => {
+
+
+        const userData = {
+            fullName: `${data.firstName} ${data.lastName} ${data.middleName}`,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            password: data.firstName,
+            userName: data.firstName,
+            userType: "benficiary",
+            partnerorganisationId: data.partnerorganisationId,
+          };
+
+        usersController.create(userData);
         trail = {
           userId: `${req.userId}`,
           action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,

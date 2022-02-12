@@ -35,7 +35,6 @@ router.post(
   beneficiariesController.getTraineesinState
 );
 
-
 router.post(
   "/report/grad",
   jwtAuth.adminVerifyToken,
@@ -61,6 +60,8 @@ router.post(
 // );
 
 router.post("/", jwtAuth.poVerifyToken, beneficiariesController.createTrainee);
+
+router.post("/bulk", jwtAuth.poVerifyToken, beneficiariesController.importFromExcel);
 
 router.put(
   "/:id",

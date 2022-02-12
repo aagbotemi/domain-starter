@@ -1,12 +1,55 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
+const { getPagination, getPagingData } = require("./pagination");
+const readXlsxFile = require("read-excel-file/node");
 const partnerOrganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
 
 require("dotenv").config();
 
 exports.partnerOrgController = {
+  importFromExcel: async (req, res) => {
+    try{
+      const pathToExcel = fileUploadController.upload(req);
+      readXlsxFile(pathToExcel).then((rows) => {
+        const participatingOrgs = await partnerOrganisation.bulkcreate(rows);
+        participatingOrgs.forEach(participatingOrg => {
+          for (let index = 0; index < rows.length; index++) {
+            if(rows[index].organisationName == participatingOrg.organisationName){
+              const participatingOrgState = await participatingOrg.setStates(
+                rows[index].stateId
+              );
+              participatingOrg.setCategories(rows[index].categories)
+              .then((data) => {
+                trail = {
+                  userId: `${req.userId}`,
+                  action: ` ${participatingOrg.organisationName} has been created successfully`,
+                  type: "success",
+                };
+                auditTrailController.create(trail);
+               
+              });
+            }
+            
+          }
+          
+          
+        });
+        res.status(200).send({
+          success: true,
+          message: "Partner Organisation Added Successfully",
+          // data: data,
+          // participatingOrgState,
+        });
+        
+      })
+    }catch (err) {
+      constants.handleErr(err, res);
+    }
+   
+    
+  },
   createPartnerOrg: async (req, res) => {
     try {
       const po = req.body;
@@ -27,7 +70,7 @@ exports.partnerOrgController = {
           success: true,
           message: "Partner Organisation Added Successfully",
           data: data,
-          participatingOrgState
+          participatingOrgState,
         });
       });
     } catch (err) {
@@ -67,8 +110,13 @@ exports.partnerOrgController = {
   },
 
   getAllPartnerOrg: (req, res) => {
+    const { page, size } = req.query;
+
+    const { limit, offset } = getPagination(page, size);
     partnerOrganisation
-      .findAll({
+      .findAndCountAll({
+        limit,
+        offset,
         include: [
           {
             model: db.trainingCategories,
@@ -76,11 +124,9 @@ exports.partnerOrgController = {
         ],
       })
       .then((data) => {
-        res.status(200).send({
-          success: true,
-          message: "All partner Organisation retrieved successfully",
-          data,
-        });
+        const response = getPagingData(data, page, limit);
+
+        res.status(200).send(response);
       })
       .catch((err) => {
         res.status(400).send({

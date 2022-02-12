@@ -17,6 +17,12 @@ router.post(
   partnerOrgController.createPartnerOrg
 );
 
+router.post(
+  "/bulk",
+  jwtAuth.adminVerifyToken,
+  partnerOrgController.importFromExcel
+);
+
 router.put(
   "/:id",
   jwtAuth.adminVerifyToken,

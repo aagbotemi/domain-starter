@@ -173,54 +173,58 @@ exports.usersController = {
       });
   },
 
-  // forgotPassword: async (req, res) => {
-  //   // const reset = req.body;
-  //   // reset.password = bcrypt.hashSync(reset.password, 10);
-  //   await users
-  //     .findOne({
-  //       where: {
-  //         email: req.body.email,
-  //       },
-  //     })
-  //     .then((data) => {
-  //       if (!data) {
-  //         res.status(404).send({
-  //           status: false,
-  //           message: "user with this email does not exist",
-  //         });
-  //       }
-  //       const token = jwt.sign({ id: data.id }, process.env.secret, { expiresIn: "30mins" })
+  forgotPassword: async (req, res) => {
+    // const reset = req.body;
+    // reset.password = bcrypt.hashSync(reset.password, 10);
+    await users
+      .findOne({
+        where: {
+          email: req.body.email,
+        },
+      })
+      .then((data) => {
+        if (!data) {
+          res.status(404).send({
+            status: false,
+            message: "user with this email does not exist",
+          });
+        }
+        const token = jwt.sign({ id: data.id }, process.env.secret, {
+          expiresIn: "30mins",
+        });
 
-  //       const dataObj = {
-  //         from: "hello@tsdp.com",
-  //         to: req.body.email,
-  //         subject: "Reset Password",
-  //         html: `
-  //           <h2>Please click on the link to reset your password</h2>
-  //           <p>${process.env.CLIENT_URL}/resetpassword/${token}</p>
-  //         `
-  //       }
+        const dataObj = {
+          from: "hello@tsdp.com",
+          to: req.body.email,
+          subject: "Reset Password",
+          html: `
+            <h2>Please click on the link to reset your password</h2>
+            <p>${process.env.CLIENT_URL}/resetpassword/${token}</p>
+          `,
+        };
 
-  //       return users.update({ resetLink: token })
-  //         .then((data) => {
-  //           if (!data) {
-  //             res.status(404).send({
-  //               status: false,
-  //               message: "reset password link error",
-  //             });
-  //           }
-  //           res.status(200).send({
-  //             status: true,
-  //             message: dataObj
-  //           })
-  //         }).catch((err) => {
-  //           res.status(400).send({
-  //             status: false,
-  //             message: err.message || "reset password link error",
-  //           })
-  //         })
-  //     })
-  // },
+        return users
+          .update({ resetLink: token })
+          .then((data) => {
+            if (!data) {
+              res.status(404).send({
+                status: false,
+                message: "reset password link error",
+              });
+            }
+            res.status(200).send({
+              status: true,
+              message: dataObj,
+            });
+          })
+          .catch((err) => {
+            res.status(400).send({
+              status: false,
+              message: err.message || "reset password link error",
+            });
+          });
+      });
+  },
   delete: (req, res) => {
     users
       .destroy({

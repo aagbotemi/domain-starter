@@ -4,9 +4,9 @@ const { constants } = require("./constants");
 const users = db.users;
 const partnerOrganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
-const mailgun = require("mailgun-js");
+// const mailgun = require("mailgun-js");
 const DOMAIN = "sandbox90292-2309ds-jicdo929-jsd9jkc@mailgun.org";
-const mg = mailgun({ apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN });
+// const mg = mailgun({ apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN });
 
 const Op = db.Sequelize.Op;
 

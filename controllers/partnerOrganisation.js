@@ -12,9 +12,9 @@ exports.partnerOrgController = {
   importFromExcel: async (req, res) => {
     try{
       const pathToExcel = fileUploadController.upload(req);
-      readXlsxFile(pathToExcel).then((rows) => {
+      readXlsxFile(pathToExcel).then(async (rows) => {
         const participatingOrgs = await partnerOrganisation.bulkcreate(rows);
-        participatingOrgs.forEach(participatingOrg => {
+        participatingOrgs.forEach(async participatingOrg => {
           for (let index = 0; index < rows.length; index++) {
             if(rows[index].organisationName == participatingOrg.organisationName){
               const participatingOrgState = await participatingOrg.setStates(

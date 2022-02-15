@@ -74,6 +74,9 @@ db.beneficiaries.belongsTo(db.partnerOrganisation);
 db.beneficiaries.hasOne(db.employ);
 db.employ.belongsTo(db.beneficiaries);
 
+db.users.hasOne(db.beneficiaries);
+db.beneficiaries.belongsTo(db.users);
+
 db.beneficiaries.hasOne(db.evicted);
 db.evicted.belongsTo(db.beneficiaries);
 

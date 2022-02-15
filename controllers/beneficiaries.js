@@ -20,82 +20,81 @@ exports.beneficiariesController = {
     const pathToExcel = fileUploadController.upload(req);
     readXlsxFile(pathToExcel).then((rows) => {
       beneficiaries
-      .bulkCreate(rows)
-      .then((datas) => {
-        datas.forEach(data => {
-          const userData = {
-            fullName: `${data.firstName} ${data.lastName} ${data.middleName}`,
-            email: data.email,
-            phoneNumber: data.phoneNumber,
-            password: data.firstName,
-            userName: data.firstName,
-            userType: "beneficiary",
-            partnerorganisationId: data.partnerorganisationId,
-          };
-  
-          usersController.create(userData);
-          trail = {
-            userId: `${req.userId}`,
-            action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
-            type: "success",
-          };
-          auditTrailController.create(trail);
-  
-          if (
-            data.graduationStatus == "evicted" ||
-            data.graduationStatus == "dropped out"
-          ) {
-            evictedInfo = {
-              beneficiaryId: `${data.id}`,
-              reason: `${req.body.reason}`,
-              dateEvicted: `${req.body.dateEvicted}`,
+        .bulkCreate(rows)
+        .then((datas) => {
+          datas.forEach((data) => {
+            const userData = {
+              fullName: `${data.firstName} ${data.lastName} ${data.middleName}`,
+              email: data.email,
+              phoneNumber: data.phoneNumber,
+              password: data.firstName,
+              userName: data.firstName,
+              userType: "beneficiary",
+              partnerorganisationId: data.partnerorganisationId,
             };
-            evictedController.create(evictedInfo);
-          }
-          if (
-            data.employmentStatus == "employed" ||
-            data.employmentStatus == "self employed"
-          ) {
-            employInfo = {
-              beneficiaryId: `${data.id}`,
-              organisationName: `${req.body.organisationName}`,
-              organisationAddress: `${req.body.organisationAddress}`,
-              yearEmployed: `${req.body.yearEmployed}`,
+
+            usersController.create(userData);
+            trail = {
+              userId: `${req.userId}`,
+              action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
+              type: "success",
             };
-            employController.create(employInfo);
-          }
-          
+            auditTrailController.create(trail);
+
+            if (
+              data.graduationStatus == "evicted" ||
+              data.graduationStatus == "dropped out"
+            ) {
+              evictedInfo = {
+                beneficiaryId: `${data.id}`,
+                reason: `${req.body.reason}`,
+                dateEvicted: `${req.body.dateEvicted}`,
+              };
+              evictedController.create(evictedInfo);
+            }
+            if (
+              data.employmentStatus == "employed" ||
+              data.employmentStatus == "self employed"
+            ) {
+              employInfo = {
+                beneficiaryId: `${data.id}`,
+                organisationName: `${req.body.organisationName}`,
+                organisationAddress: `${req.body.organisationAddress}`,
+                yearEmployed: `${req.body.yearEmployed}`,
+              };
+              employController.create(employInfo);
+            }
+          });
+          res.status(200).send({
+            success: true,
+            message: "Trainee Added Successfully",
+            data: datas,
+          });
+        })
+        .catch((err) => {
+          constants.handleErr(err, res);
         });
-        res.status(200).send({
-          success: true,
-          message: "Trainee Added Successfully",
-          data: datas,
-        });
-      })
-      .catch((err) => {
-        constants.handleErr(err, res);
-      });
-    })
-    
+    });
   },
 
   createTrainee: (req, res) => {
     const trainee = req.body;
+    const userData = {
+      fullName: `${req.firstName} ${req.lastName} ${req.middleName}`,
+      email: req.email,
+      phoneNumber: req.phoneNumber,
+      password: req.firstName,
+      userName: req.firstName,
+      userType: "beneficiary",
+      partnerorganisationId: req.partnerorganisationId,
+    };
+    usersController
+      .create(userData)
 
-    beneficiaries
-      .create(trainee)
       .then((data) => {
-        const userData = {
-          fullName: `${data.firstName} ${data.lastName} ${data.middleName}`,
-          email: data.email,
-          phoneNumber: data.phoneNumber,
-          password: data.firstName,
-          userName: data.firstName,
-          userType: "beneficiary",
-          partnerorganisationId: data.partnerorganisationId,
-        };
+        trainee.userId = data.id
+        beneficiaries.create(trainee);
 
-        usersController.create(userData);
         trail = {
           userId: `${req.userId}`,
           action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,

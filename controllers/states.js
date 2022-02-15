@@ -36,17 +36,18 @@ exports.statesController = {
         },
       })
       .then((data) => {
-        if (data.length == 0) {
+        if (!data) {
           res.status(404).send({
             status: false,
             message: "No state has been created!!!",
           });
+        } else {
+          res.status(200).send({
+            status: true,
+            length: data.length,
+            data,
+          });
         }
-        res.status(200).send({
-          status: true,
-          length: data.length,
-          data,
-        });
       })
       .catch((err) => {
         res.status(400).send({

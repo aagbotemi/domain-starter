@@ -1,7 +1,7 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const { getPagination, getPagingData } = require("./pagination");
+const { pagination} = require("./pagination");
 const readXlsxFile = require("read-excel-file/node");
 const beneficiaries = db.beneficiaries;
 const { auditTrailController } = require("./auditTrail");
@@ -180,7 +180,7 @@ exports.beneficiariesController = {
   getAllBeneficiaries: (req, res) => {
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     beneficiaries
       .findAndCountAll({
         limit,
@@ -219,7 +219,7 @@ exports.beneficiariesController = {
           maleCount: male.length,
           femaleCount: female.length,
         };
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
 
         res.status(200).send(response);
@@ -305,7 +305,7 @@ exports.beneficiariesController = {
   getPOTrainees: (req, res) => {
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     beneficiaries
       .findAndCountAll({
         limit,
@@ -348,7 +348,7 @@ exports.beneficiariesController = {
           femaleCount: female.length,
         };
 
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
 
         res.status(200).send(response);
@@ -491,7 +491,7 @@ exports.beneficiariesController = {
     const state = req.body.stateOfOrigin;
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     if (po == "all" && state != "all") {
       var condition = { stateOfOrigin: state };
     } else if (state == "all" && po != "all") {
@@ -544,7 +544,7 @@ exports.beneficiariesController = {
           femaleCount: female.length,
         };
 
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
 
         res.status(200).send(response);
@@ -571,7 +571,7 @@ exports.beneficiariesController = {
     const gender = req.body.gender;
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     if (po == "all" && gender != "all") {
       var condition = { gender: gender };
     } else if (gender == "all" && po != "all") {
@@ -625,7 +625,7 @@ exports.beneficiariesController = {
           femaleCount: female.length,
         };
 
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
         res.status(200).send(response);
 
@@ -652,7 +652,7 @@ exports.beneficiariesController = {
     const categoryId = req.body.categoryId;
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     if (po == "all" && categoryId != "all") {
       var condition = { categoryId: categoryId };
     } else if (categoryId == "all" && po != "all") {
@@ -709,7 +709,7 @@ exports.beneficiariesController = {
           selfEmployCount: selfEmploy.length,
         };
 
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
         res.status(200).send(response);
 
@@ -735,7 +735,7 @@ exports.beneficiariesController = {
     const graduationStatus = req.body.graduationStatus;
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     if (po == "all" && graduationStatus != "all") {
       var condition = { graduationStatus: graduationStatus };
     } else if (graduationStatus == "all" && po != "all") {
@@ -799,7 +799,7 @@ exports.beneficiariesController = {
           droppedOut: droppedOut.length,
         };
 
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
         res.status(200).send(response);
         // res.status(200).send({

@@ -1,7 +1,7 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const { getPagination, getPagingData } = require("./pagination");
+const { pagination} = require("./pagination");
 const readXlsxFile = require("read-excel-file/node");
 const partnerOrganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
@@ -112,7 +112,7 @@ exports.partnerOrgController = {
   getAllPartnerOrg: (req, res) => {
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     partnerOrganisation
       .findAndCountAll({
         limit,
@@ -124,7 +124,7 @@ exports.partnerOrgController = {
         ],
       })
       .then((data) => {
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
 
         res.status(200).send(response);
       })

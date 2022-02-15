@@ -33,7 +33,14 @@ exports.beneficiariesController = {
               partnerorganisationId: data.partnerorganisationId,
             };
 
-            usersController.create(userData);
+            usersController.create(userData).then((data) => {
+              const userId = data.id;
+              beneficiaries.update(userId, {
+                where: {
+                  email: data.email,
+                },
+              });
+            });
             trail = {
               userId: `${req.userId}`,
               action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
@@ -92,7 +99,7 @@ exports.beneficiariesController = {
       .create(userData)
 
       .then((data) => {
-        trainee.userId = data.id
+        trainee.userId = data.id;
         beneficiaries.create(trainee);
 
         trail = {

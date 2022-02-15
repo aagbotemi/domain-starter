@@ -25,10 +25,7 @@ module.exports = (sequelize, dataType) => {
     },
     profileImage: {
       type: dataType.STRING,
-    },
-    resetLink: {
-      type: dataType.STRING,
-    },
+    }
   });
   return user;
 };

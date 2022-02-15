@@ -3,7 +3,7 @@ exports.pagination = {
     // if (page != 0) {
     //   var page = page - 1;
     // }
-    page--;
+    page ? page-- : 0;
     const limit = size ? +size : 10;
     const offset = page ? page * limit : 0;
     return { limit, offset };

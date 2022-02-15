@@ -206,7 +206,7 @@ exports.beneficiariesController = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.gender == "male") {
             male.push(element);
           } else {
@@ -274,7 +274,7 @@ exports.beneficiariesController = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.gender == "male") {
             male.push(element);
           } else {
@@ -334,7 +334,7 @@ exports.beneficiariesController = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.gender == "male") {
             male.push(element);
           } else {
@@ -530,7 +530,7 @@ exports.beneficiariesController = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.gender == "male") {
             male.push(element);
           } else {
@@ -610,7 +610,7 @@ exports.beneficiariesController = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.gender == "male") {
             male.push(element);
           } else {
@@ -693,7 +693,7 @@ exports.beneficiariesController = {
         const selfEmploy = [];
         const unemploy = [];
 
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.employmentStatus == "employed") {
             employed.push(element);
           } else if (element.employmentStatus == "self employed") {
@@ -780,7 +780,7 @@ exports.beneficiariesController = {
         const exited = [];
         const droppedOut = [];
 
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.graduationStatus == "graduated") {
             graduated.push(element);
           } else if (element.graduationStatus == "in-training") {

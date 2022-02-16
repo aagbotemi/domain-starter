@@ -14,6 +14,9 @@ exports.authController = {
       where: {
         email: req.body.email,
       },
+      include: {
+        model: db.beneficiaries,
+      },
     })
       .then((user) => {
         // if record doesn't exist
@@ -46,6 +49,7 @@ exports.authController = {
           userName: user.userName,
           profileImage: user.profileImage,
           partnerOrganisation: user.partnerorganisationId,
+          beneficiaryInfo: user.beneficiaries,
         };
         let token = sign(payload, config.secretKey, {
           expiresIn: 36000,

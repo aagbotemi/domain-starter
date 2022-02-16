@@ -185,6 +185,40 @@ exports.beneficiariesController = {
       });
   },
 
+  getbeneficiaryProfile: (req, res) => {
+    beneficiaries
+      .findOne({
+        where: {
+          id: req.beneficiaryId,
+        },
+        include: [
+          {
+            model: db.partnerOrganisation,
+          },
+          {
+            model: db.trainingCategories,
+          },
+          {
+            model: db.trainingBatch,
+          },
+          {
+            model: db.employ,
+          },
+          {
+            model: db.evicted,
+          },
+        ],
+      })
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
   getAllBeneficiaries: (req, res) => {
     const { page, size } = req.query;
 

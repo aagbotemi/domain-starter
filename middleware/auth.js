@@ -45,7 +45,9 @@ exports.jwtAuth = {
 
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
-     
+      if (decode.beneficiaryInfo) {
+        req.beneficiaryId = decode.beneficiaryInfo.id;
+      }
 
       next();
     });
@@ -69,7 +71,9 @@ exports.jwtAuth = {
       // console.log(decode.id);
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
-     
+      if (decode.beneficiaryInfo) {
+        req.beneficiaryId = decode.beneficiaryInfo.id;
+      }
 
       next();
     });

@@ -1,7 +1,7 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const { pagination} = require("./pagination");
+const { pagination } = require("./pagination");
 const readXlsxFile = require("read-excel-file/node");
 const beneficiaries = db.beneficiaries;
 const { auditTrailController } = require("./auditTrail");
@@ -33,7 +33,8 @@ exports.beneficiariesController = {
               partnerorganisationId: data.partnerorganisationId,
             };
 
-            usersController.create(userData).then((data) => {
+            userData.password = bcrypt.hashSync(userData.password, 10);
+            db.users.create(userData).then((data) => {
               const userId = data.id;
               beneficiaries.update(userId, {
                 where: {
@@ -95,7 +96,8 @@ exports.beneficiariesController = {
       userType: "beneficiary",
       partnerorganisationId: req.partnerorganisationId,
     };
-    usersController
+    userData.password = bcrypt.hashSync(userData.password, 10);
+    db.users
       .create(userData)
 
       .then((data) => {

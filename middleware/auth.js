@@ -61,13 +61,13 @@ exports.jwtAuth = {
     }
     let token = headers.split(" ")[1];
 
-    console.log(token);
+    // console.log(token);
     if (!token) return res.status(403).send({ message: "Unauthorised Access" });
 
     verify(token, process.env.secret, (err, decode) => {
       if (err) return res.status(401).send({ message: "forbidden access" });
 
-      console.log(decode.id);
+      console.log(decode.beneficiaryInfo.id);
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
 

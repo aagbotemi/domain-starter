@@ -88,13 +88,13 @@ exports.beneficiariesController = {
   createTrainee: (req, res) => {
     const trainee = req.body;
     const userData = {
-      fullName: `${req.firstName} ${req.lastName} ${req.middleName}`,
-      email: req.email,
-      phoneNumber: req.phoneNumber,
-      password: req.firstName,
-      userName: req.firstName,
+      fullName: `${req.body.firstName} ${req.body.lastName} ${req.body.middleName}`,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      password: req.body.firstName,
+      userName: req.body.firstName,
       userType: "beneficiary",
-      partnerorganisationId: req.partnerorganisationId,
+      partnerorganisationId: req.body.partnerorganisationId,
     };
     userData.password = bcrypt.hashSync(userData.password, 10);
     db.users

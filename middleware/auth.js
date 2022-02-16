@@ -67,11 +67,11 @@ exports.jwtAuth = {
     verify(token, process.env.secret, (err, decode) => {
       if (err) return res.status(401).send({ message: "forbidden access" });
 
-      console.log(decode.beneficiaryInfo.id);
+      // console.log(decode.beneficiaryInfo.id);
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
 
-      req.beneficiaryId = decode.beneficiaryInfo.id;
+      req.beneficiary = decode.beneficiaryInfo.id;
 
       next();
     });

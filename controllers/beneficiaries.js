@@ -186,11 +186,13 @@ exports.beneficiariesController = {
   },
 
   getbeneficiaryProfile: (req, res) => {
-    console.log(req.beneficiaryId);
+    const traineeId = req.beneficiary;
+
+    console.log(traineeId);
     beneficiaries
       .findOne({
         where: {
-          id: req.beneficiaryId,
+          id: traineeId,
         },
         include: [
           {

@@ -86,7 +86,6 @@ exports.beneficiariesController = {
   },
 
   createTrainee: (req, res) => {
-    const trainee = req.body;
     const userData = {
       fullName: `${req.body.firstName} ${req.body.lastName} ${req.body.middleName}`,
       email: req.body.email,
@@ -101,16 +100,17 @@ exports.beneficiariesController = {
       .create(userData)
 
       .then((data1) => {
+        const trainee = req.body;
+
         trainee.userId = data1.id;
-        beneficiaries.create(trainee)
-        .then((data) => {
+        beneficiaries.create(trainee).then((data) => {
           trail = {
             userId: `${req.userId}`,
             action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
             type: "success",
           };
           auditTrailController.create(trail);
-  
+
           if (
             data.graduationStatus == "evicted" ||
             data.graduationStatus == "dropped out"
@@ -139,9 +139,7 @@ exports.beneficiariesController = {
             message: "Trainee Added Successfully",
             data: data,
           });
-        })
-
-       
+        });
       })
       .catch((err) => {
         constants.handleErr(err, res);

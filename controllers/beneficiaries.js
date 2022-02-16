@@ -103,43 +103,48 @@ exports.beneficiariesController = {
         const trainee = req.body;
 
         trainee.userId = data1.id;
-        beneficiaries.create(trainee).then((data) => {
-          trail = {
-            userId: `${req.userId}`,
-            action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
-            type: "success",
-          };
-          auditTrailController.create(trail);
+        beneficiaries
+          .create(trainee)
+          .then((data) => {
+            trail = {
+              userId: `${req.userId}`,
+              action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
+              type: "success",
+            };
+            auditTrailController.create(trail);
 
-          if (
-            data.graduationStatus == "evicted" ||
-            data.graduationStatus == "dropped out"
-          ) {
-            evictedInfo = {
-              beneficiaryId: `${data.id}`,
-              reason: `${req.body.reason}`,
-              dateEvicted: `${req.body.dateEvicted}`,
-            };
-            evictedController.create(evictedInfo);
-          }
-          if (
-            data.employmentStatus == "employed" ||
-            data.employmentStatus == "self employed"
-          ) {
-            employInfo = {
-              beneficiaryId: `${data.id}`,
-              organisationName: `${req.body.organisationName}`,
-              organisationAddress: `${req.body.organisationAddress}`,
-              yearEmployed: `${req.body.yearEmployed}`,
-            };
-            employController.create(employInfo);
-          }
-          res.status(200).send({
-            success: true,
-            message: "Trainee Added Successfully",
-            data: data,
+            if (
+              data.graduationStatus == "evicted" ||
+              data.graduationStatus == "dropped out"
+            ) {
+              evictedInfo = {
+                beneficiaryId: `${data.id}`,
+                reason: `${req.body.reason}`,
+                dateEvicted: `${req.body.dateEvicted}`,
+              };
+              evictedController.create(evictedInfo);
+            }
+            if (
+              data.employmentStatus == "employed" ||
+              data.employmentStatus == "self employed"
+            ) {
+              employInfo = {
+                beneficiaryId: `${data.id}`,
+                organisationName: `${req.body.organisationName}`,
+                organisationAddress: `${req.body.organisationAddress}`,
+                yearEmployed: `${req.body.yearEmployed}`,
+              };
+              employController.create(employInfo);
+            }
+            res.status(200).send({
+              success: true,
+              message: "Trainee Added Successfully",
+              data: data,
+            });
+          })
+          .catch((err) => {
+            constants.handleErr(err, res);
           });
-        });
       })
       .catch((err) => {
         constants.handleErr(err, res);

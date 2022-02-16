@@ -186,6 +186,7 @@ exports.beneficiariesController = {
   },
 
   getbeneficiaryProfile: (req, res) => {
+    console.log(req.beneficiaryId);
     beneficiaries
       .findOne({
         where: {

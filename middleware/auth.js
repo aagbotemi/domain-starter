@@ -46,7 +46,7 @@ exports.jwtAuth = {
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
 
-      req.beneficiaryId = decode.beneficiaryInfo.id;
+      req.beneficiary = decode.beneficiaryInfo.id;
 
       next();
     });

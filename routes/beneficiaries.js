@@ -5,7 +5,7 @@ const { jwtAuth } = require("../middleware/auth");
 
 router.get("/:id", jwtAuth.generalVerifyToken, beneficiariesController.getById);
 
-router.get("/trainee", jwtAuth.generalVerifyToken, beneficiariesController.getbeneficiaryProfile);
+router.get("/trainee", jwtAuth.poVerifyToken, beneficiariesController.getbeneficiaryProfile);
 
 
 router.get(

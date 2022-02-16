@@ -49,7 +49,7 @@ exports.authController = {
           userName: user.userName,
           profileImage: user.profileImage,
           partnerOrganisation: user.partnerorganisationId,
-          beneficiaryInfo: user.beneficiaries,
+          beneficiaryInfo: user.beneficiary,
         };
         let token = sign(payload, config.secretKey, {
           expiresIn: 36000,
@@ -57,7 +57,7 @@ exports.authController = {
 
         res.status(200).send({
           status: true,
-          userData: user,
+          userData: payload,
           accessToken: token,
         });
       })

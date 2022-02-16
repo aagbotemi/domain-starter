@@ -192,7 +192,7 @@ exports.beneficiariesController = {
     beneficiaries
       .findOne({
         where: {
-          id: traineeId,
+          id: 6,
         },
         include: [
           {

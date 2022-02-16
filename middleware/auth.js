@@ -45,9 +45,8 @@ exports.jwtAuth = {
 
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
-      if (decode.beneficiaryInfo) {
-        req.beneficiaryId = decode.beneficiaryInfo.id;
-      }
+
+      req.beneficiaryId = decode.beneficiaryInfo.id;
 
       next();
     });
@@ -68,12 +67,11 @@ exports.jwtAuth = {
     verify(token, process.env.secret, (err, decode) => {
       if (err) return res.status(401).send({ message: "forbidden access" });
 
-      // console.log(decode.id);
+      console.log(decode.id);
       req.userId = decode.id;
       req.poId = decode.partnerOrganisation;
-      if (decode.beneficiaryInfo) {
-        req.beneficiaryId = decode.beneficiaryInfo.id;
-      }
+
+      req.beneficiaryId = decode.beneficiaryInfo.id;
 
       next();
     });

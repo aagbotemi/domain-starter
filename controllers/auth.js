@@ -57,7 +57,7 @@ exports.authController = {
 
         res.status(200).send({
           status: true,
-          userData: payload,
+          userData: user,
           accessToken: token,
         });
       })

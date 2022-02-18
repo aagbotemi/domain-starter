@@ -116,7 +116,7 @@ exports.usersController = {
       .findOne(
         {
           where: {
-            id: req.params.id,
+            id: id,
           },
         },
         {

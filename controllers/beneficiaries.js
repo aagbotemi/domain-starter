@@ -1,7 +1,7 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const { getPagination, getPagingData } = require("./pagination");
+const { pagination } = require("./pagination");
 const readXlsxFile = require("read-excel-file/node");
 const beneficiaries = db.beneficiaries;
 const { auditTrailController } = require("./auditTrail");
@@ -20,117 +20,131 @@ exports.beneficiariesController = {
     const pathToExcel = fileUploadController.upload(req);
     readXlsxFile(pathToExcel).then((rows) => {
       beneficiaries
-      .bulkCreate(rows)
-      .then((datas) => {
-        datas.forEach(data => {
-          const userData = {
-            fullName: `${data.firstName} ${data.lastName} ${data.middleName}`,
-            email: data.email,
-            phoneNumber: data.phoneNumber,
-            password: data.firstName,
-            userName: data.firstName,
-            userType: "beneficiary",
-            partnerorganisationId: data.partnerorganisationId,
-          };
-  
-          usersController.create(userData);
-          trail = {
-            userId: `${req.userId}`,
-            action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
-            type: "success",
-          };
-          auditTrailController.create(trail);
-  
-          if (
-            data.graduationStatus == "evicted" ||
-            data.graduationStatus == "dropped out"
-          ) {
-            evictedInfo = {
-              beneficiaryId: `${data.id}`,
-              reason: `${req.body.reason}`,
-              dateEvicted: `${req.body.dateEvicted}`,
+        .bulkCreate(rows)
+        .then((datas) => {
+          datas.forEach((data) => {
+            const userData = {
+              fullName: `${data.firstName} ${data.lastName} ${data.middleName}`,
+              email: data.email,
+              phoneNumber: data.phoneNumber,
+              password: data.firstName,
+              userName: data.firstName,
+              userType: "beneficiary",
+              partnerorganisationId: data.partnerorganisationId,
             };
-            evictedController.create(evictedInfo);
-          }
-          if (
-            data.employmentStatus == "employed" ||
-            data.employmentStatus == "self employed"
-          ) {
-            employInfo = {
-              beneficiaryId: `${data.id}`,
-              organisationName: `${req.body.organisationName}`,
-              organisationAddress: `${req.body.organisationAddress}`,
-              yearEmployed: `${req.body.yearEmployed}`,
+
+            userData.password = bcrypt.hashSync(userData.password, 10);
+            db.users.create(userData).then((data) => {
+              const userId = data.id;
+              beneficiaries.update(userId, {
+                where: {
+                  email: data.email,
+                },
+              });
+            });
+            trail = {
+              userId: `${req.userId}`,
+              action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
+              type: "success",
             };
-            employController.create(employInfo);
-          }
-          
+            auditTrailController.create(trail);
+
+            if (
+              data.graduationStatus == "evicted" ||
+              data.graduationStatus == "dropped out"
+            ) {
+              evictedInfo = {
+                beneficiaryId: `${data.id}`,
+                reason: `${req.body.reason}`,
+                dateEvicted: `${req.body.dateEvicted}`,
+              };
+              evictedController.create(evictedInfo);
+            }
+            if (
+              data.employmentStatus == "employed" ||
+              data.employmentStatus == "self employed"
+            ) {
+              employInfo = {
+                beneficiaryId: `${data.id}`,
+                organisationName: `${req.body.organisationName}`,
+                organisationAddress: `${req.body.organisationAddress}`,
+                yearEmployed: `${req.body.yearEmployed}`,
+              };
+              employController.create(employInfo);
+            }
+          });
+          res.status(200).send({
+            success: true,
+            message: "Trainee Added Successfully",
+            data: datas,
+          });
+        })
+        .catch((err) => {
+          constants.handleErr(err, res);
         });
-        res.status(200).send({
-          success: true,
-          message: "Trainee Added Successfully",
-          data: datas,
-        });
-      })
-      .catch((err) => {
-        constants.handleErr(err, res);
-      });
-    })
-    
+    });
   },
 
   createTrainee: (req, res) => {
-    const trainee = req.body;
+    const userData = {
+      fullName: `${req.body.firstName} ${req.body.lastName} ${req.body.middleName}`,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      password: req.body.firstName,
+      userName: req.body.firstName,
+      userType: "beneficiary",
+      partnerorganisationId: req.body.partnerorganisationId,
+    };
+    userData.password = bcrypt.hashSync(userData.password, 10);
+    db.users
+      .create(userData)
 
-    beneficiaries
-      .create(trainee)
-      .then((data) => {
-        const userData = {
-          fullName: `${data.firstName} ${data.lastName} ${data.middleName}`,
-          email: data.email,
-          phoneNumber: data.phoneNumber,
-          password: data.firstName,
-          userName: data.firstName,
-          userType: "beneficiary",
-          partnerorganisationId: data.partnerorganisationId,
-        };
+      .then((data1) => {
+        const trainee = req.body;
 
-        usersController.create(userData);
-        trail = {
-          userId: `${req.userId}`,
-          action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
-          type: "success",
-        };
-        auditTrailController.create(trail);
+        trainee.userId = data1.id;
+        beneficiaries
+          .create(trainee)
+          .then((data) => {
+            trail = {
+              userId: `${req.userId}`,
+              action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,
+              type: "success",
+            };
+            auditTrailController.create(trail);
 
-        if (
-          data.graduationStatus == "evicted" ||
-          data.graduationStatus == "dropped out"
-        ) {
-          evictedInfo = {
-            beneficiaryId: `${data.id}`,
-            reason: `${req.body.reason}`,
-            dateEvicted: `${req.body.dateEvicted}`,
-          };
-          evictedController.create(evictedInfo);
-        }
-        if (
-          data.employmentStatus == "employed" ||
-          data.employmentStatus == "self employed"
-        ) {
-          employInfo = {
-            beneficiaryId: `${data.id}`,
-            organisationName: `${req.body.organisationName}`,
-            organisationAddress: `${req.body.organisationAddress}`,
-            yearEmployed: `${req.body.yearEmployed}`,
-          };
-          employController.create(employInfo);
-        }
-        res.status(200).send({
-          success: true,
-          message: "Trainee Added Successfully",
-          data: data,
-        });
+            if (
+              data.graduationStatus == "evicted" ||
+              data.graduationStatus == "dropped out"
+            ) {
+              evictedInfo = {
+                beneficiaryId: `${data.id}`,
+                reason: `${req.body.reason}`,
+                dateEvicted: `${req.body.dateEvicted}`,
+              };
+              evictedController.create(evictedInfo);
+            }
+            if (
+              data.employmentStatus == "employed" ||
+              data.employmentStatus == "self employed"
+            ) {
+              employInfo = {
+                beneficiaryId: `${data.id}`,
+                organisationName: `${req.body.organisationName}`,
+                organisationAddress: `${req.body.organisationAddress}`,
+                yearEmployed: `${req.body.yearEmployed}`,
+              };
+              employController.create(employInfo);
+            }
+            res.status(200).send({
+              success: true,
+              message: "Trainee Added Successfully",
+              data: data,
+            });
+          })
+          .catch((err) => {
+            constants.handleErr(err, res);
+          });
       })
       .catch((err) => {
         constants.handleErr(err, res);
@@ -171,10 +185,47 @@ exports.beneficiariesController = {
       });
   },
 
+  getbeneficiaryProfile: (req, res) => {
+    const traineeId = req.beneficiary;
+
+    console.log(traineeId);
+    beneficiaries
+      .findOne({
+        where: {
+          id: traineeId,
+        },
+        include: [
+          {
+            model: db.partnerOrganisation,
+          },
+          {
+            model: db.trainingCategories,
+          },
+          {
+            model: db.trainingBatch,
+          },
+          {
+            model: db.employ,
+          },
+          {
+            model: db.evicted,
+          },
+        ],
+      })
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res.status(400).send({
+          message: err.message || "Could not find record",
+        });
+      });
+  },
+
   getAllBeneficiaries: (req, res) => {
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     beneficiaries
       .findAndCountAll({
         limit,
@@ -200,7 +251,7 @@ exports.beneficiariesController = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.gender == "male") {
             male.push(element);
           } else {
@@ -213,7 +264,7 @@ exports.beneficiariesController = {
           maleCount: male.length,
           femaleCount: female.length,
         };
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
 
         res.status(200).send(response);
@@ -268,7 +319,7 @@ exports.beneficiariesController = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.gender == "male") {
             male.push(element);
           } else {
@@ -299,7 +350,7 @@ exports.beneficiariesController = {
   getPOTrainees: (req, res) => {
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     beneficiaries
       .findAndCountAll({
         limit,
@@ -328,7 +379,7 @@ exports.beneficiariesController = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.gender == "male") {
             male.push(element);
           } else {
@@ -342,7 +393,7 @@ exports.beneficiariesController = {
           femaleCount: female.length,
         };
 
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
 
         res.status(200).send(response);
@@ -485,7 +536,7 @@ exports.beneficiariesController = {
     const state = req.body.stateOfOrigin;
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     if (po == "all" && state != "all") {
       var condition = { stateOfOrigin: state };
     } else if (state == "all" && po != "all") {
@@ -524,7 +575,7 @@ exports.beneficiariesController = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.gender == "male") {
             male.push(element);
           } else {
@@ -538,7 +589,7 @@ exports.beneficiariesController = {
           femaleCount: female.length,
         };
 
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
 
         res.status(200).send(response);
@@ -565,7 +616,7 @@ exports.beneficiariesController = {
     const gender = req.body.gender;
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     if (po == "all" && gender != "all") {
       var condition = { gender: gender };
     } else if (gender == "all" && po != "all") {
@@ -604,7 +655,7 @@ exports.beneficiariesController = {
       .then((data) => {
         const male = [];
         const female = [];
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.gender == "male") {
             male.push(element);
           } else {
@@ -619,7 +670,7 @@ exports.beneficiariesController = {
           femaleCount: female.length,
         };
 
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
         res.status(200).send(response);
 
@@ -646,7 +697,7 @@ exports.beneficiariesController = {
     const categoryId = req.body.categoryId;
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     if (po == "all" && categoryId != "all") {
       var condition = { categoryId: categoryId };
     } else if (categoryId == "all" && po != "all") {
@@ -687,7 +738,7 @@ exports.beneficiariesController = {
         const selfEmploy = [];
         const unemploy = [];
 
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.employmentStatus == "employed") {
             employed.push(element);
           } else if (element.employmentStatus == "self employed") {
@@ -703,7 +754,7 @@ exports.beneficiariesController = {
           selfEmployCount: selfEmploy.length,
         };
 
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
         res.status(200).send(response);
 
@@ -729,7 +780,7 @@ exports.beneficiariesController = {
     const graduationStatus = req.body.graduationStatus;
     const { page, size } = req.query;
 
-    const { limit, offset } = getPagination(page, size);
+    const { limit, offset } = pagination.getPagination(page, size);
     if (po == "all" && graduationStatus != "all") {
       var condition = { graduationStatus: graduationStatus };
     } else if (graduationStatus == "all" && po != "all") {
@@ -774,7 +825,7 @@ exports.beneficiariesController = {
         const exited = [];
         const droppedOut = [];
 
-        data.forEach((element) => {
+        data.rows.forEach((element) => {
           if (element.graduationStatus == "graduated") {
             graduated.push(element);
           } else if (element.graduationStatus == "in-training") {
@@ -793,7 +844,7 @@ exports.beneficiariesController = {
           droppedOut: droppedOut.length,
         };
 
-        const response = getPagingData(data, page, limit);
+        const response = pagination.getPagingData(data, page, limit);
         response.report = report;
         res.status(200).send(response);
         // res.status(200).send({

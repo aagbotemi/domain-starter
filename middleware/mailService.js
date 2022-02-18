@@ -22,18 +22,10 @@ const sendEmail = (email, token) => {
 
     console.log("auth", auth);
 
-    const nodemailerMailgun = nodemailer.createTransport(mailGun(auth));
-
+    const transporter = nodemailer.createTransport(mailGun(auth));
     
     console.log("transporter", transporter);
-    // const transporter = nodemailer.createTransport({
-        //     service: 'gmail',
-    //     auth: {
-    //         user: process.env.EMAIL_ID, // Your email id
-    //         pass: process.env.EMAIL_PASSWORD, // Your password
-    //     }
-    // });
- 
+    
     const mailOptions = {
         from: 'meia@gmail.com',
         to: email,
@@ -43,7 +35,8 @@ const sendEmail = (email, token) => {
     };
     
     console.log("mailOptions", mailOptions);
-    nodemailerMailgun.sendMail(mailOptions, (error, info) => {
+
+    transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             // console.log(1);
             console.log(`Error: ${err}`);

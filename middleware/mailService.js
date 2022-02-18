@@ -2,34 +2,59 @@ require('dotenv').config();
 const nodemailer = require('nodemailer');
 const mailGun = require('nodemailer-mailgun-transport');
 
-const auth = {
-    auth: {
-        api_key: process.env.MAIL_API_KEY,
-        domain: process.env.MAIL_DOMAIN,
-    }
-};
+const sendEmail = (email, token) => {
+    // const _email = email;
+    // const _token = token;
 
-const transporter = nodemailer.createTransport(mailGun(auth));
+    console.log("email", email);
+    console.log("token", token);
 
-const sendEmail = (name, email, subject, text, to, cb) => {
-    const mailOptions = {
-        from: {name: name, address: email},
-        to: to,
-        subject: subject,
-        html : text,
-        text: text
+    const auth = {
+        auth: {
+            api_key: process.env.MAIL_API_KEY,
+            domain: process.env.MAIL_DOMAIN,
+        }
     };
-    transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-        //   console.log(`Error: ${err}`);
-            cb(err, null);
+
+    
+    console.log("process.env.MAIL_API_KEY", process.env.MAIL_API_KEY);
+    console.log("process.env.MAIL_DOMAIN", process.env.MAIL_DOMAIN);
+
+    console.log("auth", auth);
+
+    const nodemailerMailgun = nodemailer.createTransport(mailGun(auth));
+
+    
+    console.log("transporter", transporter);
+    // const transporter = nodemailer.createTransport({
+        //     service: 'gmail',
+    //     auth: {
+    //         user: process.env.EMAIL_ID, // Your email id
+    //         pass: process.env.EMAIL_PASSWORD, // Your password
+    //     }
+    // });
+ 
+    const mailOptions = {
+        from: 'meia@gmail.com',
+        to: email,
+        subject: 'Reset Password Link - MEIA',
+        html: '<p>You requested for reset password, kindly use this <a href="http://localhost:4000/reset-password?token=' + token + '">link</a> to reset your password</p>'
+        
+    };
+    
+    console.log("mailOptions", mailOptions);
+    nodemailerMailgun.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            // console.log(1);
+            console.log(`Error: ${err}`);
+            // cb(err, null);
+        } else {
+            // console.log(0);
+            console.log(`Response: ${info}`);
+            // cb(null, info);
         }
-        else {
-        //   console.log(`Response: ${info}`);
-            cb(null, info);
-        }
-      }
-    );
+    });
+    console.log("working", "working");
 }
 
 module.exports = sendEmail;

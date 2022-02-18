@@ -35,8 +35,18 @@ router.get(
 
 router.post(
   "/reset-password",
-  usersController.forgotPassword
+  usersController.resetPassword
 );
+
+router.post(
+  "/reset-forgot-password",
+  usersController.resetForgotPassword
+);
+
+router.post(
+  '/forgot-password',
+  usersController.forgotPassword
+)
 
 router.put(
   "/:id",

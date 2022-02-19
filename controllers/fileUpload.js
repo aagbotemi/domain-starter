@@ -1,3 +1,4 @@
+const { Console } = require("console");
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
@@ -35,7 +36,7 @@ exports.fileUploadController = {
         checkFileType(file, cb);
       },
     }).single("file");
-    
+
     upload(req, res, function (err) {
       if (req.fileValidationError) {
         return res.status(400).send(req.fileValidationError);
@@ -50,6 +51,7 @@ exports.fileUploadController = {
       let path = req.file.path;
       const pathToReturn = path.substring(path.indexOf("/") + 1);
       res.send(pathToReturn);
+      console.log(pathToReturn);
       return pathToReturn;
     });
   },

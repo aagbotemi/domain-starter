@@ -17,7 +17,7 @@ require("dotenv").config();
 
 exports.beneficiariesController = {
   importFromExcel: async (req, res) => {
-    const pathToExcel = await fileUploadController.upload(req);
+    const pathToExcel = await fileUploadController.uploadExcel(req);
     readXlsxFile(pathToExcel).then((rows) => {
       rows.forEach((row) => {
         row.partnerorganisationId = req.poId;

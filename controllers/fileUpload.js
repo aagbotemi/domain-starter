@@ -17,7 +17,7 @@ exports.fileUploadController = {
     });
 
     function checkFileType(file, cb) {
-      const filetypes = /jpg|jpeg|png|pdf|xlsx/;
+      const filetypes = /jpg|jpeg|png|pdf|xlsx|csv/;
       const extname = filetypes.test(
         path.extname(file.originalname).toLowerCase()
       );

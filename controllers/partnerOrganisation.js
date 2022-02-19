@@ -5,6 +5,8 @@ const { pagination } = require("./pagination");
 const readXlsxFile = require("read-excel-file/node");
 const partnerOrganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
+const { fileUploadController } = require("../controllers/fileUpload");
+
 
 require("dotenv").config();
 

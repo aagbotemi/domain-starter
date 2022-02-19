@@ -16,8 +16,8 @@ const { Op } = require("sequelize");
 require("dotenv").config();
 
 exports.beneficiariesController = {
-  importFromExcel: (req, res) => {
-    const pathToExcel = fileUploadController.upload(req);
+  importFromExcel: async (req, res) => {
+    const pathToExcel = await fileUploadController.upload(req);
     readXlsxFile(pathToExcel).then((rows) => {
       rows.forEach((row) => {
         row.partnerorganisationId = req.poId;

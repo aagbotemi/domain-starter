@@ -101,8 +101,9 @@ exports.fileUploadController = {
       }
       // remove the public(string) before the first slash
       let path = req.file.path;
-      const pathToReturn = "../public/" + path.substring(path.indexOf("/") + 1);
-      return pathToReturn;
+      const pathToReturn = path.substring(path.indexOf("/") + 1);
+      console.log(path);
+      return path;
     });
   },
 };

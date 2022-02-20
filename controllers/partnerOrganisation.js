@@ -13,7 +13,7 @@ require("dotenv").config();
 exports.partnerOrgController = {
   importFromExcel: async (req, res) => {
     try {
-      const pathToExcel = await fileUploadController.uploadExcel(req);
+      const pathToExcel = await fileUploadController.uploadExcel(req, res);
       readXlsxFile(pathToExcel).then(async (rows) => {
         const participatingOrgs = await partnerOrganisation.bulkcreate(rows);
         participatingOrgs.forEach(async (participatingOrg) => {

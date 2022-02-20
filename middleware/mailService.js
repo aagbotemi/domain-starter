@@ -1,35 +1,29 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const mailGun = require('nodemailer-mailgun-transport');
+const sendEmail = async (email, subject, text) => {
 
-const auth = {
-    auth: {
-        api_key: process.env.MAIL_API_KEY,
-        domain: process.env.MAIL_DOMAIN,
+    try {
+        const transporter = nodemailer.createTransport({
+            host: process.env.MAIL_HOST,
+            // service: process.env.SERVICE,
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.MAIL_USERNAME,
+                pass: process.env.MAIL_PASSWORD,
+            },
+        });
+
+        await transporter.sendMail({
+            from: process.env.USER,
+            to: email,
+            subject: subject,
+            text: text,
+        });
+        console.log("email sent sucessfully"); 
+    } catch (error) {
+        console.log(error, "email not sent");
     }
-};
-
-const transporter = nodemailer.createTransport(mailGun(auth));
-
-const sendEmail = (name, email, subject, text, to, cb) => {
-    const mailOptions = {
-        from: {name: name, address: email},
-        to: to,
-        subject: subject,
-        html : text,
-        text: text
-    };
-    transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-        //   console.log(`Error: ${err}`);
-            cb(err, null);
-        }
-        else {
-        //   console.log(`Response: ${info}`);
-            cb(null, info);
-        }
-      }
-    );
 }
 
 module.exports = sendEmail;

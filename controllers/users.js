@@ -2,12 +2,11 @@ const bcrypt = require("bcryptjs");
 const db = require("../models");
 const { constants } = require("./constants");
 const users = db.users;
+const requestPassword = db.requestPassword;
 const partnerOrganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
-// const mailgun = require("mailgun-js");
-const DOMAIN = "sandbox90292-2309ds-jicdo929-jsd9jkc@mailgun.org";
-// const mg = mailgun({ apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN });
-
+const randToken = require('rand-token');
+const sendEmail = require('../middleware/mailService');
 const Op = db.Sequelize.Op;
 
 exports.usersController = {
@@ -173,7 +172,7 @@ exports.usersController = {
       });
   },
 
-  forgotPassword: async (req, res) => {
+  resetPassword: async (req, res) => {
     const reset = req.body;
     reset.password = bcrypt.hashSync(reset.password, 10);
     users
@@ -190,6 +189,88 @@ exports.usersController = {
           });
         }
         res.status(200).send(data);
+      })
+      .catch((err) => {
+        constants.handleErr(err, res);
+      });
+  },
+
+  forgotPassword: async (req, res) => {
+    const email = req.body.email;
+    users
+      .findOne(
+        {
+          where: {
+            email: email,
+          },
+        }
+      )
+      .then((data) => {
+        if (!data) {
+          res.status(404).send({
+            status: false,
+            message: "The Email is not registered with us",
+          });
+        }
+
+        const token = randToken.generate(20);
+        const subject = 'Reset Password Link - MEIA';
+        const text = `You requested for reset password, kindly use this <a href="http://localhost:4000/reset-password?token=${token}">link</a> to reset your password`;
+        const sentEmail = sendEmail(email, subject, text);
+        console.log(sentEmail);
+        
+        requestPassword.create(token)
+          .then((resp) => {
+            console.log(resp)
+          }).catch(err => {
+            constants.handleErr(err, res)
+          })
+
+        if (sentEmail != 0) {
+          res.status(200).send({
+            success: true,
+            message: "The reset password link has been sent to your email address"
+          });
+        }
+      })
+      .catch((err) => {
+        constants.handleErr(err, res);
+      });
+  },
+
+  resetForgotPassword: (req, res) => {
+    const reset = req.body;
+    reset.password = bcrypt.hashSync(reset.password, 10);
+    requestPassword
+      .findAll({
+        where: {
+          token: reset.token,
+        },
+      })
+      .then((data) => {
+        users.update(reset.password, {
+          where: {
+            email: req.body.email,
+          },
+        }).then((res) => {
+          if (res !== 1) {
+            res.status(404).send({
+              status: false,
+              message: "record not found",
+            });
+          }
+          trail = {
+            action: `A users detail has been updated`,
+            type: "warning",
+          };
+          auditTrailController.create(trail);
+          res.status(200).send({
+            success: true,
+            message: " Your password has been updated successfully",
+            res
+          });
+
+        })
       })
       .catch((err) => {
         constants.handleErr(err, res);

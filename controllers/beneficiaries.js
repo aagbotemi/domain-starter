@@ -16,9 +16,12 @@ const { Op } = require("sequelize");
 require("dotenv").config();
 
 exports.beneficiariesController = {
-  importFromExcel: (req, res) => {
-    const pathToExcel = fileUploadController.upload(req);
+  importFromExcel: async (req, res) => {
+    const pathToExcel = await fileUploadController.uploadExcel(req);
     readXlsxFile(pathToExcel).then((rows) => {
+      rows.forEach((row) => {
+        row.partnerorganisationId = req.poId;
+      });
       beneficiaries
         .bulkCreate(rows)
         .then((datas) => {
@@ -34,14 +37,20 @@ exports.beneficiariesController = {
             };
 
             userData.password = bcrypt.hashSync(userData.password, 10);
-            db.users.create(userData).then((data) => {
-              const userId = data.id;
-              beneficiaries.update(userId, {
-                where: {
-                  email: data.email,
-                },
+            db.users
+              .create(userData)
+              .then((data) => {
+                const userId = data.id;
+                beneficiaries.update(userId, {
+                  where: {
+                    email: data.email,
+                  },
+                });
+              })
+              .catch((err) => {
+                constants.handleErr(err, res);
               });
-            });
+
             trail = {
               userId: `${req.userId}`,
               action: `${req.body.firstName} ${req.body.lastName} added as a trainee`,

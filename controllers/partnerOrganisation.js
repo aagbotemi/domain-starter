@@ -1,40 +1,44 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
 const { constants } = require("./constants");
-const { pagination} = require("./pagination");
+const { pagination } = require("./pagination");
 const readXlsxFile = require("read-excel-file/node");
 const partnerOrganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
+const { fileUploadController } = require("../controllers/fileUpload");
+
 
 require("dotenv").config();
 
 exports.partnerOrgController = {
   importFromExcel: async (req, res) => {
-    try{
-      const pathToExcel = fileUploadController.upload(req);
+    try {
+      const pathToExcel = await fileUploadController.uploadExcel(req);
       readXlsxFile(pathToExcel).then(async (rows) => {
         const participatingOrgs = await partnerOrganisation.bulkcreate(rows);
-        participatingOrgs.forEach(async participatingOrg => {
+        participatingOrgs.forEach(async (participatingOrg) => {
           for (let index = 0; index < rows.length; index++) {
-            if(rows[index].organisationName == participatingOrg.organisationName){
+            if (
+              rows[index].organisationName == participatingOrg.organisationName
+            ) {
               const participatingOrgState = await participatingOrg.setStates(
                 rows[index].stateId
               );
-              participatingOrg.setCategories(rows[index].categories)
-              .then((data) => {
-                trail = {
-                  userId: `${req.userId}`,
-                  action: ` ${participatingOrg.organisationName} has been created successfully`,
-                  type: "success",
-                };
-                auditTrailController.create(trail);
-               
-              });
+              participatingOrg
+                .setCategories(rows[index].categories)
+                .then((data) => {
+                  trail = {
+                    userId: `${req.userId}`,
+                    action: ` ${participatingOrg.organisationName} has been created successfully`,
+                    type: "success",
+                  };
+                  auditTrailController.create(trail);
+                })
+                .catch((err) => {
+                  constants.handleErr(err, res);
+                });
             }
-            
           }
-          
-          
         });
         res.status(200).send({
           success: true,
@@ -42,13 +46,10 @@ exports.partnerOrgController = {
           // data: data,
           // participatingOrgState,
         });
-        
-      })
-    }catch (err) {
+      });
+    } catch (err) {
       constants.handleErr(err, res);
     }
-   
-    
   },
   createPartnerOrg: async (req, res) => {
     try {

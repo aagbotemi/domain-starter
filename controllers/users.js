@@ -194,6 +194,18 @@ exports.usersController = {
         constants.handleErr(err, res);
       });
   },
+  sendMail: async (req, res) => {
+    const email = req.body.email;
+    const subject = "Reset Password Link - MEIA";
+    const body = "Just a test"
+    try {
+      const sentMail = sendEmail(email, subject, body)
+      console.log(sentMail);
+
+    } catch (e) {
+      console.log(e)
+    }
+  },
 
   forgotPassword: async (req, res) => {
     const email = req.body.email;
@@ -216,22 +228,25 @@ exports.usersController = {
         const token = randToken.generate(20);
         const subject = 'Reset Password Link - MEIA';
         const text = `You requested for reset password, kindly use this <a href="http://localhost:4000/reset-password?token=${token}">link</a> to reset your password`;
-        const sentEmail = sendEmail(email, subject, text);
-        console.log(sentEmail);
-        
-        requestPassword.create(token)
-          .then((resp) => {
-            console.log(resp)
-          }).catch(err => {
-            constants.handleErr(err, res)
-          })
-
-        if (sentEmail != 0) {
-          res.status(200).send({
-            success: true,
-            message: "The reset password link has been sent to your email address"
-          });
+        try {
+          // send the mail
+          const sentEmail = sendEmail(email, subject, text);
+          console.log(sentEmail);
+          // save the token
+          requestPassword.create(token)
+            .then((resp) => {
+              res.status(200).send({
+                success: true,
+                message: "The reset password link has been sent to your email address"
+              });
+            }).catch(err => {
+              constants.handleErr(err, res)
+            })
+        } catch (e) {
+          console.log(e)
         }
+
+
       })
       .catch((err) => {
         constants.handleErr(err, res);

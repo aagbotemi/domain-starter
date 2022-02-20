@@ -5,8 +5,11 @@ const { jwtAuth } = require("../middleware/auth");
 
 router.get("/:id", jwtAuth.generalVerifyToken, beneficiariesController.getById);
 
-router.get("/trainee/profile", jwtAuth.generalVerifyToken, beneficiariesController.getbeneficiaryProfile);
-
+router.get(
+  "/trainee/profile",
+  jwtAuth.generalVerifyToken,
+  beneficiariesController.getbeneficiaryProfile
+);
 
 router.get(
   "/",
@@ -64,7 +67,11 @@ router.post(
 
 router.post("/", jwtAuth.poVerifyToken, beneficiariesController.createTrainee);
 
-router.post("/bulk", jwtAuth.poVerifyToken, beneficiariesController.importFromExcel);
+router.post(
+  "/import/bulk",
+  jwtAuth.poVerifyToken,
+  beneficiariesController.importFromExcel
+);
 
 router.put(
   "/:id",

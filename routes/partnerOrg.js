@@ -18,7 +18,7 @@ router.post(
 );
 
 router.post(
-  "/bulk",
+  "/import/bulk",
   jwtAuth.adminVerifyToken,
   partnerOrgController.importFromExcel
 );

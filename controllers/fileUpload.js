@@ -55,7 +55,7 @@ exports.fileUploadController = {
       return pathToReturn;
     });
   },
-  
+
   uploadExcel: async (req, res) => {
     const storage = multer.diskStorage({
       destination(req, file, cb) {
@@ -101,7 +101,7 @@ exports.fileUploadController = {
       }
       // remove the public(string) before the first slash
       let path = req.file.path;
-      const pathToReturn = path.substring(path.indexOf("/") + 1);
+      const pathToReturn = "../public/" + path.substring(path.indexOf("/") + 1);
       return pathToReturn;
     });
   },

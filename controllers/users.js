@@ -5,12 +5,8 @@ const users = db.users;
 const requestPassword = db.requestPassword;
 const partnerOrganisation = db.partnerOrganisation;
 const { auditTrailController } = require("./auditTrail");
-// const mailgun = require("mailgun-js");
-const DOMAIN = "sandbox90292-2309ds-jicdo929-jsd9jkc@mailgun.org";
 const randToken = require('rand-token');
 const sendEmail = require('../middleware/mailService');
-// const mg = mailgun({ apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN });
-
 const Op = db.Sequelize.Op;
 
 exports.usersController = {
@@ -218,10 +214,10 @@ exports.usersController = {
         }
 
         const token = randToken.generate(20);
-        const sentEmail = sendEmail(email, token);
-
-        console.log("tookkkeeeennnnnn", token);
-        console.log("seennntttt", sentEmail);
+        const subject = 'Reset Password Link - MEIA';
+        const text = `You requested for reset password, kindly use this <a href="http://localhost:4000/reset-password?token=${token}">link</a> to reset your password`;
+        const sentEmail = sendEmail(email, subject, text);
+        console.log(sentEmail);
         
         requestPassword.create(token)
           .then((resp) => {
@@ -229,24 +225,12 @@ exports.usersController = {
           }).catch(err => {
             constants.handleErr(err, res)
           })
-        
-        console.log("tookkkeeeennnnnn", token);
 
         if (sentEmail != 0) {
-          // users.update(token, {
-          //   where: {
-          //     email: email,
-          //   },
-          // })
-          // .then((data) => {
-            res.status(200).send({
-              success: true,
-              message: "The reset password link has been sent to your email address"
-            });
-          // })
-          // .catch((err) => {
-          //   constants.handleErr(err, res);
-          // });
+          res.status(200).send({
+            success: true,
+            message: "The reset password link has been sent to your email address"
+          });
         }
       })
       .catch((err) => {
@@ -256,8 +240,6 @@ exports.usersController = {
 
   resetForgotPassword: (req, res) => {
     const reset = req.body;
-    // const password = req.body.password;
-    
     reset.password = bcrypt.hashSync(reset.password, 10);
     requestPassword
       .findAll({

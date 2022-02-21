@@ -201,9 +201,13 @@ exports.usersController = {
     try {
       const sentMail = sendEmail(email, subject, body)
       console.log(sentMail);
+      res.status(200).send({
+        message:"mail sent"
+      });
 
     } catch (e) {
       console.log(e)
+      res.status(400).send(e);
     }
   },
 

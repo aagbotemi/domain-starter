@@ -272,7 +272,7 @@ exports.usersController = {
     requestPassword
       .findOne({
         where: {
-          token: reset.token,
+          resetToken: reset.token,
         },
       })
       .then((data) => {

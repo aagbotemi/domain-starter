@@ -201,11 +201,15 @@ exports.usersController = {
     const subject = "Reset Password Link - MEIA";
     const body = "Just a test"
     try {
-      const sentMail = sendEmail(email, subject, body)
+      const sentMail = await sendEmail(email, subject, body)
       console.log(sentMail);
+      res.status(200).send({
+        message:sentMail
+      });
 
     } catch (e) {
       console.log(e)
+      res.status(400).send(e);
     }
   },
 

@@ -241,7 +241,7 @@ exports.usersController = {
           expiresIn: 36000,
         });
         const subject = 'Reset Password Link - MEIA';
-        const text = `You requested for reset password, kindly use this <a href="https://itf-necatsdp.com/updatepassword?token=${token}">Link</a> to reset your password`;
+        const text = `You requested for reset password, kindly use this https://itf-necatsdp.com/updatepassword?token=${token} to reset your password`;
         
         try {
           // send the mail

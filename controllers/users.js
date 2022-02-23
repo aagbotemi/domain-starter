@@ -201,15 +201,10 @@ exports.usersController = {
     const subject = "Reset Password Link - MEIA";
     const body = "Just a test"
     try {
-      const sentMail = await sendEmail(email, subject, body)
+      const sentMail = sendEmail(email, subject, body)
       console.log(sentMail);
-      res.status(200).send({
-        message:sentMail
-      });
-
     } catch (e) {
       console.log(e)
-      res.status(400).send(e);
     }
   },
 
@@ -231,8 +226,6 @@ exports.usersController = {
           });
         }
 
-        // const token = randToken.generate(20);
-        
         let payload = {
           id: data.id,
           email: data.email,
@@ -248,13 +241,14 @@ exports.usersController = {
           expiresIn: 36000,
         });
         const subject = 'Reset Password Link - MEIA';
-        const text = `You requested for reset password, kindly use this <a href="https://itf-necatsdp.com/forgot?token=${token}">link</a> to reset your password`;
+        const text = `You requested for reset password, kindly use this <a href="https://itf-necatsdp.com/updatepassword?token=${token}">Link</a> to reset your password`;
+        
         try {
           // send the mail
           const sentEmail = sendEmail(email, subject, text);
           console.log(sentEmail);
           // save the token
-          requestPassword.create(token)
+          requestPassword.create({resetToken: token, userId: payload.id})
             .then((resp) => {
               res.status(200).send({
                 success: true,
@@ -266,8 +260,6 @@ exports.usersController = {
         } catch (e) {
           console.log(e)
         }
-
-
       })
       .catch((err) => {
         constants.handleErr(err, res);

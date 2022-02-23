@@ -270,7 +270,7 @@ exports.usersController = {
     const reset = req.body;
     reset.password = bcrypt.hashSync(reset.password, 10);
     requestPassword
-      .findAll({
+      .findOne({
         where: {
           token: reset.token,
         },

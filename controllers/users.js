@@ -174,7 +174,7 @@ exports.usersController = {
       });
   },
 
-  resetPassword: async (req, res) => {
+  changePassword: async (req, res) => {
     const reset = req.body;
     reset.password = bcrypt.hashSync(reset.password, 10);
     users

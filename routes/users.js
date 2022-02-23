@@ -34,8 +34,8 @@ router.get(
 );
 
 router.post(
-  "/reset-password",
-  usersController.resetPassword
+  "/change-password",
+  usersController.changePassword
 );
 
 router.post(

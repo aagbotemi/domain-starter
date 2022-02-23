@@ -276,6 +276,7 @@ exports.usersController = {
         },
       })
       .then((data) => {
+        console.log(data)
         users.update(reset.password, {
           where: {
             id: data.userId

@@ -8,6 +8,8 @@ const { auditTrailController } = require("./auditTrail");
 const randToken = require('rand-token');
 const sendEmail = require('../middleware/mailService');
 const Op = db.Sequelize.Op;
+const { sign } = require("jsonwebtoken");
+const config = require("../config/auth");
 
 exports.usersController = {
   create: (req, res) => {
@@ -225,9 +227,24 @@ exports.usersController = {
           });
         }
 
-        const token = randToken.generate(20);
+        // const token = randToken.generate(20);
+        
+        let payload = {
+          id: data.id,
+          email: data.email,
+          userType: data.userType,
+          fullName: data.fullName,
+          phoneNumber: data.phoneNumber,
+          userName: data.userName,
+          profileImage: data.profileImage,
+          partnerOrganisation: data.partnerorganisationId,
+          beneficiaryInfo: data.beneficiary,
+        };
+        let token = sign(payload, config.secretKey, {
+          expiresIn: 36000,
+        });
         const subject = 'Reset Password Link - MEIA';
-        const text = `You requested for reset password, kindly use this <a href="http://localhost:4000/reset-password?token=${token}">link</a> to reset your password`;
+        const text = `You requested for reset password, kindly use this <a href="https://itf-necatsdp.com/forgot?token=${token}">link</a> to reset your password`;
         try {
           // send the mail
           const sentEmail = sendEmail(email, subject, text);
@@ -265,7 +282,7 @@ exports.usersController = {
       .then((data) => {
         users.update(reset.password, {
           where: {
-            email: req.body.email,
+            id: data.userId
           },
         }).then((res) => {
           if (res !== 1) {
